@@ -66,13 +66,15 @@ public class SignUp extends AppCompatActivity {
 //        activity.startActivity(new Intent(activity, MainActivity.class));
 
         DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
-        dref.child("Patient").child("Adnan").addValueEventListener(new ValueEventListener() {
+        dref.child("Users").child("zaheer").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+//                    PatientModel patientModel1 = dataSnapshot.getValue(PatientModel.class);
+//                    Toast.makeText(getApplicationContext(), patientModel1.getName(), Toast.LENGTH_LONG).show();
 
-                    PatientModel patientModel1 = dataSnapshot.getValue(PatientModel.class);
-                    Toast.makeText(getApplicationContext(), patientModel1.getName(), Toast.LENGTH_LONG).show();
+                    String name = dataSnapshot.child("Name").getValue().toString();
+                    Toast.makeText(getApplicationContext(), name, Toast.LENGTH_LONG).show();
 
                 } else {
                     Toast.makeText(getApplicationContext(), "No notice found.", Toast.LENGTH_LONG).show();
