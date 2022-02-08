@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/grey_light"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mainCardView"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_155sdp"
+        app:cardElevation="@dimen/_4sdp"
+        app:strokeColor="@color/dark_blue_700"
+        app:strokeWidth="@dimen/_1sdp"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_child_card_view"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+            <ImageView
+                android:id="@+id/iv_doc_type"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@drawable/childspecialist"
+                android:contentDescription="Doctors Image"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_specialization_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/child_specialist"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:textColor="@color/dark_blue_700"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintTop_toBottomOf="@+id/iv_doc_type"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+            <ImageView
+                android:id="@+id/iv_arrow_forward"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/arrow_forward"
+                app:tint="@color/dark_blue_700"
+                android:contentDescription="Arrow Forward Image"
+                android:layout_marginTop="@dimen/_2sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_specialization_name"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_book_appointment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Book Appointmnet"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:textColor="@color/dark_blue_700"
+                android:textSize="@dimen/_9ssp"
+                app:layout_constraintTop_toBottomOf="@+id/iv_arrow_forward"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

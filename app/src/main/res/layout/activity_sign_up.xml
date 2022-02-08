@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_blue_700"
+    tools:context=".activities.SignUp">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.13" />
+
+
+    <TextView
+        android:id="@+id/tv_doctors_on_demand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:text="@string/medical_annals"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_30ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:background="@drawable/login_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainConstraint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mainCardView"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="@dimen/_450sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:cardElevation="@dimen/_8sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ti_constraint"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/login_constraint">
+
+                    <TextView
+                        android:id="@+id/tv_login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:text="@string/sign_up"
+                        android:textColor="@color/dark_blue_700"
+                        android:textSize="@dimen/_18ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:scrollbars="none"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_login">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <RadioGroup
+                                android:id="@+id/groupradio"
+                                android:orientation="horizontal"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                               app:layout_constraintTop_toTopOf="parent">
+
+                                <RadioButton
+                                    android:id="@+id/rb_patient_sign_up"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Patient"
+                                    android:checked="true"
+                                    android:buttonTint="@color/dark_blue_700"
+                                    android:paddingBottom="@dimen/_10sdp"
+                                    android:paddingTop="@dimen/_10sdp"
+                                    android:paddingEnd="@dimen/_10sdp"
+                                    android:textColor="@color/dark_blue_700"
+                                    android:textSize="@dimen/_12sdp"/>
+
+                                <RadioButton
+                                    android:id="@+id/rb_doctor_sign_up"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Doctor"
+                                    android:paddingBottom="@dimen/_10sdp"
+                                    android:paddingTop="@dimen/_10sdp"
+                                    android:paddingEnd="@dimen/_10sdp"
+                                    android:buttonTint="@color/dark_blue_700"
+                                    android:textColor="@color/dark_blue_700"
+                                    android:textSize="@dimen/_12sdp"/>
+
+                            </RadioGroup>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/ti_username_sign_up"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:hint="Name"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/groupradio">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tied_username_sign_up"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ-'"
+                                    android:maxLength="25" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/ti_email_sign_up"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_37sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:hint="@string/email_address"
+                                android:visibility="visible"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ti_username_sign_up">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tied_email_sign_up"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:inputType="textEmailAddress" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/ti_contact_sign_up"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:hint="@string/contact"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ti_email_sign_up">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tied_contact_sign_up"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:inputType="phone"
+                                    android:maxLength="11" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/ti_password_signup"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:hint="@string/password"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ti_contact_sign_up">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tied_password_sign_up"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:maxLength="15" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/ti_confirm_password_signup"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:hint="@string/confirm_password"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ti_password_signup">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tied_confirm_password_sign_up"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:maxLength="15" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/ti_age_sign_up"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:hint="@string/age"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ti_confirm_password_signup">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tied_age_sign_up"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:inputType="number"
+                                    android:maxLength="3" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/ti_gender_sign_up"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:hint="@string/gender"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ti_age_sign_up">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tied_gender_sign_up"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                    android:maxLength="11" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/spinner_specialization"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_43sdp"
+                                android:hint="Select Specialization"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ti_gender_sign_up">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/filled_exposed_dropdown"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:inputType="none" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/spinner_hospital"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_43sdp"
+                                android:hint="Select Hospital"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/spinner_specialization">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/filled_exposed_dropdown_hospital"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:inputType="none" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/ti_experience_sign_up"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:hint="@string/experience_in_years"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/spinner_hospital">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tied_experience_sign_up"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:inputType="number"
+                                    android:maxLength="2" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/ti_fee_sign_up"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:hint="@string/enter_fee"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ti_experience_sign_up">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tied_fee_sign_up"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:inputType="number"
+                                    android:maxLength="4" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/ti_qualification_sign_up"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginStart="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:hint="Enter Qualification"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ti_experience_sign_up">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tied_qualification_sign_up"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:inputType="text"
+                                     />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <Button
+                                android:id="@+id/btn_sign_up"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:backgroundTint="@color/dark_blue_700"
+                                android:text="@string/sign_up"
+                                android:textColor="@color/white"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ti_fee_sign_up" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </ScrollView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tv_sign_in_for_an_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:text="@string/already_have_an_account_sign_in"
+                android:textColor="@color/dark_blue_700"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mainCardView" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

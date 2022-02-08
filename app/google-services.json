@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "748398062324",
+    "project_id": "medical-annals",
+    "storage_bucket": "medical-annals.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748398062324:android:4d04ec7e0865866a5d0ca1",
+        "android_client_info": {
+          "package_name": "com.example.medicalannals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "748398062324-pjt3qne3rfbqrn0qurev05jc7c68pcrm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcIFUCqMHcmz2Rxbk07FRGANvWcz6X5xQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "748398062324-pjt3qne3rfbqrn0qurev05jc7c68pcrm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

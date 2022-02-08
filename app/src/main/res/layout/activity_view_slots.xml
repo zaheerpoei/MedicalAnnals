@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_light"
+    tools:context=".activities.ViewSlots">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/home_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/dark_blue_700"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/toolbar_image_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_8sdp"
+                app:tint="@color/white"
+                android:contentDescription="@string/drawer_image"
+                android:src="@drawable/arrow_back" />
+
+            <TextView
+                android:id="@+id/toolbar_drawer_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/slots_available"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15sdp" />
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contraint_doc_info"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraint_toolbar">
+
+        <ImageView
+            android:id="@+id/iv_doc_pic"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:scaleType="fitXY"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/profile_background"
+            android:src="@drawable/default_profile_pic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_doc_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="@string/dr_maaz_shahzad"
+            android:textColor="@color/dark_blue_700"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/iv_doc_pic"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_hospital_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shifa_international_hospital"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_doc_name"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_doc_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_doc_name" />
+
+        <TextView
+            android:id="@+id/tv_specialization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/child_specialist"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_doc_name"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_hospital_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_hospital_name" />
+
+
+        <TextView
+            android:id="@+id/tv_years"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=", 3 Years."
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_doc_name"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/tv_specialization"
+            app:layout_constraintTop_toBottomOf="@+id/tv_hospital_name" />
+
+        <TextView
+            android:id="@+id/tv_education"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MBBS - FCPS (Dermatology)"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_doc_name"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_specialization"
+            app:layout_constraintTop_toBottomOf="@+id/tv_specialization" />
+
+
+        <TextView
+            android:id="@+id/tv_fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Fee: Rs."
+            android:textStyle="bold"
+            android:textSize="@dimen/_9ssp"
+            android:textColor="@color/dark_blue_700"
+            app:layout_constraintStart_toStartOf="@+id/tv_education"
+            app:layout_constraintTop_toBottomOf="@+id/tv_education"/>
+
+
+
+
+        <TextView
+            android:id="@+id/tv_fee_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_1000"
+            android:textStyle="bold"
+            android:textSize="@dimen/_9ssp"
+            android:textColor="@color/dark_blue_700"
+            app:layout_constraintTop_toTopOf="@+id/tv_fee"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_fee"
+            app:layout_constraintStart_toEndOf="@+id/tv_fee"/>
+
+
+        <TextView
+            android:id="@+id/tv_change_doc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"
+            android:textColor="@color/dark_blue_700"
+            android:textSize="@dimen/_9ssp"
+            android:visibility="gone"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_hospital_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.44" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_slots_info"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contraint_doc_info">
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_slits_available"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="20dp"
+                    android:scrollbars="none"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:context="example.javatpoint.com.recyclerviewlist.MainActivity" />
+
+                <TextView
+                    android:id="@+id/tv_morning_slots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/morning_slots"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textSize="@dimen/_11sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:textColor="@color/dark_blue_700"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_view_slits_available"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_morning_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="20dp"
+                    android:scrollbars="none"
+                    android:visibility="visible"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_morning_slots" />
+
+                <TextView
+                    android:id="@+id/tv_afternoon_slots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/afternoon_slots"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textSize="@dimen/_11sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:textColor="@color/dark_blue_700"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_view_morning_slots"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_afternoon_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="20dp"
+                    android:scrollbars="none"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_afternoon_slots"
+                    tools:context="example.javatpoint.com.recyclerviewlist.MainActivity" />
+
+                <TextView
+                    android:id="@+id/tv_evening_slots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/evening_slots"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textSize="@dimen/_11sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:textColor="@color/dark_blue_700"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_view_afternoon_slots"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_eveing_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="20dp"
+                    android:scrollbars="none"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_evening_slots"
+                    tools:context="example.javatpoint.com.recyclerviewlist.MainActivity" />
+
+                <Button
+                    android:id="@+id/btn_slots_available"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_35sdp"
+                    android:backgroundTint="@color/dark_blue_700"
+                    android:text="@string/book_appointment"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_view_eveing_slots" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

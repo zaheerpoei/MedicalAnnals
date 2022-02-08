@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="sky_blue_200">#80deea</color>
+    <color name="sky_blue_700">#4bacb8</color>
+    <color name="dark_blue_200">#006064</color>
+    <color name="dark_blue_700">#00363a</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="grey_light">#F5F5F6</color>
+    <color name="red_color">#FF0000</color>
+    <color name="grey_color">#C0C0C0</color>
+    <color name="green">#9ACD32</color>
+    <color name="devider">#e6e6e6</color>
+    <color name="color_gray">#808080</color>
+    <color name="charcoal">#36454F</color>
+</resources>

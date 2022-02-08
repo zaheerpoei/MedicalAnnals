@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group>
+        <item
+            android:id="@+id/nav_home_doc"
+            android:icon="@drawable/home"
+            android:title="@string/home" />
+
+        <item
+            android:id="@+id/nav_profile_management_doc"
+            android:icon="@drawable/profile"
+            android:title="@string/profile_management" />
+
+        <item
+            android:id="@+id/nav_set_appointments"
+            android:title="Set Appointments"
+            android:icon="@drawable/ic_baseline_date_range_24" />
+
+        <item
+            android:id="@+id/nav_view_patient_medical_record"
+            android:title="View Patient Record"
+            android:icon="@drawable/record" />
+
+        <item
+            android:id="@+id/nav_3"
+            android:title="" />
+        <item
+            android:id="@+id/nav_4"
+            android:title="" />
+        <item
+            android:id="@+id/nav_5"
+            android:title="" />
+        <item
+            android:id="@+id/nav_6"
+            android:title="" />
+        <item
+            android:id="@+id/nav_7"
+            android:title="" />
+        <item
+            android:id="@+id/nav_8"
+            android:title="" />
+
+        <item
+            android:id="@+id/nav_9"
+            android:title="" />
+
+        <item
+            android:id="@+id/nav_10"
+            android:title="" />
+
+        <item
+            android:id="@+id/nav_11"
+            android:title="" />
+
+        <item
+            android:id="@+id/nav_logout_doc"
+            android:icon="@drawable/logout"
+            android:title="Logout" />
+    </group>
+
+
+</menu>

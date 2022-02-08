@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/iv_doc_pic"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
+        android:scaleType="fitXY"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/profile_background"
+        android:src="@drawable/default_profile_pic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/tv_doc_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="24dp"
+        android:text="@string/dr_maaz_shahzad"
+        android:textColor="@color/dark_blue_700"
+        android:textSize="@dimen/_13sdp"
+        app:layout_constraintStart_toEndOf="@+id/iv_doc_pic"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view_slots"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_17sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        app:cardBackgroundColor="@color/dark_blue_700"
+        app:cardElevation="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvview_slots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/view_slots"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10ssp" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/dark_blue_700"
+        app:layout_constraintTop_toBottomOf="@+id/iv_doc_pic"
+        android:layout_marginStart="@dimen/_60sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+ <!--   <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mainCardView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardElevation="@dimen/_2sdp"
+        app:strokeWidth="@dimen/_1sdp"
+        app:strokeColor="@color/dark_blue_700"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_child_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_margin="@dimen/_5sdp"
+                android:contentDescription="Doctors Image"
+                android:src="@drawable/person"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/dark_blue_700" />
+
+            <TextView
+                android:id="@+id/tv_doc_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:text="@string/dr_ahmed"
+                android:textColor="@color/dark_blue_700"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+                app:layout_constraintStart_toEndOf="@+id/profile_image"
+                app:layout_constraintTop_toTopOf="@+id/profile_image" />
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_slots"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_17sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                app:cardBackgroundColor="@color/dark_blue_700"
+                app:cardElevation="@dimen/_8sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvview_slots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/view_slots"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp" />
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>-->
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/iv_patient_pic"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
+        android:scaleType="fitXY"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/profile_background"
+        android:src="@drawable/default_profile_pic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_patient_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="24dp"
+        android:text="Shahzad Nasir"
+        android:textColor="@color/dark_blue_700"
+        android:textSize="@dimen/_13sdp"
+        app:layout_constraintStart_toEndOf="@+id/iv_patient_pic"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_edit_patient"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_15sdp"
+        android:src="@drawable/edit"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintTop_toTopOf="@id/iv_dustbin"
+        app:layout_constraintBottom_toBottomOf="@id/iv_dustbin"
+        app:layout_constraintEnd_toStartOf="@id/iv_dustbin"/>
+
+    <ImageView
+        android:id="@+id/iv_dustbin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/delete"
+        app:tint="@color/red_color"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/dark_blue_700"
+        app:layout_constraintTop_toBottomOf="@+id/iv_patient_pic"
+        android:layout_marginStart="@dimen/_60sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
