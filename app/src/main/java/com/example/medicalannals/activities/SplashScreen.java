@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.medicalannals.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -18,7 +19,8 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-
+                FirebaseAuth.getInstance().getCurrentUser();
+//                if ()
                 Intent intent=new Intent(SplashScreen.this, SignIn.class);
                 startActivity(intent);
                 finish();

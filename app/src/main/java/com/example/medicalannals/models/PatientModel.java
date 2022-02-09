@@ -4,10 +4,10 @@ public class PatientModel {
     private String name;
     private String email;
     private String gender;
-    private int age;
+    private String age;
     private String number;
 
-    public PatientModel(String name, String email, String gender, int age, String number) {
+    public PatientModel(String name, String email, String gender, String age, String number) {
         this.name = name;
         this.email = email;
         this.gender = gender;
@@ -42,11 +42,11 @@ public class PatientModel {
         this.gender = gender;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 

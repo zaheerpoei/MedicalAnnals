@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.medicalannals.R;
+import com.example.medicalannals.models.DoctorsModel;
 import com.example.medicalannals.models.PatientModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,8 +39,8 @@ import com.google.firebase.database.ValueEventListener;
 public class SignUp extends AppCompatActivity {
 
     TextView tvSignInForAnAccount;
-    TextInputEditText tiedUsernameSignUp, tiedPasswordSignUp, tiedConfirmPasswordSignUp, tiedContactSignUp, tiedAgeSignUp, tiedGenderSignUp, tiedExperienceSignUp, tiedSpecializationSignUp, tiedFeeSignUp, tiedQualification;
-    String stUsernameSignUp, stPasswordSignUp, stConfirmPasswordSignUp, stContactSignUp, stAgeSignUp, stGenderSignUp, stSpecializationSignUp, stExperienceSignUp;
+    TextInputEditText tiedUsernameSignUp, tiedEmailSignUp, tiedPasswordSignUp, tiedConfirmPasswordSignUp, tiedContactSignUp, tiedAgeSignUp, tiedGenderSignUp, tiedExperienceSignUp, tiedSpecializationSignUp, tiedFeeSignUp, tiedQualification;
+    String stUsernameSignUp, stEmailSignUp, stPasswordSignUp, stConfirmPasswordSignUp, stContactSignUp, stAgeSignUp, stGenderSignUp, stSpecializationSignUp,stHospitalSignUp, stExperienceSignUp,stFeesSignUp,stQualificationSignUp;
     FirebaseAuth mAuth;
     ConstraintLayout constraintLayout;
     Button btnSignUp;
@@ -95,6 +97,7 @@ public class SignUp extends AppCompatActivity {
 //
 //            }
 //        });
+
     }
 
     private void setSpinners() {
@@ -107,6 +110,13 @@ public class SignUp extends AppCompatActivity {
         AutoCompleteTextView editTextFilledExposedDropdown =
                 findViewById(R.id.filled_exposed_dropdown);
         editTextFilledExposedDropdown.setAdapter(adapter);
+        editTextFilledExposedDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                stSpecializationSignUp = type[position];
+            }
+        });
 
         ArrayAdapter<String> adapterHospital =
                 new ArrayAdapter<>(
@@ -117,6 +127,12 @@ public class SignUp extends AppCompatActivity {
         AutoCompleteTextView editTextFilledExposedDropdownHospital =
                 findViewById(R.id.filled_exposed_dropdown_hospital);
         editTextFilledExposedDropdownHospital.setAdapter(adapterHospital);
+        editTextFilledExposedDropdownHospital.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                stHospitalSignUp = typeHospital[position];
+            }
+        });
 
 
     }
@@ -148,6 +164,7 @@ public class SignUp extends AppCompatActivity {
     private void initViews() {
         tvSignInForAnAccount = findViewById(R.id.tv_sign_in_for_an_account);
         tiedUsernameSignUp = findViewById(R.id.tied_username_sign_up);
+        tiedEmailSignUp = findViewById(R.id.tied_email_sign_up);
         tiedPasswordSignUp = findViewById(R.id.tied_password_sign_up);
         tiedConfirmPasswordSignUp = findViewById(R.id.tied_confirm_password_sign_up);
         tiedContactSignUp = findViewById(R.id.tied_contact_sign_up);
@@ -184,16 +201,19 @@ public class SignUp extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                checkFields();
-                progressDialog.show();
-                PatientModel patientModel = new PatientModel("Ibra", "ibra.noor@appinsnap.com", "Female", 25, "03425582536");
-                RegisterPatient(patientModel, "ibra.noor");
-//                RegisterPatient(patientModel,stPasswordSignUp);
-//                String number = tiedContactSignUp.getText().toString();
-//
-//                Intent i = new Intent(SignUp.this , AuthenticateUser.class);
-//                i.putExtra("PhoneNumber" , number);
-//                startActivity(i);
+                if (rbPatientSignUp.isChecked()) {
+                    if (!checkFields()) {
+                        progressDialog.show();
+                        PatientModel patientModel = new PatientModel(stUsernameSignUp, stEmailSignUp, stGenderSignUp, stAgeSignUp, stContactSignUp);
+                        RegisterPatient(patientModel, stPasswordSignUp);
+                    }
+                } else {
+                    if (!checkFields()) {
+                        progressDialog.show();
+                        DoctorsModel doctorsModel = new DoctorsModel(stUsernameSignUp, stEmailSignUp, stContactSignUp,stAgeSignUp,stGenderSignUp,stSpecializationSignUp,stHospitalSignUp,stExperienceSignUp,stQualificationSignUp,stFeesSignUp);
+                        RegisterDoctor(doctorsModel, stPasswordSignUp);
+                    }
+                }
 
             }
         });
@@ -230,6 +250,7 @@ public class SignUp extends AppCompatActivity {
 
     private boolean checkFields() {
         tiedUsernameSignUp.setError(null);
+        tiedEmailSignUp.setError(null);
         tiedPasswordSignUp.setError(null);
         tiedConfirmPasswordSignUp.setError(null);
         tiedContactSignUp.setError(null);
@@ -240,66 +261,100 @@ public class SignUp extends AppCompatActivity {
         View focusView = null;
 
         stUsernameSignUp = tiedUsernameSignUp.getText().toString().toLowerCase().trim();
+        stEmailSignUp = tiedEmailSignUp.getText().toString().toLowerCase().trim();
         stPasswordSignUp = tiedPasswordSignUp.getText().toString().trim();
         stConfirmPasswordSignUp = tiedConfirmPasswordSignUp.getText().toString().trim();
         stContactSignUp = tiedContactSignUp.getText().toString().trim();
         stAgeSignUp = tiedAgeSignUp.getText().toString().trim();
         stGenderSignUp = tiedGenderSignUp.getText().toString().trim();
         stExperienceSignUp = tiedExperienceSignUp.getText().toString().trim();
+        stFeesSignUp = tiedFeeSignUp.getText().toString().trim();
+        stQualificationSignUp = tiedQualification.getText().toString().trim();
+//        stSpecializationSignUp = tiedSpecializationSignUp.getText().toString().trim();
 
         if (TextUtils.isEmpty(stUsernameSignUp)) {
             Snackbar snackbar = Snackbar
-                    .make(constraintLayout, "Enter Username", Snackbar.LENGTH_LONG);
+                    .make(findViewById(android.R.id.content), "Enter Username", Snackbar.LENGTH_LONG);
             snackbar.show();
             focusView = tiedUsernameSignUp;
             cancel = true;
+        } else if (TextUtils.isEmpty(stEmailSignUp)) {
+            Snackbar snackbar = Snackbar
+                    .make(findViewById(android.R.id.content), "Enter Email", Snackbar.LENGTH_LONG);
+            snackbar.show();
+            focusView = tiedEmailSignUp;
+            cancel = true;
         } else if (TextUtils.isEmpty(stPasswordSignUp)) {
             Snackbar snackbar = Snackbar
-                    .make(constraintLayout, "Enter Password", Snackbar.LENGTH_LONG);
+                    .make(findViewById(android.R.id.content), "Enter Password", Snackbar.LENGTH_LONG);
             snackbar.show();
             focusView = tiedPasswordSignUp;
             cancel = true;
         } else if (tiedPasswordSignUp.length() < 8) {
             Snackbar snackbar = Snackbar
-                    .make(constraintLayout, "Password too short", Snackbar.LENGTH_LONG);
+                    .make(findViewById(android.R.id.content), "Password too short", Snackbar.LENGTH_LONG);
             snackbar.show();
             focusView = tiedPasswordSignUp;
             cancel = true;
         } else if (TextUtils.isEmpty(stConfirmPasswordSignUp)) {
             Snackbar snackbar = Snackbar
-                    .make(constraintLayout, "Enter Confirm Password", Snackbar.LENGTH_LONG);
-            snackbar.show();
-            focusView = tiedConfirmPasswordSignUp;
-            cancel = true;
-        } else if (tiedConfirmPasswordSignUp.length() < 8) {
-            Snackbar snackbar = Snackbar
-                    .make(constraintLayout, "Password too short", Snackbar.LENGTH_LONG);
+                    .make(findViewById(android.R.id.content), "Enter Confirm Password", Snackbar.LENGTH_LONG);
             snackbar.show();
             focusView = tiedConfirmPasswordSignUp;
             cancel = true;
         } else if (tiedContactSignUp.length() < 8) {
             Snackbar snackbar = Snackbar
-                    .make(constraintLayout, "Enter Contact Number", Snackbar.LENGTH_LONG);
+                    .make(findViewById(android.R.id.content), "Enter Contact Number", Snackbar.LENGTH_LONG);
             snackbar.show();
             focusView = tiedContactSignUp;
             cancel = true;
-        } else if (tiedAgeSignUp.length() < 8) {
+        }else if (tiedConfirmPasswordSignUp.length() < 8) {
             Snackbar snackbar = Snackbar
-                    .make(constraintLayout, "Enter Age", Snackbar.LENGTH_LONG);
+                    .make(findViewById(android.R.id.content), "Password too short", Snackbar.LENGTH_LONG);
+            snackbar.show();
+            focusView = tiedConfirmPasswordSignUp;
+            cancel = true;
+        }  else if (tiedAgeSignUp.length() < 1) {
+            Snackbar snackbar = Snackbar
+                    .make(findViewById(android.R.id.content), "Enter Age", Snackbar.LENGTH_LONG);
             snackbar.show();
             focusView = tiedAgeSignUp;
             cancel = true;
-        } else if (tiedGenderSignUp.length() < 8) {
+        } else if (TextUtils.isEmpty(stGenderSignUp)) {
             Snackbar snackbar = Snackbar
-                    .make(constraintLayout, "Enter Gender", Snackbar.LENGTH_LONG);
+                    .make(findViewById(android.R.id.content), "Enter Gender", Snackbar.LENGTH_LONG);
             snackbar.show();
             focusView = tiedGenderSignUp;
             cancel = true;
-        } else if (tiedExperienceSignUp.length() < 8) {
+        }else if (rbDoctorSignUp.isChecked()&&TextUtils.isEmpty(stSpecializationSignUp)) {
             Snackbar snackbar = Snackbar
-                    .make(constraintLayout, "Enter Experience", Snackbar.LENGTH_LONG);
+                    .make(findViewById(android.R.id.content), "Enter Specialization", Snackbar.LENGTH_LONG);
+            snackbar.show();
+            focusView = spinnerSpecialization;
+            cancel = true;
+        } else if (rbDoctorSignUp.isChecked()&&TextUtils.isEmpty(stHospitalSignUp)) {
+            Snackbar snackbar = Snackbar
+                    .make(findViewById(android.R.id.content), "Enter Hospital", Snackbar.LENGTH_LONG);
+            snackbar.show();
+            focusView = spinnerHospital;
+            cancel = true;
+        }else if (rbDoctorSignUp.isChecked()&&TextUtils.isEmpty(stExperienceSignUp)) {
+            Snackbar snackbar = Snackbar
+                    .make(findViewById(android.R.id.content), "Enter Experience", Snackbar.LENGTH_LONG);
             snackbar.show();
             focusView = tiedExperienceSignUp;
+            cancel = true;
+        }else if (rbDoctorSignUp.isChecked()&&TextUtils.isEmpty(stFeesSignUp)) {
+            Snackbar snackbar = Snackbar
+                    .make(findViewById(android.R.id.content), "Enter Fees", Snackbar.LENGTH_LONG);
+            snackbar.show();
+            focusView = tiedFeeSignUp;
+            cancel = true;
+        }else if (rbDoctorSignUp.isChecked()&&TextUtils.isEmpty(stQualificationSignUp)) {
+            Snackbar snackbar = Snackbar
+                    .make(findViewById(android.R.id.content), "Enter Qualification", Snackbar.LENGTH_LONG);
+            snackbar.show();
+            focusView = tiedQualification;
             cancel = true;
         }
 
@@ -352,7 +407,7 @@ public class SignUp extends AppCompatActivity {
 //                            progressDialog.dismiss();
 
 
-                        }else {
+                        } else {
                             Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
@@ -362,7 +417,40 @@ public class SignUp extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
 
                 progressDialog.dismiss();
-                Toast.makeText(SignUp.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignUp.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    public void RegisterDoctor(DoctorsModel doctorsModel, String Password) {
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(doctorsModel.getEmail(), Password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+                        if (task.isSuccessful()) {
+                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                            DatabaseReference reference = database.getReference("Doctor");
+                            reference.child(uid).setValue(doctorsModel);
+
+                            Intent intent = new Intent(SignUp.this, PatientDashboard.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+
+                        } else {
+                            Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                progressDialog.dismiss();
+                Toast.makeText(SignUp.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         });

@@ -79,12 +79,12 @@ public class SignIn extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(rbPatient.isChecked() == true){
+                if(rbPatient.isChecked()){
                     progressDialog.show();
                     LoginPatient("ibra.noor@appinsnap.com","ibra.noor");
                 }
 //                    startActivity(new Intent(SignIn.this, PatientDashboard.class));}
-                else if(rbDoctor.isChecked() == true){
+                else if(rbDoctor.isChecked()){
                         startActivity(new Intent(SignIn.this, DoctorDashboard.class));
                 }
 
