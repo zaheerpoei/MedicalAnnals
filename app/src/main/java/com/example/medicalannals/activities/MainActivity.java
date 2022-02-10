@@ -41,16 +41,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        arrayList.add(new DoctorsModel("Dr. Ahmed"));
-        arrayList.add(new DoctorsModel("Dr. Ifthikar"));
-        arrayList.add(new DoctorsModel("Dr. Shehryar"));
-        arrayList.add(new DoctorsModel("Dr. Bilal"));
-        arrayList.add(new DoctorsModel("Dr. Zimal"));
-        arrayList.add(new DoctorsModel("Dr. Murtaza"));
-        arrayList.add(new DoctorsModel("Dr. Maaz"));
-        arrayList.add(new DoctorsModel("Dr. Fareeha"));
-        arrayList.add(new DoctorsModel("Dr. Arham"));
-        arrayList.add(new DoctorsModel("Dr. Nofal"));
+        arrayList.add(new DoctorsModel());
+        arrayList.add(new DoctorsModel());
+        arrayList.add(new DoctorsModel());
+        arrayList.add(new DoctorsModel());
+        arrayList.add(new DoctorsModel());
+        arrayList.add(new DoctorsModel());
+        arrayList.add(new DoctorsModel());
+        arrayList.add(new DoctorsModel());
+        arrayList.add(new DoctorsModel());
+        arrayList.add(new DoctorsModel());
 
         DoctorsAdapter adapter=new DoctorsAdapter(arrayList,this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,1);

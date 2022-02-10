@@ -1,6 +1,11 @@
 package com.example.medicalannals.activities;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,13 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import android.widget.Toast;
 
 import com.example.medicalannals.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -32,6 +35,8 @@ public class SignIn extends AppCompatActivity {
     String  stPhoneNumber,stPassword;
     RadioButton rbDoctor , rbPatient;
     public static Boolean  doctor = false , patient = false;
+
+    ProgressDialog progressDialog;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -54,6 +59,11 @@ public class SignIn extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         rbDoctor = findViewById(R.id.rb_doctor);
         rbPatient = findViewById(R.id.rb_patient);
+
+
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Signing in..... ");
     }
 
     private void clickListeners() {
@@ -69,9 +79,12 @@ public class SignIn extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(rbPatient.isChecked() == true){
-                    startActivity(new Intent(SignIn.this, PatientDashboard.class));}
-                else if(rbDoctor.isChecked() == true){
+                if(rbPatient.isChecked()){
+                    progressDialog.show();
+                    LoginPatient("ibra.noor@appinsnap.com","ibra.noor");
+                }
+//                    startActivity(new Intent(SignIn.this, PatientDashboard.class));}
+                else if(rbDoctor.isChecked()){
                         startActivity(new Intent(SignIn.this, DoctorDashboard.class));
                 }
 
@@ -159,6 +172,30 @@ public class SignIn extends AppCompatActivity {
                     startActivity(new Intent(SignIn.this, MainActivity.class));
                     finish();
                 }
+            }
+        });
+    }
+
+    public void LoginPatient(String EMAIL, String PASSWORD) {
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithEmailAndPassword(EMAIL, PASSWORD)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            startActivity(new Intent(SignIn.this, PatientDashboard.class));
+                            finish();
+                            progressDialog.dismiss();
+
+                        }else {
+                            Toast.makeText(SignIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(SignIn.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         });
     }
