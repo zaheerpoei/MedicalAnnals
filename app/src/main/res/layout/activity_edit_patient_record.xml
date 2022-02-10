@@ -112,7 +112,7 @@
             android:id="@+id/tied_remarks_edit_patient"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ-'"
+            android:inputType="text"
             android:maxLength="200" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -134,7 +134,7 @@
             android:id="@+id/tied_prescription_edit_patient"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ-'"
+            android:inputType="text"
             android:maxLength="200" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -146,7 +146,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20sdp"
         android:backgroundTint="@color/dark_blue_700"
-        android:text="DONE"
+        android:text="SAVE"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

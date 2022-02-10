@@ -3,10 +3,13 @@ package com.example.medicalannals.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.accessibilityservice.AccessibilityGestureEvent;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +18,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +65,6 @@ public class SignUp extends AppCompatActivity {
         visibility();
         clickListeners();
         setSpinners();
-
 //        PatientModel patientModel = new PatientModel("Adnan", "zaheer.ahmed@appinsnap.com", "Male", 29, "03246159187");
 //
 //
@@ -180,10 +184,7 @@ public class SignUp extends AppCompatActivity {
         spinnerHospital = findViewById(R.id.spinner_hospital);
         tiedQualification = findViewById(R.id.tied_qualification_sign_up);
         tiQualification = findViewById(R.id.ti_qualification_sign_up);
-
         btnSignUp = findViewById(R.id.btn_sign_up);
-
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Registering..... ");
     }
@@ -203,15 +204,19 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View v) {
                 if (rbPatientSignUp.isChecked()) {
                     if (!checkFields()) {
-                        progressDialog.show();
-                        PatientModel patientModel = new PatientModel(stUsernameSignUp, stEmailSignUp, stGenderSignUp, stAgeSignUp, stContactSignUp);
-                        RegisterPatient(patientModel, stPasswordSignUp);
+                        if(isValidEmailAddress(tiedEmailSignUp)) {
+                            progressDialog.show();
+                            PatientModel patientModel = new PatientModel(stUsernameSignUp, stEmailSignUp, stGenderSignUp, stAgeSignUp, stContactSignUp);
+                            RegisterPatient(patientModel, stPasswordSignUp);
+                        }
                     }
                 } else {
                     if (!checkFields()) {
-                        progressDialog.show();
-                        DoctorsModel doctorsModel = new DoctorsModel(stUsernameSignUp, stEmailSignUp, stContactSignUp,stAgeSignUp,stGenderSignUp,stSpecializationSignUp,stHospitalSignUp,stExperienceSignUp,stQualificationSignUp,stFeesSignUp);
-                        RegisterDoctor(doctorsModel, stPasswordSignUp);
+                        if(isValidEmailAddress(tiedEmailSignUp)){
+                            progressDialog.show();
+                            DoctorsModel doctorsModel = new DoctorsModel(stUsernameSignUp, stEmailSignUp, stContactSignUp, stAgeSignUp, stGenderSignUp, stSpecializationSignUp, stHospitalSignUp, stExperienceSignUp, stQualificationSignUp, stFeesSignUp);
+                            RegisterDoctor(doctorsModel, stPasswordSignUp);
+                        }
                     }
                 }
 
@@ -245,7 +250,6 @@ public class SignUp extends AppCompatActivity {
                 tiQualification.setVisibility(View.GONE);
             }
         });
-
     }
 
     private boolean checkFields() {
@@ -270,103 +274,80 @@ public class SignUp extends AppCompatActivity {
         stExperienceSignUp = tiedExperienceSignUp.getText().toString().trim();
         stFeesSignUp = tiedFeeSignUp.getText().toString().trim();
         stQualificationSignUp = tiedQualification.getText().toString().trim();
-//        stSpecializationSignUp = tiedSpecializationSignUp.getText().toString().trim();
+//      stSpecializationSignUp = tiedSpecializationSignUp.getText().toString().trim();
 
         if (TextUtils.isEmpty(stUsernameSignUp)) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Enter Username", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            ShowAlertDialog("Enter Username");
             focusView = tiedUsernameSignUp;
             cancel = true;
-        } else if (TextUtils.isEmpty(stEmailSignUp)) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Enter Email", Snackbar.LENGTH_LONG);
-            snackbar.show();
+        }
+        else if (tiedUsernameSignUp.length() < 2) {
+            ShowAlertDialog("Enter correct Username");
+            focusView = tiedUsernameSignUp;
+            cancel = true;
+        }
+        else if (TextUtils.isEmpty(stEmailSignUp)) {
+            ShowAlertDialog("Enter Email Address");
             focusView = tiedEmailSignUp;
             cancel = true;
-        } else if (TextUtils.isEmpty(stPasswordSignUp)) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Enter Password", Snackbar.LENGTH_LONG);
-            snackbar.show();
+        } else if (tiedContactSignUp.length() < 11) {
+            ShowAlertDialog("Enter Contact Number");
+            focusView = tiedContactSignUp;
+            cancel = true;
+        }
+        else if (TextUtils.isEmpty(stPasswordSignUp)) {
+            ShowAlertDialog("Enter Password");
             focusView = tiedPasswordSignUp;
             cancel = true;
         } else if (tiedPasswordSignUp.length() < 8) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Password too short", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            ShowAlertDialog("Password too short");
             focusView = tiedPasswordSignUp;
             cancel = true;
         } else if (TextUtils.isEmpty(stConfirmPasswordSignUp)) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Enter Confirm Password", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            ShowAlertDialog("Enter Confirm Password");
             focusView = tiedConfirmPasswordSignUp;
             cancel = true;
-        } else if (tiedContactSignUp.length() < 8) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Enter Contact Number", Snackbar.LENGTH_LONG);
-            snackbar.show();
-            focusView = tiedContactSignUp;
-            cancel = true;
-        }else if (tiedConfirmPasswordSignUp.length() < 8) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Password too short", Snackbar.LENGTH_LONG);
-            snackbar.show();
+        } else if (tiedConfirmPasswordSignUp.length() < 8) {
+            ShowAlertDialog("Confirm Password too short");
             focusView = tiedConfirmPasswordSignUp;
             cancel = true;
-        }  else if (tiedAgeSignUp.length() < 1) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Enter Age", Snackbar.LENGTH_LONG);
-            snackbar.show();
+        }else if (tiedAgeSignUp.length() < 1) {
+            ShowAlertDialog("Enter Age");
             focusView = tiedAgeSignUp;
             cancel = true;
         } else if (TextUtils.isEmpty(stGenderSignUp)) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Enter Gender", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            ShowAlertDialog("Enter Gender");
             focusView = tiedGenderSignUp;
             cancel = true;
         }else if (rbDoctorSignUp.isChecked()&&TextUtils.isEmpty(stSpecializationSignUp)) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Enter Specialization", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            ShowAlertDialog("Enter Specialization");
             focusView = spinnerSpecialization;
             cancel = true;
         } else if (rbDoctorSignUp.isChecked()&&TextUtils.isEmpty(stHospitalSignUp)) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Enter Hospital", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            ShowAlertDialog("Enter Hospital");
             focusView = spinnerHospital;
             cancel = true;
         }else if (rbDoctorSignUp.isChecked()&&TextUtils.isEmpty(stExperienceSignUp)) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Enter Experience", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            ShowAlertDialog("Enter Experience");
             focusView = tiedExperienceSignUp;
             cancel = true;
         }else if (rbDoctorSignUp.isChecked()&&TextUtils.isEmpty(stFeesSignUp)) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Enter Fees", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            ShowAlertDialog("Enter Fee");
             focusView = tiedFeeSignUp;
             cancel = true;
         }else if (rbDoctorSignUp.isChecked()&&TextUtils.isEmpty(stQualificationSignUp)) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(android.R.id.content), "Enter Qualification", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            ShowAlertDialog("Enter Qualification");
             focusView = tiedQualification;
             cancel = true;
+        } else if(!stPasswordSignUp.equals(stConfirmPasswordSignUp)){
+            ShowAlertDialog("Password and Confirm Password are not matched.");
+            focusView = tiedPasswordSignUp;
+            cancel = true;
         }
-
-
         if (cancel) {
-
             focusView.requestFocus();
-
         }
-
         return cancel;
-
     }
 
     private void authenticateUser() {
@@ -436,7 +417,7 @@ public class SignUp extends AppCompatActivity {
                             DatabaseReference reference = database.getReference("Doctor");
                             reference.child(uid).setValue(doctorsModel);
 
-                            Intent intent = new Intent(SignUp.this, PatientDashboard.class);
+                            Intent intent = new Intent(SignUp.this, DoctorDashboard.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
 
@@ -454,5 +435,48 @@ public class SignUp extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
+    }
+
+    protected void ShowAlertDialog(String stMessage){
+
+        Dialog dialog = new Dialog(SignUp.this);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        View view  = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+        dialog.setContentView(view);
+
+        TextView Message,btnAllow;
+        ImageView ivAlert;
+        Message=(TextView)view.findViewById(R.id.tvMessage);
+        btnAllow=(TextView)view.findViewById(R.id.btn_allow);
+        ivAlert = (ImageView) view.findViewById(R.id.imageView16) ;
+
+        ivAlert.setImageResource(R.drawable.warning);
+        ivAlert.setColorFilter(ContextCompat.getColor(this, R.color.dark_blue_700), android.graphics.PorterDuff.Mode.SRC_IN);
+
+        Message.setText(stMessage);
+
+        btnAllow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+
+
+        dialog.show();
+    };
+
+    public boolean isValidEmailAddress(EditText editText) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[^-][a-zA-Z]{2,}))$";
+        if (editText.getText().toString().trim().matches(ePattern)) {
+            return true;
+        }
+        ShowAlertDialog("Please Enter The Valid Email Address");
+//        editText.setError("Please Enter The Valid Email Address");
+        return false;
     }
 }

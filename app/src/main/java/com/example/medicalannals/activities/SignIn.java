@@ -3,14 +3,19 @@ package com.example.medicalannals.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,15 +29,20 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignIn extends AppCompatActivity {
-    TextInputEditText tiedEmailAddress, tiedPassword , tiedPhoneNumber;
+    TextInputEditText tiedEmailAddress, tiedPassword ;
     TextView tvForgotPassword , tvSignUpForAnAccount;
     TextInputLayout tiPhoneNumber, tiPassword  , tiEmailAddress ;
     Button btnLogin;
     FirebaseAuth mAuth;
     ConstraintLayout constraintLayout;
-    String  stPhoneNumber,stPassword;
+    String  stEmailAddress,stPassword;
     RadioButton rbDoctor , rbPatient;
     public static Boolean  doctor = false , patient = false;
 
@@ -80,17 +90,67 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(rbPatient.isChecked()){
-                    progressDialog.show();
-                    LoginPatient("ibra.noor@appinsnap.com","ibra.noor");
+                    if(!checkFields()) {
+                        if(isValidEmailAddress(tiedEmailAddress)) {
+                            progressDialog.show();
+                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                            database
+                                    .child("Patient")
+                                    .child(uid)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if(snapshot.exists()) {
+                                                LoginPatient(stEmailAddress, stPassword);
+                                            }
+                                            else{
+                                                progressDialog.dismiss();
+                                                ShowAlertDialog("Record not exists");
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            ShowAlertDialog(error.toString());
+                                        }
+                                    });
+
+                        }
+                    }
                 }
-//                    startActivity(new Intent(SignIn.this, PatientDashboard.class));}
                 else if(rbDoctor.isChecked()){
-                        startActivity(new Intent(SignIn.this, DoctorDashboard.class));
+                    if(!checkFields()) {
+                        if (isValidEmailAddress(tiedEmailAddress)) {
+                            progressDialog.show();
+                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference reference = database.getReference();
+                            reference
+                                    .child("Doctor")
+                                    .child(uid)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if(snapshot.exists()) {
+                                                LoginDoctor(stEmailAddress, stPassword);
+                                            }
+                                            else{
+                                                progressDialog.dismiss();
+                                                ShowAlertDialog("Record not exists");
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            ShowAlertDialog(error.toString());
+                                        }
+                                    });
+
+                        }
+                    }
                 }
 
-//                if(!checkFields()){
-//                    authenticateUser();
-//                }
             }
         });
 
@@ -100,6 +160,7 @@ public class SignIn extends AppCompatActivity {
 
                 Intent i = new Intent(SignIn.this , SignUp.class);
                 startActivity(i);
+                finish();
 
             }
         });
@@ -119,34 +180,28 @@ public class SignIn extends AppCompatActivity {
 
     private boolean checkFields()
     {
-        tiedPhoneNumber.setError(null);
+        tiedEmailAddress.setError(null);
         tiedPassword.setError(null);
 
         boolean cancel = false;
         View focusView = null;
 
-        stPhoneNumber = tiedPhoneNumber.getText().toString().toLowerCase().trim();
+        stEmailAddress = tiedEmailAddress.getText().toString().toLowerCase().trim();
         stPassword = tiedPassword.getText().toString().trim();
 
-        if (TextUtils.isEmpty(stPhoneNumber)) {
-            Snackbar snackbar = Snackbar
-                    .make(constraintLayout, "Enter Phone Number", Snackbar.LENGTH_LONG);
-            snackbar.show();
-            focusView = tiedPhoneNumber;
+        if (TextUtils.isEmpty(stEmailAddress)) {
+            ShowAlertDialog("Enter Email Address");
+            focusView = tiedEmailAddress;
             cancel = true;
         }
 
         else if (TextUtils.isEmpty(stPassword)) {
-            Snackbar snackbar = Snackbar
-                    .make(constraintLayout, "Enter Password", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            ShowAlertDialog("Enter Password");
             focusView = tiedPassword;
             cancel = true;
         }
         else if (tiedPassword.length() < 8) {
-            Snackbar snackbar = Snackbar
-                    .make(constraintLayout, "Password too short", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            ShowAlertDialog("Password should be grater than 8 characters");
             focusView = tiedPassword;
             cancel = true;
         }
@@ -161,13 +216,14 @@ public class SignIn extends AppCompatActivity {
     }
     private void authenticateUser()
     {
-        mAuth.signInWithEmailAndPassword(stPhoneNumber,stPassword).addOnCompleteListener(SignIn.this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(stEmailAddress,stPassword).addOnCompleteListener(SignIn.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
-                    Snackbar snackbar = Snackbar
-                            .make(constraintLayout, "Invalid Phone Number or Password", Snackbar.LENGTH_LONG);
-                    snackbar.show();
+                    ShowAlertDialog("Invalid Email Address or Password");
+//                    Snackbar snackbar = Snackbar
+//                            .make(constraintLayout, "Invalid Phone Number or Password", Snackbar.LENGTH_LONG);
+//                    snackbar.show();
                 } else {
                     startActivity(new Intent(SignIn.this, MainActivity.class));
                     finish();
@@ -194,9 +250,76 @@ public class SignIn extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SignIn.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(SignIn.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         });
+    }
+
+    public void LoginDoctor(String EMAIL, String PASSWORD) {
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithEmailAndPassword(EMAIL, PASSWORD)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            startActivity(new Intent(SignIn.this, DoctorDashboard.class));
+                            finish();
+                            progressDialog.dismiss();
+
+                        }else {
+                            Toast.makeText(SignIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(SignIn.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    protected void ShowAlertDialog(String stMessage){
+
+        Dialog dialog = new Dialog(SignIn.this);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        View view  = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+        dialog.setContentView(view);
+
+        TextView Message,btnAllow;
+        ImageView ivAlert;
+        Message=(TextView)view.findViewById(R.id.tvMessage);
+        btnAllow=(TextView)view.findViewById(R.id.btn_allow);
+        ivAlert = (ImageView) view.findViewById(R.id.imageView16) ;
+
+        ivAlert.setImageResource(R.drawable.warning);
+        ivAlert.setColorFilter(ContextCompat.getColor(this, R.color.dark_blue_700), android.graphics.PorterDuff.Mode.SRC_IN);
+
+        Message.setText(stMessage);
+
+        btnAllow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+
+
+        dialog.show();
+    };
+
+    public boolean isValidEmailAddress(EditText editText) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[^-][a-zA-Z]{2,}))$";
+        if (editText.getText().toString().trim().matches(ePattern)) {
+            return true;
+        }
+        ShowAlertDialog("Please Enter The Valid Email Address");
+//        editText.setError("Please Enter The Valid Email Address");
+        return false;
     }
 }
