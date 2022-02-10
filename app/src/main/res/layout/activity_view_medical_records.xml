@@ -94,7 +94,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_patient_record"
         android:layout_width="match_parent"
@@ -111,7 +110,5 @@
         tools:context="example.javatpoint.com.recyclerviewlist.MainActivity">
 
     </androidx.recyclerview.widget.RecyclerView>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

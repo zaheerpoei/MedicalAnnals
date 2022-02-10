@@ -1,17 +1,17 @@
 package com.example.medicalannals.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.widget.ImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.example.medicalannals.R;
 import com.example.medicalannals.adapters.DoctorsAdapter;
@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         initViews();
         clickListeners();
         setRecyclerView();
-
     }
 
     private void setRecyclerView() {
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
     }
-
     private void initViews() {
 
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -68,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         toolbarDrawerImage = findViewById(R.id.toolbar_drawer_image_back);
         recyclerView = findViewById(R.id.recycler_view);
     }
-
     private void clickListeners() {
         toolbarDrawerImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +77,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
 
 }

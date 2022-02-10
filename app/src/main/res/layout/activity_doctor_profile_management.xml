@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/profile_management"
                 android:textStyle="bold"
+                android:paddingStart="@dimen/_17sdp"
                 android:layout_gravity="center"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
@@ -64,6 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraint_toolbar"/>
 
+
     <TextView
         android:id="@+id/tv_change_doc"
         android:layout_width="wrap_content"
@@ -77,6 +79,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.44" />
 
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_change_doc">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainConstraint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
     <TextView
         android:id="@+id/tv_change_name"
         android:layout_width="wrap_content"
@@ -87,7 +106,7 @@
         android:textColor="@color/dark_blue_700"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/tv_change_doc"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.44" />
 
@@ -181,7 +200,7 @@
 
 
     <EditText
-        android:id="@+id/ed_password"
+        android:id="@+id/ed_password_doctor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:enabled="false"
@@ -195,13 +214,79 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_password"/>
 
     <ImageView
-        android:id="@+id/iv_edit_password"
+        android:id="@+id/iv_edit_password_doctor"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_15sdp"
         android:src="@drawable/edit"
         android:layout_marginEnd="@dimen/_10sdp"
-        app:layout_constraintTop_toTopOf="@+id/ed_password"
-        app:layout_constraintBottom_toBottomOf="@+id/ed_password"
+        app:layout_constraintTop_toTopOf="@+id/ed_password_doctor"
+        app:layout_constraintBottom_toBottomOf="@+id/ed_password_doctor"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/tv_specialization"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Specialization"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:textColor="@color/dark_blue_700"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/ed_password_doctor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.44" />
+
+
+    <EditText
+        android:id="@+id/ed_specialization"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:textSize="@dimen/_12ssp"
+        android:textColor="@color/dark_blue_700"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="Child Specialist"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_specialization"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_qualification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Qualification"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:textColor="@color/dark_blue_700"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/ed_specialization"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.44" />
+
+
+    <EditText
+        android:id="@+id/ed_qualification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:textSize="@dimen/_12ssp"
+        android:textColor="@color/dark_blue_700"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="MBBS"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_qualification"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

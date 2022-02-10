@@ -96,7 +96,8 @@
                             android:id="@+id/tied_email_address_sign_in"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:inputType="textEmailAddress" />
+                            android:inputType="textEmailAddress"
+                            android:maxLength="25"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 

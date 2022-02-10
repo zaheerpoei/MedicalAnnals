@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/profile_management"
                 android:textStyle="bold"
+                android:paddingStart="@dimen/_16sdp"
                 android:layout_gravity="center"
                 android:textAllCaps="true"
                 android:textColor="@color/white"

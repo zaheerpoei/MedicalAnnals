@@ -1,10 +1,5 @@
 package com.example.medicalannals.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,10 +13,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.medicalannals.R;
-import com.example.medicalannals.adapters.DoctorsAdapter;
 import com.example.medicalannals.adapters.PatientMedicalRecordAdapter;
-import com.example.medicalannals.models.DoctorsModel;
 import com.example.medicalannals.models.PatientMedicalRecordModel;
 
 import java.util.ArrayList;

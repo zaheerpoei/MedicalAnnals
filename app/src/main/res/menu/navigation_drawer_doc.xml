@@ -15,7 +15,7 @@
 
         <item
             android:id="@+id/nav_set_appointments"
-            android:title="Set Appointments"
+            android:title="Manage Schedule"
             android:icon="@drawable/ic_baseline_date_range_24" />
 
         <item

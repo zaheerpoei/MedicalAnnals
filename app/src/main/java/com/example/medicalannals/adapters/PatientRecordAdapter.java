@@ -11,9 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.medicalannals.R;
-import com.example.medicalannals.activities.EditPatientRecord;
+import com.example.medicalannals.activities.DocViewPatientMedicalRecords;
 import com.example.medicalannals.models.PatientRecordModel;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class PatientRecordAdapter  extends RecyclerView.Adapter<PatientRecordAda
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(mcontext , EditPatientRecord.class);
+                Intent i = new Intent(mcontext , DocViewPatientMedicalRecords.class);
                 mcontext.startActivity(i);
             }
         });
@@ -59,6 +58,7 @@ public class PatientRecordAdapter  extends RecyclerView.Adapter<PatientRecordAda
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPatientImage , ivEdit , ivDelete;
         TextView tvPatientName;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             ivPatientImage = itemView.findViewById(R.id.iv_patient_pic);

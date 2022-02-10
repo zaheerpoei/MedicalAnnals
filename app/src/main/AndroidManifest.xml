@@ -46,9 +46,6 @@
             android:name=".activities.SignUp"
             android:exported="false" />
         <activity
-            android:name=".activities.AuthenticateUser"
-            android:exported="false" />
-        <activity
             android:name=".activities.SignIn"
             android:exported="false" />
         <activity
