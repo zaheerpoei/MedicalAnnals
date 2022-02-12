@@ -31,9 +31,7 @@ public class DoctorProfileManagement extends AppCompatActivity {
         toolbarImageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(DoctorProfileManagement.this , DoctorDashboard.class);
-                startActivity(i);
-                finish();
+                onBackPressed();
             }
         });
 

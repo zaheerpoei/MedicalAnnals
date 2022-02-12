@@ -60,9 +60,10 @@ public class DocViewPatientMedicalRecords extends AppCompatActivity {
         toolbarImageBackDocPatientRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(DocViewPatientMedicalRecords.this , DoctorDashboard.class);
-                startActivity(i);
-                finish();
+                onBackPressed();
+//                Intent i = new Intent(DocViewPatientMedicalRecords.this , DoctorDashboard.class);
+//                startActivity(i);
+//                finish();
             }
         });
 

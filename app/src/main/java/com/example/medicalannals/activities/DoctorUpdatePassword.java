@@ -34,9 +34,7 @@ public class DoctorUpdatePassword extends AppCompatActivity {
         ivToolbarImageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(DoctorUpdatePassword.this, DoctorDashboard.class);
-                startActivity(i);
-                finish();
+                onBackPressed();
             }
         });
 

@@ -29,9 +29,7 @@ public class ProfileManagement extends AppCompatActivity {
         toolbarImageBackPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ProfileManagement.this , PatientDashboard.class);
-                startActivity(i);
-                finish();
+                onBackPressed();
             }
         });
 

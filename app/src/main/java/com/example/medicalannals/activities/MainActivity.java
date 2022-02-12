@@ -1,12 +1,16 @@
 package com.example.medicalannals.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.medicalannals.R;
 import com.example.medicalannals.adapters.DoctorsAdapter;
 import com.example.medicalannals.models.DoctorsModel;
+import com.example.medicalannals.models.PatientModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,8 +43,11 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<DoctorsModel> arrayList = new ArrayList<>();
     ArrayList<DoctorsModel> userList= new ArrayList<DoctorsModel>();
-    DoctorsModel doctorsModel = new DoctorsModel();
     String specializationValue;
+    private DoctorsAdapter adapter;
+    ProgressDialog progressDialog;
+    TextView tvNoRecord;
+    EditText edSearchBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,18 +65,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-//        arrayList.add(new DoctorsModel());
-//        arrayList.add(new DoctorsModel());
-//        arrayList.add(new DoctorsModel());
-//        arrayList.add(new DoctorsModel());
-//        arrayList.add(new DoctorsModel());
-//        arrayList.add(new DoctorsModel());
-//        arrayList.add(new DoctorsModel());
-//        arrayList.add(new DoctorsModel());
-//        arrayList.add(new DoctorsModel());
-//        arrayList.add(new DoctorsModel());
 
-        DoctorsAdapter adapter=new DoctorsAdapter(userList,this);
+        adapter=new DoctorsAdapter(userList,this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,1);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -77,23 +75,47 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
 
         drawerLayout = findViewById(R.id.drawer_layout);
+        edSearchBar = findViewById(R.id.ed_searchbar);
+        tvNoRecord = findViewById(R.id.tv_no_record);
         navView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.home_toolbar);
         toolbarDrawerImage = findViewById(R.id.toolbar_drawer_image_back);
         recyclerView = findViewById(R.id.recycler_view);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Signing in..... ");
+
+        edSearchBar.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                System.out.println("Text ["+s+"]");
+
+                adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
     private void clickListeners() {
         toolbarDrawerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this , PatientDashboard.class);
-                startActivity(i);
-                finish();
+                onBackPressed();
             }
         });
 
     }
     private void getDoctors() {
+        progressDialog.show();
         DatabaseReference ref1= FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref2;
         ref2 = ref1.child("Doctor");
@@ -101,21 +123,30 @@ public class MainActivity extends AppCompatActivity {
         ref2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                progressDialog.dismiss();
                 for (DataSnapshot dsp : snapshot.getChildren()) {
+
                     DataSnapshot specialization = dsp.child("specialization");
-                    if(specialization.getValue().toString().equals(specializationValue)) {
-                        Toast.makeText(MainActivity.this, "Matched"+"", Toast.LENGTH_SHORT).show();
-                        DataSnapshot docName = dsp.child("name");
-                        doctorsModel.setName(docName.getValue().toString());
+                    if(specialization.getValue().toString().equalsIgnoreCase(specializationValue)) {
+                        DoctorsModel doctorsModel = snapshot.getValue(DoctorsModel.class);
                         userList.add(doctorsModel);
                     }
+                }
+                if (userList.size() >0) {
+                    adapter.notifyDataSetChanged();
+                    recyclerView.setVisibility(View.VISIBLE);
+                    tvNoRecord.setVisibility(View.GONE);
+                }else {
+                    recyclerView.setVisibility(View.GONE);
+                    tvNoRecord.setVisibility(View.VISIBLE);
                 }
                 Log.d("Doctors" , userList.toString());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                progressDialog.dismiss();
             }
         });
 

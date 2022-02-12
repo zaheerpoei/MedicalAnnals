@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,10 +21,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medicalannals.R;
 import com.example.medicalannals.adapters.SearchDoctorTypeAdapter;
+import com.example.medicalannals.models.PatientModel;
 import com.example.medicalannals.models.SearchSpecialistModel;
 import com.google.android.material.internal.NavigationMenuView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -83,6 +90,35 @@ public class PatientDashboard extends AppCompatActivity implements NavigationVie
         toolbar = findViewById(R.id.home_toolbar);
         toolbarDrawerImage = findViewById(R.id.toolbar_drawer_image);
         recyclerView = findViewById(R.id.recycler_view_search_type);
+
+        setNavigationHeader();
+
+    }
+
+    private void setNavigationHeader() {
+        View headerView = navView.getHeaderView(0);
+
+        TextView nav_header_name = headerView.findViewById(R.id.nav_header_name);
+        TextView nav_header_email_address = headerView.findViewById(R.id.nav_header_email_address);
+
+        String uid = FirebaseAuth.getInstance().getUid();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        database.child("Patient")
+                .child(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            PatientModel patientModel1 = snapshot.getValue(PatientModel.class);
+                            nav_header_name.setText(patientModel1.getName());
+                            nav_header_email_address.setText(patientModel1.getEmail());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
     }
 
     private void clickListeners() {
@@ -101,19 +137,17 @@ public class PatientDashboard extends AppCompatActivity implements NavigationVie
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_home:
-                        Intent intent = new Intent(PatientDashboard.this , PatientDashboard.class);
-                        startActivity(intent);
-                        finish();
+//                        Intent intent = new Intent(PatientDashboard.this , PatientDashboard.class);
+//                        startActivity(intent);
+//                        finish();
                         break;
                     case R.id.nav_medical_record:
                         Intent intentMedical = new Intent(PatientDashboard.this , PatientMedicalRecord.class);
                         startActivity(intentMedical);
-                        finish();
                         break;
                     case R.id.nav_profile_management:
                         Intent i = new Intent(PatientDashboard.this , ProfileManagement.class);
                         startActivity(i);
-                        finish();
                         break;
                     case R.id.nav_logout:
                         FirebaseAuth.getInstance().signOut();

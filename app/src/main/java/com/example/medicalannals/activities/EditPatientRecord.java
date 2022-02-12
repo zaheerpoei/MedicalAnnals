@@ -31,9 +31,7 @@ public class EditPatientRecord extends AppCompatActivity {
         toolbarImageBackEditRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(EditPatientRecord.this , DoctorDashboard.class);
-                startActivity(i);
-                finish();
+                onBackPressed();
             }
         });
         btnEditPatient.setOnClickListener(new View.OnClickListener() {

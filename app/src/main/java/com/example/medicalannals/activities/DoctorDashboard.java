@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,9 +29,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.medicalannals.R;
 import com.example.medicalannals.adapters.SlotsBookedAdapter;
 import com.example.medicalannals.models.DoctorSlotsBookedModel;
+import com.example.medicalannals.models.PatientModel;
 import com.google.android.material.internal.NavigationMenuView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,6 +64,34 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
         clickListeners();
         disableNavigationViewScrollbars(navView);
         setRecyclerView();
+        setNavigationHeader();
+    }
+
+
+    private void setNavigationHeader() {
+        View headerView = navView.getHeaderView(0);
+
+        TextView nav_header_name = headerView.findViewById(R.id.nav_header_name_doc);
+        TextView nav_header_email_address = headerView.findViewById(R.id.nav_header_email_address_doc);
+
+        String uid = FirebaseAuth.getInstance().getUid();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        database.child("Doctor")
+                .child(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            PatientModel patientModel1 = snapshot.getValue(PatientModel.class);
+                            nav_header_name.setText(patientModel1.getName());
+                            nav_header_email_address.setText(patientModel1.getEmail());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
     }
 
     private void clickListeners() {
@@ -74,25 +109,21 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_home_doc:
-                        Intent intent = new Intent(DoctorDashboard.this , DoctorDashboard.class);
-                        startActivity(intent);
-                        finish();
+//                        Intent intent = new Intent(DoctorDashboard.this , DoctorDashboard.class);
+//                        startActivity(intent);
                         break;
                     case R.id.nav_profile_management_doc:
                         Intent medicalIntent = new Intent(DoctorDashboard.this , DoctorProfileManagement.class);
                         startActivity(medicalIntent);
-                        finish();
                         break;
                     case R.id.nav_set_appointments:
                         Intent setAppointmnet = new Intent(DoctorDashboard.this , DoctorSlots.class);
                         startActivity(setAppointmnet);
-                        finish();
                         break;
 
                     case R.id.nav_view_patient_medical_record:
                         Intent patientRecordIntent = new Intent(DoctorDashboard.this , DocViewPatientMedicalRecords.class);
                         startActivity(patientRecordIntent);
-                        finish();
                         break;
 
                     case R.id.nav_logout_doc:
@@ -101,7 +132,7 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
                         SignIn.doctor = false;
                         Intent intentSignOut = new Intent(DoctorDashboard.this , SignIn.class);
                         startActivity(intentSignOut);
-                        finish();
+                        finishAffinity();
 //                        Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                         break;
                 }

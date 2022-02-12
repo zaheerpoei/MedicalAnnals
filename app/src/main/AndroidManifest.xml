@@ -55,6 +55,9 @@
             android:name=".activities.PatientMedicalRecord"
             android:exported="true" />
         <activity
+            android:name=".activities.DocViewPatientMedicalRecords"
+            android:exported="true" />
+        <activity
             android:name=".activities.SplashScreen"
             android:exported="true">
             <intent-filter>
