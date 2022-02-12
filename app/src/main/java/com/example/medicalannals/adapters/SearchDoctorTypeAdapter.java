@@ -44,7 +44,9 @@ public class SearchDoctorTypeAdapter extends RecyclerView.Adapter<SearchDoctorTy
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String specializationName = searchSpecialistModel.getSpecialization();
                 Intent i = new Intent(mcontext , MainActivity.class);
+                i.putExtra("specializationName" , specializationName);
                 mcontext.startActivity(i);
             }
         });

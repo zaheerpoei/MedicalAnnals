@@ -2,10 +2,12 @@ package com.example.medicalannals.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -15,12 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.medicalannals.R;
 import com.example.medicalannals.adapters.PatientRecordAdapter;
 import com.example.medicalannals.models.PatientRecordModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 
 public class ViewMedicalRecords extends AppCompatActivity {
-
-
     RecyclerView recyclerViewPatientRecord;
     Toolbar toolbar;
     ImageView toolbarBackImage;
@@ -31,11 +37,10 @@ public class ViewMedicalRecords extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_medical_records);
-
         initViews();
         clickListeners();
         setRecyclerView();
-    }
+        }
 
     private void setRecyclerView() {
         arrayList.add(new PatientRecordModel(R.drawable.default_profile_pic ,  "Talha Dogar"));

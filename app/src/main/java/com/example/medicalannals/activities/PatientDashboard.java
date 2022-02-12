@@ -23,6 +23,7 @@ import com.example.medicalannals.adapters.SearchDoctorTypeAdapter;
 import com.example.medicalannals.models.SearchSpecialistModel;
 import com.google.android.material.internal.NavigationMenuView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -41,13 +42,10 @@ public class PatientDashboard extends AppCompatActivity implements NavigationVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_dashboard);
-
         initViews();
         clickListeners();
         setRecyclerView();
-        disableNavigationViewScrollbars(navView);
-
-    }
+        disableNavigationViewScrollbars(navView);}
 
 
     @Override
@@ -63,24 +61,14 @@ public class PatientDashboard extends AppCompatActivity implements NavigationVie
     private void setRecyclerView() {
         arrayList.add(new SearchSpecialistModel(R.drawable.childspecialist ,  "Child Specialist"));
         arrayList.add(new SearchSpecialistModel(R.drawable.skin ,  "Skin Specialist"));
-//        arrayList.add(new SearchSpecialistModel(R.drawable.diabetes ,  "General Physician"));
         arrayList.add(new SearchSpecialistModel(R.drawable.physco ,  "Psychiatrist"));
         arrayList.add(new SearchSpecialistModel(R.drawable.diabetes ,  "Diabetes Specialist"));
         arrayList.add(new SearchSpecialistModel(R.drawable.eye ,  "Eye Specialist"));
         arrayList.add(new SearchSpecialistModel(R.drawable.dentist ,  "Dentist"));
         arrayList.add(new SearchSpecialistModel(R.drawable.ent ,  "ENT Specialist"));
         arrayList.add(new SearchSpecialistModel(R.drawable.kidney ,  "Kidney Specialist"));
-//        arrayList.add(new SearchSpecialistModel(R.drawable.childspecialist ,  "Urologist"));
-//        arrayList.add(new SearchSpecialistModel(R.drawable.childspecialist ,  "Pulmonologist"));
         arrayList.add(new SearchSpecialistModel(R.drawable.heart ,  "Heart Specialist"));
-//        arrayList.add(new SearchSpecialistModel(R.drawable.childspecialist ,  "General Surgeon"));
-//        arrayList.add(new SearchSpecialistModel(R.drawable.childspecialist ,  "Neurologist"));
-//        arrayList.add(new SearchSpecialistModel(R.drawable.childspecialist ,  "Gyneocologist"));
-//        arrayList.add(new SearchSpecialistModel(R.drawable.childspecialist ,  "Consultant Physician"));
         arrayList.add(new SearchSpecialistModel(R.drawable.gas ,  "Gastroenterologist"));
-//        arrayList.add(new SearchSpecialistModel(R.drawable.childspecialist ,  "Endocrinologist"));
-//        arrayList.add(new SearchSpecialistModel(R.drawable.childspecialist ,  "Pain Management"));
-
 
         SearchDoctorTypeAdapter adapter=new SearchDoctorTypeAdapter(arrayList,this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
@@ -90,7 +78,6 @@ public class PatientDashboard extends AppCompatActivity implements NavigationVie
     }
 
     private void initViews() {
-
         drawerLayout = findViewById(R.id.drawer_layout);
         navView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.home_toolbar);
@@ -129,13 +116,12 @@ public class PatientDashboard extends AppCompatActivity implements NavigationVie
                         finish();
                         break;
                     case R.id.nav_logout:
+                        FirebaseAuth.getInstance().signOut();
                         SignIn.patient = false;
                         SignIn.doctor = false;
                         Intent intentSignOut = new Intent(PatientDashboard.this , SignIn.class);
                         startActivity(intentSignOut);
                         finish();
-
-//                        Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 drawerLayout.closeDrawer(GravityCompat.START); return true;

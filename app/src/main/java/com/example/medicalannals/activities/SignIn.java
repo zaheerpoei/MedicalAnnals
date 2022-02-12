@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -38,14 +39,13 @@ import com.google.firebase.database.ValueEventListener;
 public class SignIn extends AppCompatActivity {
     TextInputEditText tiedEmailAddress, tiedPassword ;
     TextView tvForgotPassword , tvSignUpForAnAccount;
-    TextInputLayout tiPhoneNumber, tiPassword  , tiEmailAddress ;
+    TextInputLayout   tiEmailAddress , tiPassword;
     Button btnLogin;
     FirebaseAuth mAuth;
     ConstraintLayout constraintLayout;
     String  stEmailAddress,stPassword;
     RadioButton rbDoctor , rbPatient;
     public static Boolean  doctor = false , patient = false;
-
     ProgressDialog progressDialog;
 
     @SuppressLint("ResourceAsColor")
@@ -70,8 +70,6 @@ public class SignIn extends AppCompatActivity {
         rbDoctor = findViewById(R.id.rb_doctor);
         rbPatient = findViewById(R.id.rb_patient);
 
-
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Signing in..... ");
     }
@@ -93,66 +91,21 @@ public class SignIn extends AppCompatActivity {
                     if(!checkFields()) {
                         if(isValidEmailAddress(tiedEmailAddress)) {
                             progressDialog.show();
-                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                            database
-                                    .child("Patient")
-                                    .child(uid)
-                                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            if(snapshot.exists()) {
-                                                LoginPatient(stEmailAddress, stPassword);
-                                            }
-                                            else{
-                                                progressDialog.dismiss();
-                                                ShowAlertDialog("Record not exists");
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            ShowAlertDialog(error.toString());
-                                        }
-                                    });
-
-                        }
+                            LoginPatient(stEmailAddress , stPassword); }
                     }
                 }
                 else if(rbDoctor.isChecked()){
                     if(!checkFields()) {
                         if (isValidEmailAddress(tiedEmailAddress)) {
                             progressDialog.show();
-                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference reference = database.getReference();
-                            reference
-                                    .child("Doctor")
-                                    .child(uid)
-                                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            if(snapshot.exists()) {
-                                                LoginDoctor(stEmailAddress, stPassword);
-                                            }
-                                            else{
-                                                progressDialog.dismiss();
-                                                ShowAlertDialog("Record not exists");
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            ShowAlertDialog(error.toString());
-                                        }
-                                    });
-
+                            LoginDoctor(stEmailAddress, stPassword);
                         }
                     }
                 }
 
             }
         });
+
 
         tvSignUpForAnAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,8 +131,7 @@ public class SignIn extends AppCompatActivity {
         });
     }
 
-    private boolean checkFields()
-    {
+    private boolean checkFields() {
         tiedEmailAddress.setError(null);
         tiedPassword.setError(null);
 
@@ -214,23 +166,6 @@ public class SignIn extends AppCompatActivity {
         return cancel;
 
     }
-    private void authenticateUser()
-    {
-        mAuth.signInWithEmailAndPassword(stEmailAddress,stPassword).addOnCompleteListener(SignIn.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    ShowAlertDialog("Invalid Email Address or Password");
-//                    Snackbar snackbar = Snackbar
-//                            .make(constraintLayout, "Invalid Phone Number or Password", Snackbar.LENGTH_LONG);
-//                    snackbar.show();
-                } else {
-                    startActivity(new Intent(SignIn.this, MainActivity.class));
-                    finish();
-                }
-            }
-        });
-    }
 
     public void LoginPatient(String EMAIL, String PASSWORD) {
         mAuth = FirebaseAuth.getInstance();
@@ -239,18 +174,35 @@ public class SignIn extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            startActivity(new Intent(SignIn.this, PatientDashboard.class));
-                            finish();
-                            progressDialog.dismiss();
-
+                            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                            String uid = mAuth.getCurrentUser().getUid();
+                            database
+                                    .child("Patient")
+                                    .child(uid)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            progressDialog.dismiss();
+                                            if(snapshot.exists()) {
+                                                startActivity(new Intent(SignIn.this, PatientDashboard.class));
+                                                finish();
+                                            }
+                                            else{
+                                                ShowAlertDialog("Record not exists.");
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            ShowAlertDialog(error.toString());
+                                        }
+                                    });
                         }else {
-                            Toast.makeText(SignIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            ShowAlertDialog(task.getException().getMessage());
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(SignIn.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         });
@@ -263,18 +215,34 @@ public class SignIn extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            startActivity(new Intent(SignIn.this, DoctorDashboard.class));
-                            finish();
-                            progressDialog.dismiss();
 
+                            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                            String uid = mAuth.getCurrentUser().getUid();
+                            database
+                                    .child("Doctor")
+                                    .child(uid)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            progressDialog.dismiss();
+                                            if(snapshot.exists()) {
+                                                startActivity(new Intent(SignIn.this, DoctorDashboard.class));
+                                                finish(); }
+                                            else{ ShowAlertDialog("Record not exists.");
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            ShowAlertDialog(error.toString());
+                                        }
+                                    });
                         }else {
-                            Toast.makeText(SignIn.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            ShowAlertDialog(task.getException().getMessage());
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(SignIn.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         });

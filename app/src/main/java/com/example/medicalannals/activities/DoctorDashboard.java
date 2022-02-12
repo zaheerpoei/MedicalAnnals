@@ -30,6 +30,7 @@ import com.example.medicalannals.adapters.SlotsBookedAdapter;
 import com.example.medicalannals.models.DoctorSlotsBookedModel;
 import com.google.android.material.internal.NavigationMenuView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -95,6 +96,7 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
                         break;
 
                     case R.id.nav_logout_doc:
+                        FirebaseAuth.getInstance().signOut();
                         SignIn.patient = false;
                         SignIn.doctor = false;
                         Intent intentSignOut = new Intent(DoctorDashboard.this , SignIn.class);
