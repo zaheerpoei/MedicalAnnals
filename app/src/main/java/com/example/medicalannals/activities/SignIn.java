@@ -54,8 +54,7 @@ public class SignIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         initViews();
-        clickListeners();
-    }
+        clickListeners(); }
 
     private void initViews() {
         constraintLayout = findViewById(R.id.constraint_parent);

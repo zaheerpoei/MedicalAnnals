@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,9 +20,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.medicalannals.R;
+import com.example.medicalannals.models.DoctorSlotsBookedModel;
+import com.example.medicalannals.models.SlotsModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class DoctorSlots extends AppCompatActivity {
@@ -32,12 +40,13 @@ public class DoctorSlots extends AppCompatActivity {
     EditText edSetSlotsDate , edSetSlotsTime;
     private DatePickerDialog.OnDateSetListener doctorDashboardDateListener;
     long age;
+    String stDate, stTime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_slots);
-
         initViews();
         clickListeners();
     }
@@ -49,36 +58,6 @@ public class DoctorSlots extends AppCompatActivity {
                 Intent i = new Intent(DoctorSlots.this , DoctorDashboard.class);
                 startActivity(i);
                 finish();
-            }
-        });
-
-        btnSetSlot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog dialog = new Dialog(DoctorSlots.this);
-                dialog.setCancelable(true);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                View dialogView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
-                dialog.setContentView(dialogView);
-
-                TextView Message, btnAllow;
-                Message = (TextView) dialogView.findViewById(R.id.tvMessage);
-                btnAllow = (TextView) dialogView.findViewById(R.id.btn_allow);
-
-                Message.setText("Slot Added.");
-
-                btnAllow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                        Intent i = new Intent(DoctorSlots.this , DoctorDashboard.class);
-                        startActivity(i);
-                        finish();
-                    }
-                });
-
-                dialog.show();
             }
         });
         edSetSlotsDate.setOnTouchListener(new View.OnTouchListener() {
@@ -167,6 +146,49 @@ public class DoctorSlots extends AppCompatActivity {
                 timePickerDialog.show();
             }
         });
+        btnSetSlot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(!checkFields()){
+                    ArrayList<SlotsModel> arrayList = new ArrayList<>();
+                    SlotsModel slotsModel = new SlotsModel();
+                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                    DatabaseReference reference = database.getReference("Slots");
+                    slotsModel.setDate(stDate);
+                    slotsModel.setTime(stTime);
+                    slotsModel.setDocId(uid);
+                    arrayList.add(slotsModel);
+                    reference.push().setValue(slotsModel);
+//                    reference.child(uid).setValue(arrayList);
+                }
+
+                Dialog dialog = new Dialog(DoctorSlots.this);
+                dialog.setCancelable(true);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                View dialogView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+                dialog.setContentView(dialogView);
+
+                TextView Message, btnAllow;
+                Message = (TextView) dialogView.findViewById(R.id.tvMessage);
+                btnAllow = (TextView) dialogView.findViewById(R.id.btn_allow);
+
+                Message.setText("Slot Added.");
+
+                btnAllow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        onBackPressed();
+                    }
+                });
+
+                dialog.show();
+            }
+        });
 
     }
 
@@ -193,4 +215,63 @@ public class DoctorSlots extends AppCompatActivity {
         edSetSlotsTime = findViewById(R.id.ed_set_slots_time);
 
     }
+
+    private boolean checkFields() {
+       edSetSlotsDate.setError(null);
+       edSetSlotsTime.setError(null);
+
+       stDate = edSetSlotsDate.getText().toString().trim();
+       stTime = edSetSlotsTime.getText().toString().trim();
+        boolean cancel = false;
+        View focusView = null;
+
+        if (TextUtils.isEmpty(stDate)) {
+            ShowAlertDialog("Please Select Date");
+            focusView = edSetSlotsDate;
+            cancel = true;
+        }
+        else if(TextUtils.isEmpty(stTime)){
+            ShowAlertDialog("Please Select Time");
+            focusView = edSetSlotsTime;
+            cancel = true;
+        }
+        if (cancel) {
+            focusView.requestFocus();
+        }
+        return cancel;
+
+    }
+
+    protected void ShowAlertDialog(String stMessage){
+
+        Dialog dialog = new Dialog(DoctorSlots.this);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        View view  = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+        dialog.setContentView(view);
+
+        TextView Message,btnAllow;
+        ImageView ivAlert;
+        Message=(TextView)view.findViewById(R.id.tvMessage);
+        btnAllow=(TextView)view.findViewById(R.id.btn_allow);
+        ivAlert = (ImageView) view.findViewById(R.id.imageView16) ;
+
+        ivAlert.setImageResource(R.drawable.warning);
+        ivAlert.setColorFilter(ContextCompat.getColor(this, R.color.dark_blue_700), android.graphics.PorterDuff.Mode.SRC_IN);
+
+        Message.setText(stMessage);
+
+        btnAllow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+
+
+        dialog.show();
+    };
 }

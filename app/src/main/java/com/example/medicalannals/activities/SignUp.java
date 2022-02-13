@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.medicalannals.R;
 import com.example.medicalannals.models.DoctorsModel;
 import com.example.medicalannals.models.PatientModel;
+import com.example.medicalannals.models.SlotsModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;

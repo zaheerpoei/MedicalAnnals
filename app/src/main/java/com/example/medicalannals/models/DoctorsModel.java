@@ -12,6 +12,22 @@ public class DoctorsModel {
     public String qualification;
     public String fees;
 
+    public DoctorsModel(String name, String email, String contact, String age, String gender, String specialization, String hospital, String experience, String qualification, String fees) {
+        this.name = name;
+        this.email = email;
+        this.contact = contact;
+        this.age = age;
+        this.gender = gender;
+        this.specialization = specialization;
+        this.hospital = hospital;
+        this.experience = experience;
+        this.qualification = qualification;
+        this.fees = fees;
+    }
+
+    public DoctorsModel() {
+    }
+
     public String getName() {
         return name;
     }
@@ -90,21 +106,5 @@ public class DoctorsModel {
 
     public void setFees(String fees) {
         this.fees = fees;
-    }
-
-    public DoctorsModel(String name, String email, String contact, String age, String gender, String specialization, String hospital, String experience, String qualification, String fees) {
-        this.name = name;
-        this.email = email;
-        this.contact = contact;
-        this.age = age;
-        this.gender = gender;
-        this.specialization = specialization;
-        this.hospital = hospital;
-        this.experience = experience;
-        this.qualification = qualification;
-        this.fees = fees;
-    }
-
-    public DoctorsModel() {
     }
 }
