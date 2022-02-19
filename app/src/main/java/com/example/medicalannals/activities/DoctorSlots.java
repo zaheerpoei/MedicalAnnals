@@ -55,9 +55,7 @@ public class DoctorSlots extends AppCompatActivity {
         ivToolbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(DoctorSlots.this , DoctorDashboard.class);
-                startActivity(i);
-                finish();
+                onBackPressed();
             }
         });
         edSetSlotsDate.setOnTouchListener(new View.OnTouchListener() {
@@ -113,7 +111,7 @@ public class DoctorSlots extends AppCompatActivity {
                         doctorDashboardDateListener,
                         year, month, day);
 
-                dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -173,7 +171,7 @@ public class DoctorSlots extends AppCompatActivity {
                 dialog.setContentView(dialogView);
 
                 TextView Message, btnAllow;
-                Message = (TextView) dialogView.findViewById(R.id.tvMessage);
+                Message =  (TextView) dialogView.findViewById(R.id.tvMessage);
                 btnAllow = (TextView) dialogView.findViewById(R.id.btn_allow);
 
                 Message.setText("Slot Added.");
@@ -189,7 +187,6 @@ public class DoctorSlots extends AppCompatActivity {
                 dialog.show();
             }
         });
-
     }
 
     private long getAge(int year, int month, int day) {
@@ -268,9 +265,6 @@ public class DoctorSlots extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
-
-
 
         dialog.show();
     };

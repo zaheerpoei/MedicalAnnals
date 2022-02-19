@@ -3,6 +3,7 @@ package com.example.medicalannals.activities;
 import static androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,7 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +25,16 @@ import com.example.medicalannals.adapters.EveningSlotsAdapter;
 import com.example.medicalannals.adapters.MorningSlotsAdapter;
 import com.example.medicalannals.adapters.ViewSlotsAdapter;
 import com.example.medicalannals.models.BookTimeSlotModel;
+import com.example.medicalannals.models.DoctorsModel;
+import com.example.medicalannals.models.SlotsModel;
 import com.example.medicalannals.models.ViewSlotsModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -36,24 +48,70 @@ public class ViewSlots extends AppCompatActivity {
     ImageView ivToolbarBack;
     TextView tvChangeDoc;
     Button btnSlotsAvailable;
+    String slotsValue;
+    MorningSlotsAdapter adapterMorningSlots ;
+    AfternoonSlotsAdapter adapterAfternoonSlots;
+    EveningSlotsAdapter adappterEveningSlots;
+    ArrayList<SlotsModel> morningList= new ArrayList<SlotsModel>();
+    ArrayList<SlotsModel> afternoonList= new ArrayList<SlotsModel>();
+    ArrayList<SlotsModel> eveningList= new ArrayList<SlotsModel>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_slots);
-
         initViews();
         setRecyclerView();
         clickListeners();
+        getSlotsData();
+    }
+
+    private void getSlotsData() {
+        final Query userQuery = FirebaseDatabase.getInstance().getReference().child("Slots").orderByChild("docId");
+        userQuery.equalTo("gHdGFCJc9LgaOJS5TzU1CAzgrXA2").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Toast.makeText(getApplicationContext() , "check", Toast.LENGTH_SHORT).show();
+                for (DataSnapshot dsp : snapshot.getChildren()) {
+                    SlotsModel bookTimeSlotModel = dsp.getValue(SlotsModel.class);
+                    String time = bookTimeSlotModel.getTime();
+                    String[] array = time.split(":");
+                    String[] space = time.split(" ");
+                    if(array[0].equals("9") || array[0].equals("10") || array[0].equals("11")) {
+                        if(space[1].equals("AM")) {
+                            morningList.add(bookTimeSlotModel);
+                        }
+                    }
+
+                    else if(array[0].equals("12") || array[0].equals("1") || array[0].equals("2") || array[0].equals("3") || array[0].equals("4")){
+                        if(space[1].equals("PM")){
+                            afternoonList.add(bookTimeSlotModel);
+                        }
+                    }
+
+                    else if(array[0].equals("5") || array[0].equals("6") || array[0].equals("7") || array[0].equals("8") || array[0].equals("9")){
+                        if(space[1].equals("PM")){
+                            eveningList.add(bookTimeSlotModel);
+                        }
+                    }
+                }
+                adapterMorningSlots.notifyDataSetChanged();
+                adapterAfternoonSlots.notifyDataSetChanged();
+                adappterEveningSlots.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void clickListeners() {
         ivToolbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ViewSlots.this , MainActivity.class);
-                startActivity(i);
-                finish();
+                onBackPressed();
             }
         });
         btnSlotsAvailable.setOnClickListener(new View.OnClickListener() {
@@ -105,36 +163,23 @@ public class ViewSlots extends AppCompatActivity {
         recyclerViewSlotsAvailable.setLayoutManager(linearLayoutManager);
         recyclerViewSlotsAvailable.setAdapter(adapter);
 
-        arrayListMorningSlots.add(new BookTimeSlotModel("10:00AM"));
-        arrayListMorningSlots.add(new BookTimeSlotModel("11:00AM"));
-        arrayListMorningSlots.add(new BookTimeSlotModel("11:30AM"));
-
-        MorningSlotsAdapter adapterMorningSlots=new MorningSlotsAdapter(arrayListMorningSlots,this);
+        adapterMorningSlots=new MorningSlotsAdapter(morningList,this);
         LinearLayoutManager linearLayoutManagerMorningSlots=new LinearLayoutManager(getApplicationContext());
         linearLayoutManagerMorningSlots.setOrientation(HORIZONTAL);
         recyclerViewMorningSlots.setLayoutManager(linearLayoutManagerMorningSlots);
         recyclerViewMorningSlots.setAdapter(adapterMorningSlots);
 
-        arrayListAfternoonSlots.add(new BookTimeSlotModel("1:00PM"));
-        arrayListAfternoonSlots.add(new BookTimeSlotModel("2:30PM"));
-        arrayListAfternoonSlots.add(new BookTimeSlotModel("3:15PM"));
-        arrayListAfternoonSlots.add(new BookTimeSlotModel("3:30PM"));
-
-        AfternoonSlotsAdapter adapterAfternoonSlots=new AfternoonSlotsAdapter(arrayListAfternoonSlots ,this);
+         adapterAfternoonSlots=new AfternoonSlotsAdapter(afternoonList ,this);
         LinearLayoutManager linearLayoutManagerAfternoonSlots=new LinearLayoutManager(getApplicationContext());
         linearLayoutManagerAfternoonSlots.setOrientation(linearLayoutManagerAfternoonSlots.HORIZONTAL);
         recyclerViewAfternoonSlots.setLayoutManager(linearLayoutManagerAfternoonSlots);
         recyclerViewAfternoonSlots.setAdapter(adapterAfternoonSlots);
 
-        arrayListEveningSlots.add(new BookTimeSlotModel("8:00PM"));
-        arrayListEveningSlots.add(new BookTimeSlotModel("9:00PM"));
-        arrayListEveningSlots.add(new BookTimeSlotModel("10:00PM"));
-
-        EveningSlotsAdapter adapterEveningSlots=new EveningSlotsAdapter(arrayListEveningSlots,this);
+         adappterEveningSlots=new EveningSlotsAdapter(eveningList,this);
         LinearLayoutManager linearLayoutManagerEveningSlots=new LinearLayoutManager(getApplicationContext());
         linearLayoutManagerEveningSlots.setOrientation(linearLayoutManagerEveningSlots.HORIZONTAL);
         recyclerViewEveningSlots.setLayoutManager(linearLayoutManagerEveningSlots);
-        recyclerViewEveningSlots.setAdapter(adapterEveningSlots);
+        recyclerViewEveningSlots.setAdapter(adappterEveningSlots);
     }
 
     private void initViews() {

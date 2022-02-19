@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-
         adapter=new DoctorsAdapter(userList,this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,1);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -126,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
                 progressDialog.dismiss();
                 for (DataSnapshot dsp : snapshot.getChildren()) {
-
                     DataSnapshot specialization = dsp.child("specialization");
                     if(specialization.getValue().toString().equalsIgnoreCase(specializationValue)) {
                         DoctorsModel doctorsModel = snapshot.getValue(DoctorsModel.class);

@@ -12,15 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medicalannals.R;
 import com.example.medicalannals.models.BookTimeSlotModel;
+import com.example.medicalannals.models.SlotsModel;
 
 import java.util.ArrayList;
 
 public class EveningSlotsAdapter extends RecyclerView.Adapter<EveningSlotsAdapter.MyViewHolder>{
 
-    private ArrayList<BookTimeSlotModel> bookTimeSlotModelArrayList;
+    private ArrayList<SlotsModel> bookTimeSlotModelArrayList;
     private Context mcontext;
 
-    public EveningSlotsAdapter(ArrayList<BookTimeSlotModel> bookTimeSlotModelArrayList, Context mcontext) {
+    public EveningSlotsAdapter(ArrayList<SlotsModel> bookTimeSlotModelArrayList, Context mcontext) {
         this.bookTimeSlotModelArrayList = bookTimeSlotModelArrayList;
         this.mcontext = mcontext;
     }
@@ -35,7 +36,7 @@ public class EveningSlotsAdapter extends RecyclerView.Adapter<EveningSlotsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        BookTimeSlotModel bookTimeSlotModel = bookTimeSlotModelArrayList.get(position);
+        SlotsModel bookTimeSlotModel = bookTimeSlotModelArrayList.get(position);
         holder.tvTime.setText(bookTimeSlotModel.getTime());
     }
 

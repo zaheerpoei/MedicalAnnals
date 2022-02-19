@@ -47,23 +47,17 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.MyViewHo
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mcontext , ViewSlots.class);
-                mcontext.startActivity(i);
-
-            }
+                mcontext.startActivity(i); }
         });
-
     }
-
     @Override
     public int getItemCount() {
         return filteredData.size();
     }
-
     @Override
     public Filter getFilter() {
         return new ItemFilter();
     }
-
     private class ItemFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -100,7 +94,6 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.MyViewHo
         }
 
     }
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvDocName;
         TextView tvViewSlots;
