@@ -234,18 +234,18 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
     }
 
     private void setRecyclerView() {
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
+        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
 
 
 

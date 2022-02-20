@@ -10,16 +10,12 @@
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/drawable-v24/profile.xml" value="0.18333333333333332" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/drawable/logout.xml" value="0.18333333333333332" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/activity_doc_view_patient_medical_records.xml" value="0.2421875" />
-        <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/activity_doctor_profile_management.xml" value="0.2421875" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/activity_doctor_slots.xml" value="0.215625" />
-        <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/activity_doctor_update_password.xml" value="0.2421875" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/activity_edit_patient_record.xml" value="0.2421875" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/activity_forgot_password.xml" value="0.2265625" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/activity_patient_dashboard.xml" value="0.2265625" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/activity_sign_in.xml" value="0.2421875" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/activity_sign_up.xml" value="0.2265625" />
-        <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/activity_update_password.xml" value="0.2421875" />
-        <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/activity_view_slots.xml" value="0.2421875" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/alert_dialog.xml" value="0.2265625" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/recycler_view_item.xml" value="0.2265625" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/recycler_view_view_slots_item.xml" value="0.2265625" />
@@ -27,6 +23,8 @@
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/layout/slots_booked.xml" value="0.2265625" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/menu/navigation_drawer.xml" value="0.23846153846153847" />
         <entry key="..\:/Ibra/AndroidStudioProjects/AndroidStudioProjects/MedicalAnnals/app/src/main/res/menu/navigation_drawer_doc.xml" value="0.23846153846153847" />
+        <entry key="..\:/Users/zaheer.ahmed/Downloads/MedicalAnnals/MedicalAnnals/app/src/main/res/layout/activity_view_slots.xml" value="0.4" />
+        <entry key="..\:/Users/zaheer.ahmed/Downloads/MedicalAnnals/MedicalAnnals/app/src/main/res/layout/slots_booked.xml" value="0.121875" />
       </map>
     </option>
   </component>

@@ -20,10 +20,12 @@ public class AfternoonSlotsAdapter extends RecyclerView.Adapter<AfternoonSlotsAd
 
     private ArrayList<SlotsModel> bookTimeSlotModelArrayList;
     private Context mcontext;
+    private AfternoonSelectedTime afternoonSelectedTime;
 
-    public AfternoonSlotsAdapter(ArrayList<SlotsModel> bookTimeSlotModelArrayList, Context mcontext) {
+    public AfternoonSlotsAdapter(ArrayList<SlotsModel> bookTimeSlotModelArrayList, Context mcontext,AfternoonSelectedTime afternoonSelectedTime) {
         this.bookTimeSlotModelArrayList = bookTimeSlotModelArrayList;
         this.mcontext = mcontext;
+        this.afternoonSelectedTime = afternoonSelectedTime;
     }
 
     @NonNull
@@ -38,6 +40,12 @@ public class AfternoonSlotsAdapter extends RecyclerView.Adapter<AfternoonSlotsAd
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         SlotsModel bookTimeSlotModel = bookTimeSlotModelArrayList.get(position);
         holder.tvTime.setText(bookTimeSlotModel.getTime());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                afternoonSelectedTime.onAfternoonTimeSelected(bookTimeSlotModel.getTime());
+            }
+        });
     }
 
     @Override
@@ -52,5 +60,10 @@ public class AfternoonSlotsAdapter extends RecyclerView.Adapter<AfternoonSlotsAd
             super(itemView);
             tvTime = itemView.findViewById(R.id.tv_time);
         }
+    }
+
+
+    public interface AfternoonSelectedTime{
+        void onAfternoonTimeSelected(String time);
     }
 }

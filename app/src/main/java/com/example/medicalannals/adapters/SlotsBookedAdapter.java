@@ -40,7 +40,7 @@ public class SlotsBookedAdapter extends RecyclerView.Adapter<SlotsBookedAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         DoctorSlotsBookedModel doctorSlotsBookedModel = doctorSlotsBookedModelList.get(position);
-        holder.tvPatientNameBookedSlots.setText(doctorSlotsBookedModel.getPatientBookedSlotName());
+        holder.tvPatientNameBookedSlots.setText(doctorSlotsBookedModel.getPatientBookedSlotId());
         holder.constraintMainSlotsBooked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

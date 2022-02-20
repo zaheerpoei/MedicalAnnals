@@ -2,35 +2,37 @@ package com.example.medicalannals.models;
 
 public class DoctorSlotsBookedModel {
 
-    public int patientBookedSlotImage;
-    public String patientBookedSlotName;
+    public String patientBookedSlotId;
+    public String doctorBookedSlotId;
     public String patientBookedSlotDate;
     public String patientBookedSlotTime;
 
-    public DoctorSlotsBookedModel(int patientBookedSlotImage , String patientBookedSlotName, String patientBookedSlotDate , String patientBookedSlotTime )
+    public DoctorSlotsBookedModel(String patientBookedSlotId, String doctorBookedSlotId, String patientBookedSlotDate , String patientBookedSlotTime )
     {
-        this.patientBookedSlotImage = patientBookedSlotImage;
-        this.patientBookedSlotName=patientBookedSlotName;
+        this.patientBookedSlotId = patientBookedSlotId;
+        this.doctorBookedSlotId = doctorBookedSlotId;
+        this.patientBookedSlotId = patientBookedSlotId;
         this.patientBookedSlotDate=patientBookedSlotDate;
         this.patientBookedSlotTime=patientBookedSlotTime;
     }
 
-    public int getPatientBookedSlotImage()
-    {
-        return patientBookedSlotImage;
+    public DoctorSlotsBookedModel() {
     }
 
-    public void setPatientBookedSlotImage(int patientBookedSlotImage)
-    {
-        this.patientBookedSlotImage = patientBookedSlotImage;
+    public String getDoctorBookedSlotId() {
+        return doctorBookedSlotId;
     }
 
-    public String getPatientBookedSlotName() {
-        return patientBookedSlotName;
+    public void setDoctorBookedSlotId(String doctorBookedSlotId) {
+        this.doctorBookedSlotId = doctorBookedSlotId;
     }
 
-    public void setPatientBookedSlotName(String patientBookedSlotName) {
-        this.patientBookedSlotName = patientBookedSlotName;
+    public String getPatientBookedSlotId() {
+        return patientBookedSlotId;
+    }
+
+    public void setPatientBookedSlotId(String patientBookedSlotId) {
+        this.patientBookedSlotId = patientBookedSlotId;
     }
 
     public String getPatientBookedSlotDate() {

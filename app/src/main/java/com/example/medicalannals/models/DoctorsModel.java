@@ -1,7 +1,10 @@
 package com.example.medicalannals.models;
 
-public class DoctorsModel {
-    public String name = "Dr. Ahmed";
+import java.io.Serializable;
+
+public class DoctorsModel implements Serializable {
+    public String id;
+    public String name ;
     public String email;
     public String contact;
     public String age;
@@ -12,7 +15,8 @@ public class DoctorsModel {
     public String qualification;
     public String fees;
 
-    public DoctorsModel(String name, String email, String contact, String age, String gender, String specialization, String hospital, String experience, String qualification, String fees) {
+    public DoctorsModel(String id,String name, String email, String contact, String age, String gender, String specialization, String hospital, String experience, String qualification, String fees) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.contact = contact;
@@ -26,6 +30,14 @@ public class DoctorsModel {
     }
 
     public DoctorsModel() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
