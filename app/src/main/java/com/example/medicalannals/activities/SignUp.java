@@ -215,7 +215,7 @@ public class SignUp extends AppCompatActivity {
                     if (!checkFields()) {
                         if(isValidEmailAddress(tiedEmailSignUp)){
                             progressDialog.show();
-                            DoctorsModel doctorsModel = new DoctorsModel(stUsernameSignUp, stEmailSignUp, stContactSignUp, stAgeSignUp, stGenderSignUp, stSpecializationSignUp, stHospitalSignUp, stExperienceSignUp, stQualificationSignUp, stFeesSignUp);
+                            DoctorsModel doctorsModel = new DoctorsModel("",stUsernameSignUp, stEmailSignUp, stContactSignUp, stAgeSignUp, stGenderSignUp, stSpecializationSignUp, stHospitalSignUp, stExperienceSignUp, stQualificationSignUp, stFeesSignUp);
                             RegisterDoctor(doctorsModel, stPasswordSignUp);
                         }
                     }

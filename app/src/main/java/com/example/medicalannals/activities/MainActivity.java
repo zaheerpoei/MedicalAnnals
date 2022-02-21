@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Signing in..... ");
+        progressDialog.setMessage("Loading..... ");
 
         edSearchBar.addTextChangedListener(new TextWatcher() {
 
@@ -127,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot dsp : snapshot.getChildren()) {
                     DataSnapshot specialization = dsp.child("specialization");
                     if(specialization.getValue().toString().equalsIgnoreCase(specializationValue)) {
-                        DoctorsModel doctorsModel = snapshot.getValue(DoctorsModel.class);
+                        DoctorsModel doctorsModel = dsp.getValue(DoctorsModel.class);
+                        doctorsModel.setId(dsp.getKey());
                         userList.add(doctorsModel);
                     }
                 }

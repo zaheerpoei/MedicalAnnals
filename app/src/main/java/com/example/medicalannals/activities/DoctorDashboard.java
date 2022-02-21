@@ -2,6 +2,7 @@ package com.example.medicalannals.activities;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -37,23 +38,27 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class DoctorDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class DoctorDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    ConstraintLayout constraintViewMedicalRecords , constraintSetAppointments;
+    ConstraintLayout constraintViewMedicalRecords, constraintSetAppointments;
     DrawerLayout drawerLayout;
+    TextView tv_booked_slots_date;
     NavigationView navView;
     Toolbar toolbar;
-    ImageView toolbarDrawerImage , ivCalenderDoctorsDashboard;
+    ImageView toolbarDrawerImage, ivCalenderDoctorsDashboard;
     RecyclerView recyclerViewBookedSlots;
     EditText edSearchbarDateDoctorDashboard;
     ArrayList<DoctorSlotsBookedModel> arrayList = new ArrayList<>();
     private DatePickerDialog.OnDateSetListener doctorDashboardDateListener;
     long age;
+    ProgressDialog progressDialog;
+    private SlotsBookedAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,34 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
         disableNavigationViewScrollbars(navView);
         setRecyclerView();
         setNavigationHeader();
+        doctorAppointments();
+    }
+
+    private void doctorAppointments() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        month = month + 1;
+
+        String Days = "";
+        if (day < 10) {
+            Days = "0" + day;
+        } else {
+            Days = String.valueOf(day);
+        }
+
+        String mont = "";
+        if (month < 10) {
+            mont = "0" + month;
+        } else {
+            mont = String.valueOf(month);
+        }
+
+        String date = Days + "-" + mont + "-" + year;
+        edSearchbarDateDoctorDashboard.setText(date);
+        getAppointments(date);
     }
 
 
@@ -113,16 +146,16 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
 //                        startActivity(intent);
                         break;
                     case R.id.nav_profile_management_doc:
-                        Intent medicalIntent = new Intent(DoctorDashboard.this , DoctorProfileManagement.class);
+                        Intent medicalIntent = new Intent(DoctorDashboard.this, DoctorProfileManagement.class);
                         startActivity(medicalIntent);
                         break;
                     case R.id.nav_set_appointments:
-                        Intent setAppointmnet = new Intent(DoctorDashboard.this , DoctorSlots.class);
+                        Intent setAppointmnet = new Intent(DoctorDashboard.this, DoctorSlots.class);
                         startActivity(setAppointmnet);
                         break;
 
                     case R.id.nav_view_patient_medical_record:
-                        Intent patientRecordIntent = new Intent(DoctorDashboard.this , DocViewPatientMedicalRecords.class);
+                        Intent patientRecordIntent = new Intent(DoctorDashboard.this, DocViewPatientMedicalRecords.class);
                         startActivity(patientRecordIntent);
                         break;
 
@@ -130,13 +163,14 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
                         FirebaseAuth.getInstance().signOut();
                         SignIn.patient = false;
                         SignIn.doctor = false;
-                        Intent intentSignOut = new Intent(DoctorDashboard.this , SignIn.class);
+                        Intent intentSignOut = new Intent(DoctorDashboard.this, SignIn.class);
                         startActivity(intentSignOut);
                         finishAffinity();
 //                        Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                         break;
                 }
-                drawerLayout.closeDrawer(GravityCompat.START); return true;
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
             }
         });
         ivCalenderDoctorsDashboard.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +187,7 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
                         doctorDashboardDateListener,
                         year, month, day);
 
-                dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                dialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -195,11 +229,14 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
                 age = getAge(year, month, day);
                 // Toast.makeText(getActivity(), String.valueOf(age), Toast.LENGTH_SHORT).show();
                 edSearchbarDateDoctorDashboard.setText(date);
+
+                getAppointments(date);
             }
         };
     }
 
     private void initViews() {
+        tv_booked_slots_date = findViewById(R.id.tv_booked_slots_date);
         drawerLayout = findViewById(R.id.drawer_layout);
         navView = findViewById(R.id.nav_view_doc);
         toolbar = findViewById(R.id.home_toolbar);
@@ -207,6 +244,11 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
         recyclerViewBookedSlots = findViewById(R.id.recycler_view_booked_slots);
         ivCalenderDoctorsDashboard = findViewById(R.id.iv_calender_doctors_dashboard);
         edSearchbarDateDoctorDashboard = findViewById(R.id.ed_searchbar_date_doctor_dashboard);
+
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading..... ");
+
     }
 
     @Override
@@ -215,12 +257,11 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
     }
 
     @Override
-    public void onBackPressed(){
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else
-        {super.onBackPressed();
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -233,24 +274,60 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
         }
     }
 
+    private void getAppointments(String date) {
+        arrayList.clear();
+        progressDialog.show();
+        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference ref2;
+        Query query = ref1.child("Appointments").orderByChild("doctorBookedSlotId");
+
+        query.equalTo(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                progressDialog.dismiss();
+                for (DataSnapshot dsp : snapshot.getChildren()) {
+                    DataSnapshot patientBookedSlotDate = dsp.child("patientBookedSlotDate");
+                    if (patientBookedSlotDate.getValue().toString().equalsIgnoreCase(date)) {
+                        DoctorSlotsBookedModel doctorSlotsBookedModel = dsp.getValue(DoctorSlotsBookedModel.class);
+                        arrayList.add(doctorSlotsBookedModel);
+                    }
+                }
+                if (arrayList.size() > 0) {
+                    adapter.notifyDataSetChanged();
+                    recyclerViewBookedSlots.setVisibility(View.VISIBLE);
+                    tv_booked_slots_date.setVisibility(View.GONE);
+                } else {
+                    recyclerViewBookedSlots.setVisibility(View.GONE);
+                    tv_booked_slots_date.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                progressDialog.dismiss();
+            }
+        });
+
+    }
+
     private void setRecyclerView() {
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
-        arrayList.add(new DoctorSlotsBookedModel(R.drawable.default_profile_pic , "Ali Ahmed" , "Feb 11,2022" , "11:00 AM"));
+//        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+//        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+//        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+//        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+//        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+//        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+//        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+//        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+//        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+//        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+//        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
+//        arrayList.add(new DoctorSlotsBookedModel( "Ali Ahmed" ,"", "Feb 11,2022" , "11:00 AM"));
 
 
-
-        SlotsBookedAdapter adapter=new SlotsBookedAdapter(arrayList,this);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
+        adapter = new SlotsBookedAdapter(arrayList, this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerViewBookedSlots.setLayoutManager(linearLayoutManager);
         recyclerViewBookedSlots.setAdapter(adapter);

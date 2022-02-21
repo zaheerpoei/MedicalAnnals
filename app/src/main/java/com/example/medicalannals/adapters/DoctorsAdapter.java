@@ -47,6 +47,7 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.MyViewHo
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mcontext , ViewSlots.class);
+                i.putExtra("doctor",doctorsModel);
                 mcontext.startActivity(i); }
         });
     }

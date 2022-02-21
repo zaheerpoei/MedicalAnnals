@@ -16,7 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class SplashScreen extends AppCompatActivity {
+public class Splash extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class SplashScreen extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()) {
-                                startActivity(new Intent(SplashScreen.this, DoctorDashboard.class));
+                                startActivity(new Intent(Splash.this, DoctorDashboard.class));
                                 finish();
                             }
                         }
@@ -50,7 +50,7 @@ public class SplashScreen extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()) {
-                                startActivity(new Intent(SplashScreen.this, PatientDashboard.class));
+                                startActivity(new Intent(Splash.this, PatientDashboard.class));
                                 finish();
                             }
                         }
@@ -65,7 +65,7 @@ public class SplashScreen extends AppCompatActivity {
                 @Override
                 public void run() {
 
-                    Intent intent=new Intent(SplashScreen.this, SignIn.class);
+                    Intent intent=new Intent(Splash.this, SignIn.class);
                     startActivity(intent);
                     finish();
 
