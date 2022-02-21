@@ -21,14 +21,16 @@
 
     <TextView
         android:id="@+id/tv_patient_name_booked_slots"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
         android:text="Ali Ahmed"
+        android:lines="1"
         android:textColor="@color/dark_blue_700"
         android:textSize="@dimen/_15sdp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/tv_booked_slots_time"
         app:layout_constraintStart_toEndOf="@+id/iv_patient_pic_booked_slots"
         app:layout_constraintTop_toTopOf="parent" />
 

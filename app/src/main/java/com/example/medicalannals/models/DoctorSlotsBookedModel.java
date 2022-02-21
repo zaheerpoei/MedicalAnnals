@@ -1,19 +1,24 @@
 package com.example.medicalannals.models;
 
-public class DoctorSlotsBookedModel {
+import java.io.Serializable;
+
+public class DoctorSlotsBookedModel implements Serializable {
 
     public String patientBookedSlotId;
     public String doctorBookedSlotId;
     public String patientBookedSlotDate;
     public String patientBookedSlotTime;
+    public String patientName;
 
-    public DoctorSlotsBookedModel(String patientBookedSlotId, String doctorBookedSlotId, String patientBookedSlotDate , String patientBookedSlotTime )
+    public DoctorSlotsBookedModel(String patientBookedSlotId, String doctorBookedSlotId, String patientBookedSlotDate
+            , String patientBookedSlotTime, String patientName )
     {
         this.patientBookedSlotId = patientBookedSlotId;
         this.doctorBookedSlotId = doctorBookedSlotId;
         this.patientBookedSlotId = patientBookedSlotId;
         this.patientBookedSlotDate=patientBookedSlotDate;
         this.patientBookedSlotTime=patientBookedSlotTime;
+        this.patientName=patientName;
     }
 
     public DoctorSlotsBookedModel() {
@@ -51,4 +56,11 @@ public class DoctorSlotsBookedModel {
         this.patientBookedSlotTime = patientBookedSlotTime;
     }
 
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
 }

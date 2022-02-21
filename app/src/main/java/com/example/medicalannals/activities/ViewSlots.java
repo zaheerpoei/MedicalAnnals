@@ -28,6 +28,7 @@ import com.example.medicalannals.adapters.ViewSlotsAdapter;
 import com.example.medicalannals.models.BookTimeSlotModel;
 import com.example.medicalannals.models.DoctorSlotsBookedModel;
 import com.example.medicalannals.models.DoctorsModel;
+import com.example.medicalannals.models.PatientModel;
 import com.example.medicalannals.models.SlotsModel;
 import com.example.medicalannals.models.ViewSlotsModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -137,22 +138,41 @@ public class ViewSlots extends AppCompatActivity implements ViewSlotsAdapter.Sel
             @Override
             public void onClick(View view) {
                 if (!stDate.isEmpty() && !stTime.isEmpty()){
+                    progressDialog.show();
                     DoctorSlotsBookedModel doctorSlotsBookedModel = new DoctorSlotsBookedModel();
                     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                    databaseReference.child("Patient")
+                            .child(uid)
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        PatientModel patientModel = snapshot.getValue(PatientModel.class);
+                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                        DatabaseReference reference = database.getReference("Appointments");
+                                        doctorSlotsBookedModel.setPatientBookedSlotDate(stDate);
+                                        doctorSlotsBookedModel.setPatientBookedSlotTime(stTime);
+                                        doctorSlotsBookedModel.setPatientBookedSlotId(uid);
+                                        doctorSlotsBookedModel.setDoctorBookedSlotId(doctor.getId());
+                                        doctorSlotsBookedModel.setPatientName(patientModel.getName());
+                                        reference.push().setValue(doctorSlotsBookedModel).addOnCompleteListener(task -> {
 
-                    DatabaseReference reference = database.getReference("Appointments");
-                    doctorSlotsBookedModel.setPatientBookedSlotDate(stDate);
-                    doctorSlotsBookedModel.setPatientBookedSlotTime(stTime);
-                    doctorSlotsBookedModel.setPatientBookedSlotId(uid);
-                    doctorSlotsBookedModel.setDoctorBookedSlotId(doctor.getId());
-                    reference.push().setValue(doctorSlotsBookedModel).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()){
-                            showDialog();
-                        }else {
-                            Toast.makeText(ViewSlots.this,"Please try again",Toast.LENGTH_LONG).show();
-                        }
-                    });
+                                            progressDialog.dismiss();
+                                            if (task.isSuccessful()){
+                                                showDialog();
+                                            }else {
+                                                Toast.makeText(ViewSlots.this,"Please try again",Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                }
+                            });
+
                 }else {
                     Toast.makeText(ViewSlots.this,"Please select time for booking",Toast.LENGTH_LONG).show();
                 }
