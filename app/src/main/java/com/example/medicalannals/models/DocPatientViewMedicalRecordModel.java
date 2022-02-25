@@ -3,12 +3,14 @@ package com.example.medicalannals.models;
 public class DocPatientViewMedicalRecordModel {
 
     public String tvDocNamePatientRecord;
+    public String tvPatientNamePatientRecord;
     public String tvDatePatientRecord;
     public String tvRemarksPatientRecord;
     public String tvPrescriptionPatientRecord;
 
-    public DocPatientViewMedicalRecordModel(String tvDocNamePatientRecord , String tvDatePatientRecord, String tvRemarksPatientRecord , String tvPrescriptionPatientRecord )
+    public DocPatientViewMedicalRecordModel(String tvDocNamePatientRecord ,String tvPatientNamePatientRecord, String tvDatePatientRecord, String tvRemarksPatientRecord , String tvPrescriptionPatientRecord )
     {
+        this.tvPatientNamePatientRecord = tvPatientNamePatientRecord;
         this.tvDocNamePatientRecord = tvDocNamePatientRecord;
         this.tvDatePatientRecord=tvDatePatientRecord;
         this.tvRemarksPatientRecord=tvRemarksPatientRecord;
@@ -22,6 +24,14 @@ public class DocPatientViewMedicalRecordModel {
 
     public void setTvPatientNameRecord(String tvDocNamePatientRecord)
     {
+        this.tvDocNamePatientRecord = tvDocNamePatientRecord;
+    }
+
+    public String getTvDocNamePatientRecord() {
+        return tvDocNamePatientRecord;
+    }
+
+    public void setTvDocNamePatientRecord(String tvDocNamePatientRecord) {
         this.tvDocNamePatientRecord = tvDocNamePatientRecord;
     }
 

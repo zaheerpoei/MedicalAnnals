@@ -18,10 +18,13 @@ public class ViewSlotsAdapter extends RecyclerView.Adapter<ViewSlotsAdapter.MyVi
 
     private ArrayList<ViewSlotsModel> viewSlotsModelArrayList;
     private Context mcontext;
+    private SelectedDate selectedDate;
 
-    public ViewSlotsAdapter(ArrayList<ViewSlotsModel> viewSlotsModelArrayList, Context mcontext) {
+    public ViewSlotsAdapter(ArrayList<ViewSlotsModel> viewSlotsModelArrayList, Context mcontext,SelectedDate selectedDate) {
         this.viewSlotsModelArrayList = viewSlotsModelArrayList;
         this.mcontext = mcontext;
+        this.selectedDate = selectedDate;
+
     }
 
     @NonNull
@@ -35,12 +38,13 @@ public class ViewSlotsAdapter extends RecyclerView.Adapter<ViewSlotsAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ViewSlotsModel viewSlotsModel = viewSlotsModelArrayList.get(position);
-        holder.tvDate.setText(viewSlotsModel.getDate());
+        String[] date = viewSlotsModel.getDate().split("-");
+        holder.tvDate.setText(date[0]);
         holder.tvDayName.setText(viewSlotsModel.getDay());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                selectedDate.onDateSelected(viewSlotsModel.date);
             }
         });
 
@@ -60,6 +64,10 @@ public class ViewSlotsAdapter extends RecyclerView.Adapter<ViewSlotsAdapter.MyVi
             tvDate = itemView.findViewById(R.id.tv_date);
             tvDayName = itemView.findViewById(R.id.tv_day_name);
         }
+    }
+
+    public interface SelectedDate{
+        void onDateSelected(String date);
     }
 }
 

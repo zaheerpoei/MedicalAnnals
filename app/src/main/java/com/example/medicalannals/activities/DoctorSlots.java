@@ -3,7 +3,6 @@ package com.example.medicalannals.activities;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -18,12 +17,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.medicalannals.R;
-import com.example.medicalannals.models.DoctorSlotsBookedModel;
 import com.example.medicalannals.models.SlotsModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -149,7 +148,6 @@ public class DoctorSlots extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(!checkFields()){
-                    ArrayList<SlotsModel> arrayList = new ArrayList<>();
                     SlotsModel slotsModel = new SlotsModel();
                     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -158,35 +156,44 @@ public class DoctorSlots extends AppCompatActivity {
                     slotsModel.setDate(stDate);
                     slotsModel.setTime(stTime);
                     slotsModel.setDocId(uid);
-                    arrayList.add(slotsModel);
-                    reference.push().setValue(slotsModel);
+                    reference.push().setValue(slotsModel).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()){
+
+                            showDialog();
+                        }else {
+                            Toast.makeText(DoctorSlots.this,"Please Try again",Toast.LENGTH_LONG).show();
+                        }
+                    });
 //                    reference.child(uid).setValue(arrayList);
                 }
 
-                Dialog dialog = new Dialog(DoctorSlots.this);
-                dialog.setCancelable(true);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                View dialogView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
-                dialog.setContentView(dialogView);
-
-                TextView Message, btnAllow;
-                Message =  (TextView) dialogView.findViewById(R.id.tvMessage);
-                btnAllow = (TextView) dialogView.findViewById(R.id.btn_allow);
-
-                Message.setText("Slot Added.");
-
-                btnAllow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                        onBackPressed();
-                    }
-                });
-
-                dialog.show();
             }
         });
+    }
+
+    private void showDialog() {
+        Dialog dialog = new Dialog(DoctorSlots.this);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        View dialogView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+        dialog.setContentView(dialogView);
+
+        TextView Message, btnAllow;
+        Message =  (TextView) dialogView.findViewById(R.id.tvMessage);
+        btnAllow = (TextView) dialogView.findViewById(R.id.btn_allow);
+
+        Message.setText("Slot Added.");
+
+        btnAllow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                onBackPressed();
+            }
+        });
+
+        dialog.show();
     }
 
     private long getAge(int year, int month, int day) {
