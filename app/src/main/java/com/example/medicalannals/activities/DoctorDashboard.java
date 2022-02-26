@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.medicalannals.R;
 import com.example.medicalannals.adapters.SlotsBookedAdapter;
 import com.example.medicalannals.models.DoctorSlotsBookedModel;
+import com.example.medicalannals.models.DoctorsModel;
 import com.example.medicalannals.models.PatientModel;
 import com.google.android.material.internal.NavigationMenuView;
 import com.google.android.material.navigation.NavigationView;
@@ -115,9 +116,9 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            PatientModel patientModel1 = snapshot.getValue(PatientModel.class);
-                            nav_header_name.setText(patientModel1.getName());
-                            nav_header_email_address.setText(patientModel1.getEmail());
+                            DoctorsModel doctorsModel = snapshot.getValue(DoctorsModel.class);
+                            nav_header_name.setText(doctorsModel.getName());
+                            nav_header_email_address.setText(doctorsModel.getEmail());
                         }
                     }
 

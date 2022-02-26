@@ -40,8 +40,8 @@ public class DocPatientViewMedicalRecordAdapter extends RecyclerView.Adapter<Doc
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         DocPatientViewMedicalRecordModel docPatientViewMedicalRecordModel = docPatientViewMedicalRecordModelArrayList.get(position);
-        holder.tvDocNamePatientRecordItem.setText(docPatientViewMedicalRecordModel.getPatientNameRecord());
-        holder.tvDatePatientRecordItem.setText(docPatientViewMedicalRecordModel.getDatePatientRecord());
+        holder.tvDocNamePatientRecordItem.setText(docPatientViewMedicalRecordModel.getTvPatientNamePatientRecord());
+        holder.tvDatePatientRecordItem.setText(docPatientViewMedicalRecordModel.getTvDatePatientRecord());
 //        holder.tvRemarksData.setText(patientMedicalRecordModel.getRemarksPatientRecord());
 //        holder.tvPrescriptionData.setText(patientMedicalRecordModel.getPrescriptionPatientRecord());
         holder.constraintPatientMedicalRecordSymptoms.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +64,7 @@ public class DocPatientViewMedicalRecordAdapter extends RecyclerView.Adapter<Doc
                 ivAlert.setVisibility(View.GONE);
                 lineView.setVisibility(View.GONE);
 
-                Message.setText(docPatientViewMedicalRecordModel.getRemarksDocPatientRecord());
+                Message.setText(docPatientViewMedicalRecordModel.getTvRemarksPatientRecord());
 
                 btnAllow.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -97,7 +97,7 @@ public class DocPatientViewMedicalRecordAdapter extends RecyclerView.Adapter<Doc
                 ivAlert.setVisibility(View.GONE);
                 lineView.setVisibility(View.GONE);
 
-                Message.setText(docPatientViewMedicalRecordModel.getPrescriptionDocPatientRecord());
+                Message.setText(docPatientViewMedicalRecordModel.getTvPrescriptionPatientRecord());
 
                 btnAllow.setOnClickListener(new View.OnClickListener() {
                     @Override
