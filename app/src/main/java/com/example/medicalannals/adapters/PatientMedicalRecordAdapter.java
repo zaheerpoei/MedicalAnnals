@@ -16,16 +16,17 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medicalannals.R;
+import com.example.medicalannals.models.DocPatientViewMedicalRecordModel;
 import com.example.medicalannals.models.PatientMedicalRecordModel;
 
 import java.util.ArrayList;
 
 public class PatientMedicalRecordAdapter extends RecyclerView.Adapter<PatientMedicalRecordAdapter.MyViewHolder> {
 
-    private ArrayList<PatientMedicalRecordModel> patientMedicalRecordModelArrayList;
+    private ArrayList<DocPatientViewMedicalRecordModel> patientMedicalRecordModelArrayList;
     private Context mcontext;
 
-    public PatientMedicalRecordAdapter(ArrayList<PatientMedicalRecordModel> patientMedicalRecordModelArrayList, Context mcontext) {
+    public PatientMedicalRecordAdapter(ArrayList<DocPatientViewMedicalRecordModel> patientMedicalRecordModelArrayList, Context mcontext) {
         this.patientMedicalRecordModelArrayList = patientMedicalRecordModelArrayList;
         this.mcontext = mcontext;
     }
@@ -40,9 +41,9 @@ public class PatientMedicalRecordAdapter extends RecyclerView.Adapter<PatientMed
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        PatientMedicalRecordModel patientMedicalRecordModel = patientMedicalRecordModelArrayList.get(position);
-        holder.tvDocNamePatientRecordItem.setText(patientMedicalRecordModel.getDocNamePatientRecord());
-        holder.tvDatePatientRecordItem.setText(patientMedicalRecordModel.getDatePatientRecord());
+        DocPatientViewMedicalRecordModel patientMedicalRecordModel = patientMedicalRecordModelArrayList.get(position);
+        holder.tvDocNamePatientRecordItem.setText(patientMedicalRecordModel.getTvDocNamePatientRecord());
+        holder.tvDatePatientRecordItem.setText(patientMedicalRecordModel.getTvDatePatientRecord());
 //        holder.tvRemarksData.setText(patientMedicalRecordModel.getRemarksPatientRecord());
 //        holder.tvPrescriptionData.setText(patientMedicalRecordModel.getPrescriptionPatientRecord());
         holder.constraintPatientMedicalRecordSymptoms.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +66,7 @@ public class PatientMedicalRecordAdapter extends RecyclerView.Adapter<PatientMed
                 ivAlert.setVisibility(View.GONE);
                 lineView.setVisibility(View.GONE);
 
-                Message.setText(patientMedicalRecordModel.getRemarksPatientRecord());
+                Message.setText(patientMedicalRecordModel.getTvRemarksPatientRecord());
 
                 btnAllow.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -98,7 +99,7 @@ public class PatientMedicalRecordAdapter extends RecyclerView.Adapter<PatientMed
                 ivAlert.setVisibility(View.GONE);
                 lineView.setVisibility(View.GONE);
 
-                Message.setText(patientMedicalRecordModel.getPrescriptionPatientRecord());
+                Message.setText(patientMedicalRecordModel.getTvPrescriptionPatientRecord());
 
                 btnAllow.setOnClickListener(new View.OnClickListener() {
                     @Override

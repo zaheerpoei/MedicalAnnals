@@ -86,6 +86,7 @@ public class EditPatientRecord extends AppCompatActivity {
     }
 
     private void getDoctor() {
+
         String uid = FirebaseAuth.getInstance().getUid();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         database.child("Doctor")
@@ -94,7 +95,7 @@ public class EditPatientRecord extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            docPatientViewMedicalRecordModel = snapshot.getValue(DocPatientViewMedicalRecordModel.class);
+                            doctorsModel = snapshot.getValue(DoctorsModel.class);
                         }
                     }
 
