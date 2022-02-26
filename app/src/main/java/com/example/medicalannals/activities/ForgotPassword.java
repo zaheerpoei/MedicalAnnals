@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,16 +42,22 @@ public class ForgotPassword extends AppCompatActivity {
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String emailAddress = tiedEmailAddress.getText().toString();
-                FirebaseAuth.getInstance().sendPasswordResetEmail(emailAddress)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                  ShowAlertDialog("Verification code has been sent to your email address.Click on the link to change the password");
+                if(checkField()){
+                    String emailAddress = tiedEmailAddress.getText().toString();
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(emailAddress)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        ShowAlertDialog("Verification code has been sent to your email address.Click on the link to change the password");
+                                    }else {
+                                        Toast.makeText(ForgotPassword.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+
                                 }
-                            }
-                        });
+                            });
+                }
+
             }
         });
 
@@ -58,9 +66,23 @@ public class ForgotPassword extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(ForgotPassword.this , SignIn.class);
                 startActivity(i);
-                finish();
             }
         });
+    }
+
+    private boolean checkField() {
+        tiedEmailAddress.setError(null);
+        boolean provideField = true;
+        View focusView = null;
+        if(TextUtils.isEmpty(tiedEmailAddress.getText().toString())){
+            ShowAlertDialog("Please Enter Email");
+            focusView = tiedEmailAddress;
+            provideField = false;
+        }
+        if (!provideField){
+            focusView.requestFocus();
+        }
+        return provideField;
     }
 
     private void initViews() {
@@ -85,14 +107,14 @@ public class ForgotPassword extends AppCompatActivity {
         ivAlert = (ImageView) view.findViewById(R.id.imageView16) ;
         Message.setText(stMessage);
 
+        ivAlert.setImageResource(R.drawable.done);
+        ivAlert.setColorFilter(ContextCompat.getColor(this,R.color.green));
+
+
         btnAllow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                dialog.dismiss();
-                Intent i = new Intent(ForgotPassword.this , SignIn.class);
-                startActivity(i);
-                finish();
             }
         });
 

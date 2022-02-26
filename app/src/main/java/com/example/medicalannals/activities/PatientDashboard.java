@@ -43,6 +43,7 @@ public class PatientDashboard extends AppCompatActivity implements NavigationVie
     ImageView toolbarDrawerImage;
     RecyclerView recyclerView;
     ArrayList<SearchSpecialistModel> arrayList = new ArrayList<>();
+    PatientModel patientModel1;
 
 
     @Override
@@ -109,7 +110,7 @@ public class PatientDashboard extends AppCompatActivity implements NavigationVie
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            PatientModel patientModel1 = snapshot.getValue(PatientModel.class);
+                            patientModel1 = snapshot.getValue(PatientModel.class);
                             nav_header_name.setText(patientModel1.getName());
                             nav_header_email_address.setText(patientModel1.getEmail());
                         }
@@ -147,6 +148,7 @@ public class PatientDashboard extends AppCompatActivity implements NavigationVie
                         break;
                     case R.id.nav_profile_management:
                         Intent i = new Intent(PatientDashboard.this , ProfileManagement.class);
+                        i.putExtra("patientModel",patientModel1);
                         startActivity(i);
                         break;
                     case R.id.nav_logout:
