@@ -60,6 +60,7 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
     long age;
     ProgressDialog progressDialog;
     private SlotsBookedAdapter adapter;
+    DoctorsModel doctorsModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,7 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            DoctorsModel doctorsModel = snapshot.getValue(DoctorsModel.class);
+                            doctorsModel = snapshot.getValue(DoctorsModel.class);
                             nav_header_name.setText(doctorsModel.getName());
                             nav_header_email_address.setText(doctorsModel.getEmail());
                         }
@@ -148,6 +149,7 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
                         break;
                     case R.id.nav_profile_management_doc:
                         Intent medicalIntent = new Intent(DoctorDashboard.this, DoctorProfileManagement.class);
+                        medicalIntent.putExtra("doctorModel",doctorsModel);
                         startActivity(medicalIntent);
                         break;
                     case R.id.nav_set_appointments:

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_light"
-    tools:openDrawer="start"
+
     android:id="@+id/drawer_layout"
     tools:context=".activities.DoctorDashboard">
 
@@ -249,6 +249,7 @@
         android:fitsSystemWindows="true"
         android:scrollbars="none"
         android:visibility="visible"
+
         app:headerLayout="@layout/navigation_drawer_header_doc"
         app:menu="@menu/navigation_drawer_doc" />
 

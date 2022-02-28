@@ -127,12 +127,27 @@ public class SignIn extends AppCompatActivity {
         rbDoctor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(rbDoctor.isChecked()) {
+                    tiedEmailAddress.setText("ibra@gmail.com");
+                    tiedPassword.setText("something");
+                }else {
+                    tiedEmailAddress.setText("waheed.shah121@gmail.com");
+                    tiedPassword.setText("login@123");
+
+                }
             }
         });
 
         rbPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(rbPatient.isChecked()) {
+                    tiedEmailAddress.setText("waheed.shah121@gmail.com");
+                    tiedPassword.setText("login@123");
+                }else {
+                    tiedEmailAddress.setText("ibra@gmail.com");
+                    tiedPassword.setText("something");
+                }
             }
         });
     }

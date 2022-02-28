@@ -5,9 +5,13 @@
       <map>
         <entry key="..\:/AppinSnap/MedicalAnnals/app/src/main/res/drawable/arrow_back.xml" value="0.25435897435897437" />
         <entry key="..\:/AppinSnap/MedicalAnnals/app/src/main/res/drawable/done.xml" value="0.25435897435897437" />
+        <entry key="..\:/AppinSnap/MedicalAnnals/app/src/main/res/layout/activity_doctor_dashboard.xml" value="0.2421875" />
+        <entry key="..\:/AppinSnap/MedicalAnnals/app/src/main/res/layout/activity_doctor_profile_management.xml" value="0.2421875" />
+        <entry key="..\:/AppinSnap/MedicalAnnals/app/src/main/res/layout/activity_doctor_update_password.xml" value="0.2421875" />
         <entry key="..\:/AppinSnap/MedicalAnnals/app/src/main/res/layout/activity_edit_patient_record.xml" value="0.2421875" />
         <entry key="..\:/AppinSnap/MedicalAnnals/app/src/main/res/layout/activity_forgot_password.xml" value="0.2421875" />
         <entry key="..\:/AppinSnap/MedicalAnnals/app/src/main/res/layout/activity_main.xml" value="0.2421875" />
+        <entry key="..\:/AppinSnap/MedicalAnnals/app/src/main/res/layout/activity_patient_dashboard.xml" value="0.2421875" />
         <entry key="..\:/AppinSnap/MedicalAnnals/app/src/main/res/layout/activity_patient_medical_record.xml" value="0.2421875" />
         <entry key="..\:/AppinSnap/MedicalAnnals/app/src/main/res/layout/activity_profile_management.xml" value="0.2421875" />
         <entry key="..\:/AppinSnap/MedicalAnnals/app/src/main/res/layout/activity_sign_in.xml" value="0.2421875" />
