@@ -72,8 +72,8 @@ public class SignIn extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Signing in..... ");
         if(rbPatient.isChecked()) {
-            tiedEmailAddress.setText("zaheer.ahmed@appinsnap.com");
-            tiedPassword.setText("something");
+            tiedEmailAddress.setText("waheed.shah121@gmail.com");
+            tiedPassword.setText("login@123");
         }else {
             tiedEmailAddress.setText("ibra@gmail.com");
             tiedPassword.setText("something");

@@ -9,8 +9,10 @@ public class DocPatientViewMedicalRecordModel {
     public String tvPrescriptionPatientRecord;
     public String patientBookedSlotId;
     public String doctorBookedSlotId;
+    private String appointmentKey;
+    private boolean isdeleted;
 
-    public DocPatientViewMedicalRecordModel(String tvDocNamePatientRecord ,String tvPatientNamePatientRecord, String tvDatePatientRecord, String tvRemarksPatientRecord , String tvPrescriptionPatientRecord,String patientBookedSlotId, String doctorBookedSlotId)
+    public DocPatientViewMedicalRecordModel(String tvDocNamePatientRecord ,String tvPatientNamePatientRecord, String tvDatePatientRecord, String tvRemarksPatientRecord , String tvPrescriptionPatientRecord,String patientBookedSlotId, String doctorBookedSlotId,String appointmentKey,boolean isdeleted)
     {
         this.tvPatientNamePatientRecord = tvPatientNamePatientRecord;
         this.tvDocNamePatientRecord = tvDocNamePatientRecord;
@@ -19,6 +21,8 @@ public class DocPatientViewMedicalRecordModel {
         this.tvPrescriptionPatientRecord=tvPrescriptionPatientRecord;
         this.patientBookedSlotId = patientBookedSlotId;
         this.doctorBookedSlotId = doctorBookedSlotId;
+        this.appointmentKey = appointmentKey;
+        this.isdeleted = isdeleted;
     }
 
     public String getTvDocNamePatientRecord() {
@@ -78,5 +82,21 @@ public class DocPatientViewMedicalRecordModel {
     }
 
     public DocPatientViewMedicalRecordModel() {
+    }
+
+    public void setAppointmentKey(String appointmentKey) {
+        this.appointmentKey = appointmentKey;
+    }
+
+    public String getAppointmentKey() {
+        return appointmentKey;
+    }
+
+    public boolean getIsdeleted() {
+        return isdeleted;
+    }
+
+    public void setIsdeleted(boolean isdeleted) {
+        this.isdeleted = isdeleted;
     }
 }

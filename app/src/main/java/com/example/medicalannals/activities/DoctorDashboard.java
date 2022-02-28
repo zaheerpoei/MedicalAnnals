@@ -288,9 +288,11 @@ public class DoctorDashboard extends AppCompatActivity implements NavigationView
 
                 progressDialog.dismiss();
                 for (DataSnapshot dsp : snapshot.getChildren()) {
+
                     DataSnapshot patientBookedSlotDate = dsp.child("patientBookedSlotDate");
                     if (patientBookedSlotDate.getValue().toString().equalsIgnoreCase(date)) {
                         DoctorSlotsBookedModel doctorSlotsBookedModel = dsp.getValue(DoctorSlotsBookedModel.class);
+                        doctorSlotsBookedModel.setAppointmentKey(dsp.getKey());
                         arrayList.add(doctorSlotsBookedModel);
                     }
                 }

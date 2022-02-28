@@ -2,7 +2,6 @@ package com.example.medicalannals.activities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -22,8 +21,8 @@ import com.example.medicalannals.R;
 import com.example.medicalannals.models.DocPatientViewMedicalRecordModel;
 import com.example.medicalannals.models.DoctorSlotsBookedModel;
 import com.example.medicalannals.models.DoctorsModel;
-import com.example.medicalannals.models.PatientModel;
-import com.example.medicalannals.models.SlotsModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,9 +57,9 @@ public class EditPatientRecord extends AppCompatActivity {
 
     private void getPatientRecord() {
         progressDialog.show();
-        final Query userQuery = FirebaseDatabase.getInstance().getReference().child("Patient Records").orderByChild("patientBookedSlotId");
+        final Query userQuery = FirebaseDatabase.getInstance().getReference().child("Patient Records").orderByChild("appointmentKey");
 
-        userQuery.equalTo(doctorSlotsBookedModel.getPatientBookedSlotId()).addListenerForSingleValueEvent(new ValueEventListener() {
+        userQuery.equalTo(doctorSlotsBookedModel.getAppointmentKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -68,12 +67,12 @@ public class EditPatientRecord extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext() , "check", Toast.LENGTH_SHORT).show();
                 for (DataSnapshot dsp : snapshot.getChildren()) {
                     DocPatientViewMedicalRecordModel docPatientViewMedicalRecordModel = dsp.getValue(DocPatientViewMedicalRecordModel.class);
-                    if (doctorSlotsBookedModel.patientBookedSlotDate.equals(docPatientViewMedicalRecordModel.getTvDatePatientRecord()) &&
-                            doctorSlotsBookedModel.getDoctorBookedSlotId().equals(docPatientViewMedicalRecordModel.getDoctorBookedSlotId())) {
+//                    if (doctorSlotsBookedModel.patientBookedSlotDate.equals(docPatientViewMedicalRecordModel.getTvDatePatientRecord()) &&
+//                            doctorSlotsBookedModel.getDoctorBookedSlotId().equals(docPatientViewMedicalRecordModel.getDoctorBookedSlotId())) {
 
                         remarksEt.setText(docPatientViewMedicalRecordModel.getTvRemarksPatientRecord());
                         prescriptionEt.setText(docPatientViewMedicalRecordModel.getTvPrescriptionPatientRecord());
-                    }
+//                    }
                 }
 
             }
@@ -81,6 +80,63 @@ public class EditPatientRecord extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
+
+    private void deletePatientRecord() {
+        progressDialog.show();
+        final Query userQuery = FirebaseDatabase.getInstance().getReference().child("Patient Records").orderByChild("appointmentKey");
+
+        userQuery.equalTo(doctorSlotsBookedModel.getAppointmentKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                progressDialog.hide();
+//                Toast.makeText(getApplicationContext() , "check", Toast.LENGTH_SHORT).show();
+                if (snapshot.exists()){
+                    for (DataSnapshot dsp : snapshot.getChildren()) {
+                        dsp.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                updateIfUserExist();
+                            }
+                        });
+                    }
+
+                }else {
+                    updateIfUserExist();
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void updateIfUserExist() {
+        DocPatientViewMedicalRecordModel docPatientViewMedicalRecordModel = new DocPatientViewMedicalRecordModel();
+        docPatientViewMedicalRecordModel.setTvPatientNamePatientRecord(doctorSlotsBookedModel.patientName);
+        docPatientViewMedicalRecordModel.setPatientBookedSlotId(doctorSlotsBookedModel.patientBookedSlotId);
+        docPatientViewMedicalRecordModel.setTvRemarksPatientRecord(remarksEt.getText().toString());
+        docPatientViewMedicalRecordModel.setTvPrescriptionPatientRecord(prescriptionEt.getText().toString());
+        docPatientViewMedicalRecordModel.setTvDocNamePatientRecord(doctorsModel.name);
+        docPatientViewMedicalRecordModel.setDoctorBookedSlotId(doctorSlotsBookedModel.doctorBookedSlotId);
+        docPatientViewMedicalRecordModel.setTvDatePatientRecord(doctorSlotsBookedModel.patientBookedSlotDate);
+        docPatientViewMedicalRecordModel.setAppointmentKey(doctorSlotsBookedModel.getAppointmentKey());
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("Patient Records");
+        reference.push().setValue(docPatientViewMedicalRecordModel).addOnCompleteListener(task -> {
+            progressDialog.dismiss();
+            if (task.isSuccessful()) {
+                showDialog();
+            } else {
+                Toast.makeText(EditPatientRecord.this, "Please Try again", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -117,26 +173,9 @@ public class EditPatientRecord extends AppCompatActivity {
             public void onClick(View view) {
                 if (!checkFields()) {
                     progressDialog.show();
-                    DocPatientViewMedicalRecordModel docPatientViewMedicalRecordModel = new DocPatientViewMedicalRecordModel();
-                    docPatientViewMedicalRecordModel.setTvPatientNamePatientRecord(doctorSlotsBookedModel.patientName);
-                    docPatientViewMedicalRecordModel.setPatientBookedSlotId(doctorSlotsBookedModel.patientBookedSlotId);
-                    docPatientViewMedicalRecordModel.setTvRemarksPatientRecord(remarksEt.getText().toString());
-                    docPatientViewMedicalRecordModel.setTvPrescriptionPatientRecord(prescriptionEt.getText().toString());
-                    docPatientViewMedicalRecordModel.setTvDocNamePatientRecord(doctorsModel.name);
-                    docPatientViewMedicalRecordModel.setDoctorBookedSlotId(doctorSlotsBookedModel.doctorBookedSlotId);
-                    docPatientViewMedicalRecordModel.setTvDatePatientRecord(doctorSlotsBookedModel.patientBookedSlotDate);
 
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference reference = database.getReference("Patient Records");
-                    reference.push().setValue(docPatientViewMedicalRecordModel).addOnCompleteListener(task -> {
-                        progressDialog.dismiss();
-                        if (task.isSuccessful()) {
-                            showDialog();
-                        } else {
-                            Toast.makeText(EditPatientRecord.this, "Please Try again", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                } else {
+                    deletePatientRecord();
+
 
                 }
             }

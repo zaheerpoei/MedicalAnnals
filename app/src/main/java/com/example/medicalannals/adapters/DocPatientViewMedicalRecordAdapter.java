@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medicalannals.R;
 import com.example.medicalannals.models.DocPatientViewMedicalRecordModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -42,8 +50,8 @@ public class DocPatientViewMedicalRecordAdapter extends RecyclerView.Adapter<Doc
         DocPatientViewMedicalRecordModel docPatientViewMedicalRecordModel = docPatientViewMedicalRecordModelArrayList.get(position);
         holder.tvDocNamePatientRecordItem.setText(docPatientViewMedicalRecordModel.getTvPatientNamePatientRecord());
         holder.tvDatePatientRecordItem.setText(docPatientViewMedicalRecordModel.getTvDatePatientRecord());
-//        holder.tvRemarksData.setText(patientMedicalRecordModel.getRemarksPatientRecord());
-//        holder.tvPrescriptionData.setText(patientMedicalRecordModel.getPrescriptionPatientRecord());
+//        holder.tvRemarksData.setText(docPatientViewMedicalRecordModel.getTvRemarksPatientRecord());
+//        holder.tvPrescriptionData.setText(docPatientViewMedicalRecordModel.getTvPrescriptionPatientRecord());
         holder.constraintPatientMedicalRecordSymptoms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,8 +135,9 @@ public class DocPatientViewMedicalRecordAdapter extends RecyclerView.Adapter<Doc
                 Message = (TextView) dialogView.findViewById(R.id.tvMessage);
                 btnAllow = (TextView) dialogView.findViewById(R.id.btn_allow);
                 lineView = (TextView) dialogView.findViewById(R.id.textView71);
-
-                Message.setText("Record Deleted.");
+                ivAlert.setImageResource(R.drawable.warning);
+                ivAlert.setColorFilter(mcontext.getResources().getColor(R.color.dark_blue_700));
+                Message.setText("Are you sure? You want to delete.");
 
                 btnAllow.setOnClickListener(new View.OnClickListener() {
                     @Override
