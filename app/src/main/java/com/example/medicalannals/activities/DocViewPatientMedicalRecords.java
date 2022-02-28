@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,6 +39,7 @@ public class DocViewPatientMedicalRecords extends AppCompatActivity {
     RecyclerView recyclerViewDocPatientMedicalRecord;
     ArrayList<DocPatientViewMedicalRecordModel> arrayList = new ArrayList<>();
     ProgressDialog progressDialog;
+    private DocPatientViewMedicalRecordAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +63,13 @@ public class DocViewPatientMedicalRecords extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     DocPatientViewMedicalRecordModel docPatientViewMedicalRecordModel = dataSnapshot.getValue(DocPatientViewMedicalRecordModel.class);
-                    if (!docPatientViewMedicalRecordModel.getIsdeleted())
+                    if (!docPatientViewMedicalRecordModel.getIsdeleted()) {
+                        docPatientViewMedicalRecordModel.setPatientRecordId(dataSnapshot.getKey());
                         arrayList.add(docPatientViewMedicalRecordModel);
+                    }
                 }
 
-                DocPatientViewMedicalRecordAdapter adapter = new DocPatientViewMedicalRecordAdapter(arrayList, DocViewPatientMedicalRecords.this);
+                adapter = new DocPatientViewMedicalRecordAdapter(arrayList, DocViewPatientMedicalRecords.this);
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(DocViewPatientMedicalRecords.this, 1);
                 gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerViewDocPatientMedicalRecord.setLayoutManager(gridLayoutManager);
@@ -175,5 +180,25 @@ public class DocViewPatientMedicalRecords extends AppCompatActivity {
         ivDocPatientRecordCalender = findViewById(R.id.iv_doc_patient_record_calender);
         edSearchbarDocPatientRecord = findViewById(R.id.ed_searchbar_doc_patient_record);
         recyclerViewDocPatientMedicalRecord = findViewById(R.id.recycler_view_doc_patient_medical_record);
+
+        edSearchbarDocPatientRecord.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                System.out.println("Text ["+s+"]");
+
+                adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 }

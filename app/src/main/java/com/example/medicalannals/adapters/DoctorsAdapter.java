@@ -59,6 +59,7 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.MyViewHo
     public Filter getFilter() {
         return new ItemFilter();
     }
+
     private class ItemFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -95,6 +96,7 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.MyViewHo
         }
 
     }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvDocName;
         TextView tvViewSlots;
