@@ -29,22 +29,22 @@
                 android:id="@+id/toolbar_image_back_patient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_8sdp"
-                app:tint="@color/white"
                 android:contentDescription="@string/drawer_image"
-                android:src="@drawable/arrow_back" />
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/arrow_back"
+                app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/toolbar_drawer_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/profile_management"
-                android:textStyle="bold"
-                android:paddingStart="@dimen/_16sdp"
                 android:layout_gravity="center"
+                android:paddingStart="@dimen/_16sdp"
+                android:text="@string/profile_management"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold" />
 
 
         </androidx.appcompat.widget.Toolbar>
@@ -56,14 +56,14 @@
         android:id="@+id/iv_patient_pic"
         android:layout_width="@dimen/_60sdp"
         android:layout_height="@dimen/_60sdp"
-        android:scaleType="fitXY"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_15sdp"
         android:background="@drawable/profile_background"
+        android:scaleType="fitXY"
         android:src="@drawable/default_profile_pic"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraint_toolbar"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraint_toolbar" />
 
     <TextView
         android:id="@+id/tv_change_patient"
@@ -73,51 +73,50 @@
         android:textColor="@color/dark_blue_700"
         android:textSize="@dimen/_9ssp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/iv_patient_pic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_patient_pic"
         app:layout_constraintVertical_bias="0.44" />
 
     <TextView
         android:id="@+id/tv_change_name_patient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Full Name"
-        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Full Name"
         android:textColor="@color/dark_blue_700"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/tv_change_patient"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_change_patient"
         app:layout_constraintVertical_bias="0.44" />
 
     <EditText
         android:id="@+id/ed_full_name_patient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:enabled="false"
-        android:textSize="@dimen/_12ssp"
-        android:textColor="@color/dark_blue_700"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:text="@string/areesha_fatima"
-        app:layout_constraintStart_toStartOf="parent"
+        android:enabled="false"
+        android:textColor="@color/dark_blue_700"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_change_name_patient"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_change_name_patient" />
 
     <TextView
         android:id="@+id/tv_email_patient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/email_address"
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@string/email_address"
         android:textColor="@color/dark_blue_700"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/ed_full_name_patient"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ed_full_name_patient"
         app:layout_constraintVertical_bias="0.44" />
 
 
@@ -125,29 +124,28 @@
         android:id="@+id/ed_email_address_patient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:enabled="false"
-        android:textSize="@dimen/_12ssp"
-        android:textColor="@color/dark_blue_700"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:text="@string/demo_gmail_com"
-        app:layout_constraintStart_toStartOf="parent"
+        android:enabled="false"
+        android:textColor="@color/dark_blue_700"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_email_patient"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_email_patient" />
 
 
     <TextView
         android:id="@+id/tv_phone_number_patient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Phone Number"
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="Phone Number"
         android:textColor="@color/dark_blue_700"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/ed_email_address_patient"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ed_email_address_patient"
         app:layout_constraintVertical_bias="0.44" />
 
 
@@ -155,54 +153,72 @@
         android:id="@+id/ed_phone_number_patient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:enabled="false"
-        android:textSize="@dimen/_12ssp"
-        android:textColor="@color/dark_blue_700"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:text="@string/_03000000000"
-        app:layout_constraintStart_toStartOf="parent"
+        android:enabled="false"
+        android:textColor="@color/dark_blue_700"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_phone_number_patient"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_phone_number_patient" />
 
 
     <TextView
         android:id="@+id/tv_password_patient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/password"
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@string/password"
         android:textColor="@color/dark_blue_700"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/ed_phone_number_patient"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ed_phone_number_patient"
         app:layout_constraintVertical_bias="0.44" />
 
-
-    <EditText
-        android:id="@+id/ed_password_patient"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_change_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:enabled="false"
-        android:textSize="@dimen/_12ssp"
-        android:textColor="@color/dark_blue_700"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:text="password"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="@dimen/_8sdp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_password_patient"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_password_patient">
 
-    <ImageView
-        android:id="@+id/iv_edit_password_patient"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_15sdp"
-        android:src="@drawable/edit"
-        android:layout_marginEnd="@dimen/_10sdp"
-        app:layout_constraintTop_toTopOf="@+id/ed_password_patient"
-        app:layout_constraintBottom_toBottomOf="@+id/ed_password_patient"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+            android:id="@+id/ed_password_patient"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:text="password"
+            app:layout_constraintEnd_toStartOf="@id/iv_edit_password_patient"
+            android:textColor="@color/dark_blue_700"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_edit_password_patient"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:src="@drawable/edit"
+            app:layout_constraintBottom_toBottomOf="@+id/ed_password_patient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ed_password_patient" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/grey_color"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ed_password_patient"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

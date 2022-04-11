@@ -1,6 +1,11 @@
 package com.example.medicalannals.models;
 
-public class PatientModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class PatientModel implements Serializable {
     private String name;
     private String email;
     private String gender;
@@ -57,4 +62,5 @@ public class PatientModel {
     public void setNumber(String number) {
         this.number = number;
     }
+
 }

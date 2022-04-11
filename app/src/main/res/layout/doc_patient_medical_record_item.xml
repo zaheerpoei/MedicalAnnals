@@ -38,23 +38,25 @@
         android:id="@+id/tv_date_doc_patient_record_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:text="@string/_10_2_2022"
         android:textSize="@dimen/_12ssp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        app:layout_constraintTop_toTopOf="@+id/iv_dustbin"
         app:layout_constraintBottom_toBottomOf="@+id/iv_dustbin"
-        app:layout_constraintEnd_toStartOf="@+id/iv_dustbin"/>
+        app:layout_constraintEnd_toStartOf="@+id/iv_dustbin"
+        app:layout_constraintTop_toTopOf="@+id/iv_dustbin"
+        app:layout_constraintVertical_bias="0.37" />
 
     <ImageView
         android:id="@+id/iv_dustbin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:layout_marginEnd="16dp"
         android:src="@drawable/delete"
-        app:tint="@color/red_color"
-        android:layout_marginTop="@dimen/_13sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:tint="@color/red_color" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_doc_patient_medical_record_symptoms"

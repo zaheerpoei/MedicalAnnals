@@ -5,30 +5,44 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.medicalannals.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 public class UpdatePassword extends AppCompatActivity {
 
     ImageView ivToolbarImageBack;
     Button btnUpdatePassword;
+    TextInputEditText tietOldPass,tietNewPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_password);
-
+        String email = getIntent().getStringExtra("email");
         initViews();
-        clickListeners();
+        clickListeners(email);
     }
 
-    private void clickListeners() {
+    private void clickListeners(String email) {
         ivToolbarImageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,34 +53,111 @@ public class UpdatePassword extends AppCompatActivity {
         btnUpdatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(checkField()){
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    AuthCredential credential = EmailAuthProvider
+                            .getCredential(email, tietOldPass.getText().toString());
 
-                Dialog dialog = new Dialog(UpdatePassword.this);
-                dialog.setCancelable(true);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    assert user != null;
+                    user.reauthenticate(credential)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        user.updatePassword(Objects.requireNonNull(tietNewPass.getText()).toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
 
-                View dialogView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
-                dialog.setContentView(dialogView);
+                                                    ShowAlertDialog("Password Updated");
 
-                TextView Message, btnAllow;
-                Message = (TextView) dialogView.findViewById(R.id.tvMessage);
-                btnAllow = (TextView) dialogView.findViewById(R.id.btn_allow);
-
-                Message.setText("Verification code has been sent to your email address.Click on the link to change the password");
-
-                btnAllow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                        Intent i = new Intent(UpdatePassword.this, PatientDashboard.class);
-                        startActivity(i);
-                        finish();
-                    }
-                });
+                                                } else {
+                                                    ShowAlertDialog("Sorry we are unable to process your request this time. Try again later");
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        Log.d("TAG", "onComplete: "+task.getException().toString());
+                                        ShowAlertDialog("Please Enter Right Password");
+                                    }
+                                }
+                            });
+                }
             }
         });
     }
+    private boolean checkField() {
+        tietOldPass.setError(null);
+        tietNewPass.setError(null);
+        boolean provideField = true;
+        View focusView = null;
+
+        if(TextUtils.isEmpty(tietOldPass.getText().toString())){
+            ShowAlertDialog("Please Enter Old Pass");
+            focusView = tietOldPass;
+            provideField = false;
+
+        }else if(TextUtils.isEmpty(tietNewPass.getText().toString())){
+            ShowAlertDialog("Please Enter New Pass");
+            focusView = tietNewPass;
+            provideField = false;
+
+        }
+        if(!provideField){
+            focusView.requestFocus();
+        }
+        return provideField;
+    }
+
+
+    protected void ShowAlertDialog(String stMessage){
+
+        Dialog dialog = new Dialog(this);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        View view  = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+        dialog.setContentView(view);
+
+        TextView Message,btnAllow;
+        ImageView ivAlert;
+        Message=(TextView)view.findViewById(R.id.tvMessage);
+        btnAllow=(TextView)view.findViewById(R.id.btn_allow);
+        ivAlert = (ImageView) view.findViewById(R.id.imageView16) ;
+        Message.setText(stMessage);
+
+        if(stMessage.equals("Please Enter Right Password") || stMessage.equals("Sorry we are unable to process your request this time. Try again later")){
+            ivAlert.setImageResource(R.drawable.warning);
+            ivAlert.setColorFilter(ContextCompat.getColor(this,R.color.dark_blue_700));
+        }else {
+            ivAlert.setImageResource(R.drawable.done);
+            ivAlert.setColorFilter(ContextCompat.getColor(this,R.color.green));
+        }
+
+
+
+        btnAllow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                SignIn.patient = false;
+                SignIn.doctor = false;
+                Intent intentSignOut = new Intent(UpdatePassword.this , SignIn.class);
+                startActivity(intentSignOut);
+                finishAffinity();
+                dialog.dismiss();
+            }
+        });
+
+
+
+
+        dialog.show();
+    };
 
     private void initViews() {
+        tietOldPass = findViewById(R.id.tiet_old_pass);
+        tietNewPass = findViewById(R.id.tiet_new_password);
         ivToolbarImageBack = findViewById(R.id.toolbar_image_back);
         btnUpdatePassword = findViewById(R.id.btn_update_password);
     }

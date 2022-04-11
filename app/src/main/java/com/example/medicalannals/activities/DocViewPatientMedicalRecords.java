@@ -1,12 +1,16 @@
 package com.example.medicalannals.activities;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.medicalannals.R;
 import com.example.medicalannals.adapters.DocPatientViewMedicalRecordAdapter;
 import com.example.medicalannals.models.DocPatientViewMedicalRecordModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +38,8 @@ public class DocViewPatientMedicalRecords extends AppCompatActivity {
     long age;
     RecyclerView recyclerViewDocPatientMedicalRecord;
     ArrayList<DocPatientViewMedicalRecordModel> arrayList = new ArrayList<>();
+    ProgressDialog progressDialog;
+    private DocPatientViewMedicalRecordAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,25 +48,41 @@ public class DocViewPatientMedicalRecords extends AppCompatActivity {
 
         initViews();
         clickListeners();
-        setRecyclerView();
+        getDoctorViewPatientRecord();
     }
 
-    private void setRecyclerView() {
-        arrayList.add(new DocPatientViewMedicalRecordModel("Ahmed Bilal" ,"Ahmed Bilal" , "Feb 14,2022" , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop." , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop."));
-        arrayList.add(new DocPatientViewMedicalRecordModel("Ahmed Bilal" ,"Ahmed Bilal" , "Feb 14,2022" , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop." , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop."));
-        arrayList.add(new DocPatientViewMedicalRecordModel("Ahmed Bilal" ,"Ahmed Bilal" , "Feb 14,2022" , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop." , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop."));
-        arrayList.add(new DocPatientViewMedicalRecordModel("Ahmed Bilal" ,"Ahmed Bilal" , "Feb 14,2022" , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop." , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop."));
-        arrayList.add(new DocPatientViewMedicalRecordModel("Ahmed Bilal" ,"Ahmed Bilal" , "Feb 14,2022" , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop." , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop."));
-        arrayList.add(new DocPatientViewMedicalRecordModel("Ahmed Bilal" ,"Ahmed Bilal" , "Feb 14,2022" , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop." , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop."));
-        arrayList.add(new DocPatientViewMedicalRecordModel("Ahmed Bilal" ,"Ahmed Bilal" , "Feb 14,2022" , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop." , "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop."));
+    private void getDoctorViewPatientRecord() {
+        progressDialog.show();
+        String uid = FirebaseAuth.getInstance().getUid();
+        final Query doctorQuery = FirebaseDatabase.getInstance().getReference().child("Patient Records").orderByChild("doctorBookedSlotId");
 
+        doctorQuery.equalTo(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                progressDialog.hide();
 
-        DocPatientViewMedicalRecordAdapter adapter=new DocPatientViewMedicalRecordAdapter(arrayList,this);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,1);
-        gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerViewDocPatientMedicalRecord.setLayoutManager(gridLayoutManager);
-        recyclerViewDocPatientMedicalRecord.setAdapter(adapter);
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    DocPatientViewMedicalRecordModel docPatientViewMedicalRecordModel = dataSnapshot.getValue(DocPatientViewMedicalRecordModel.class);
+                    if (!docPatientViewMedicalRecordModel.getIsdeleted()) {
+                        docPatientViewMedicalRecordModel.setPatientRecordId(dataSnapshot.getKey());
+                        arrayList.add(docPatientViewMedicalRecordModel);
+                    }
+                }
+
+                adapter = new DocPatientViewMedicalRecordAdapter(arrayList, DocViewPatientMedicalRecords.this);
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(DocViewPatientMedicalRecords.this, 1);
+                gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerViewDocPatientMedicalRecord.setLayoutManager(gridLayoutManager);
+                recyclerViewDocPatientMedicalRecord.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
+
 
     private void clickListeners() {
         toolbarImageBackDocPatientRecord.setOnClickListener(new View.OnClickListener() {
@@ -146,9 +174,31 @@ public class DocViewPatientMedicalRecords extends AppCompatActivity {
 
 
     private void initViews() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
         toolbarImageBackDocPatientRecord = findViewById(R.id.toolbar_image_back_doc_patient_record);
         ivDocPatientRecordCalender = findViewById(R.id.iv_doc_patient_record_calender);
         edSearchbarDocPatientRecord = findViewById(R.id.ed_searchbar_doc_patient_record);
         recyclerViewDocPatientMedicalRecord = findViewById(R.id.recycler_view_doc_patient_medical_record);
+
+        edSearchbarDocPatientRecord.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                System.out.println("Text ["+s+"]");
+
+                adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 }
