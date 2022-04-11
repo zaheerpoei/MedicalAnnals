@@ -50,8 +50,8 @@ public class PatientDashboard extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_dashboard);
         initViews();
-        clickListeners();
         setRecyclerView();
+        clickListeners();
         disableNavigationViewScrollbars(navView);}
 
 
@@ -66,16 +66,16 @@ public class PatientDashboard extends AppCompatActivity implements NavigationVie
     }
 
     private void setRecyclerView() {
-        arrayList.add(new SearchSpecialistModel(R.drawable.childspecialist ,  "Child Specialist"));
-        arrayList.add(new SearchSpecialistModel(R.drawable.skin ,  "Skin Specialist"));
-        arrayList.add(new SearchSpecialistModel(R.drawable.physco ,  "Psychiatrist"));
-        arrayList.add(new SearchSpecialistModel(R.drawable.diabetes ,  "Diabetes Specialist"));
-        arrayList.add(new SearchSpecialistModel(R.drawable.eye ,  "Eye Specialist"));
-        arrayList.add(new SearchSpecialistModel(R.drawable.dentist ,  "Dentist"));
-        arrayList.add(new SearchSpecialistModel(R.drawable.ent ,  "ENT Specialist"));
-        arrayList.add(new SearchSpecialistModel(R.drawable.kidney ,  "Kidney Specialist"));
-        arrayList.add(new SearchSpecialistModel(R.drawable.heart ,  "Heart Specialist"));
-        arrayList.add(new SearchSpecialistModel(R.drawable.gas ,  "Gastroenterologist"));
+        arrayList.add(new SearchSpecialistModel(R.drawable.childspecialist ,"Child Specialist"));
+        arrayList.add(new SearchSpecialistModel(R.drawable.skin ,"Skin Specialist"));
+        arrayList.add(new SearchSpecialistModel(R.drawable.physco ,"Psychiatrist"));
+        arrayList.add(new SearchSpecialistModel(R.drawable.diabetes ,"Diabetes Specialist"));
+        arrayList.add(new SearchSpecialistModel(R.drawable.eye ,"Eye Specialist"));
+        arrayList.add(new SearchSpecialistModel(R.drawable.dentist ,"Dentist"));
+        arrayList.add(new SearchSpecialistModel(R.drawable.ent ,"ENT Specialist"));
+        arrayList.add(new SearchSpecialistModel(R.drawable.kidney ,"Kidney Specialist"));
+        arrayList.add(new SearchSpecialistModel(R.drawable.heart ,"Heart Specialist"));
+        arrayList.add(new SearchSpecialistModel(R.drawable.gas ,"Gastroenterologist"));
 
         SearchDoctorTypeAdapter adapter=new SearchDoctorTypeAdapter(arrayList,this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
