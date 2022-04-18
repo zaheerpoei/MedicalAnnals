@@ -183,45 +183,62 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_phone_number"/>
 
+            <TextView
+                android:id="@+id/tv_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/password"
+                android:textColor="@color/dark_blue_700"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/ed_phone_number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.44" />
 
-    <TextView
-        android:id="@+id/tv_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/password"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:textColor="@color/dark_blue_700"
-        android:textSize="@dimen/_12ssp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/ed_phone_number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.44" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_change_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_8sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_password">
 
+                <TextView
+                    android:id="@+id/ed_password_doctor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:text="password"
+                    app:layout_constraintEnd_toStartOf="@id/iv_edit_password_doctor"
+                    android:textColor="@color/dark_blue_700"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/ed_password_doctor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:textSize="@dimen/_12ssp"
-        android:textColor="@color/dark_blue_700"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:text="password"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_password"/>
-
-    <ImageView
-        android:id="@+id/iv_edit_password_doctor"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_15sdp"
-        android:src="@drawable/edit"
-        android:layout_marginEnd="@dimen/_10sdp"
-        app:layout_constraintTop_toTopOf="@+id/ed_password_doctor"
-        app:layout_constraintBottom_toBottomOf="@+id/ed_password_doctor"
-        app:layout_constraintEnd_toEndOf="parent"/>
+                <ImageView
+                    android:id="@+id/iv_edit_password_doctor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:src="@drawable/edit"
+                    app:layout_constraintTop_toTopOf="@+id/ed_password_doctor"
+                    app:layout_constraintBottom_toBottomOf="@+id/ed_password_doctor"
+                    app:layout_constraintEnd_toEndOf="parent" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/grey_color"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_edit_password_doctor"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <TextView
@@ -234,7 +251,7 @@
         android:textColor="@color/dark_blue_700"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/ed_password_doctor"
+        app:layout_constraintTop_toBottomOf="@+id/cl_change_password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.44" />
 

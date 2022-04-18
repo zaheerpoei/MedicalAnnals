@@ -2,7 +2,6 @@ package com.example.medicalannals.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -31,7 +30,8 @@ public class UpdatePassword extends AppCompatActivity {
 
     ImageView ivToolbarImageBack;
     Button btnUpdatePassword;
-    TextInputEditText tietOldPass,tietNewPass;
+    TextInputEditText tietOldPass, tietNewPass;
+    static boolean isPasswordUpdatedSuccess = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +47,13 @@ public class UpdatePassword extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onBackPressed();
-                }
+            }
         });
 
         btnUpdatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkField()){
+                if (checkField()) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     AuthCredential credential = EmailAuthProvider
                             .getCredential(email, tietOldPass.getText().toString());
@@ -68,17 +68,16 @@ public class UpdatePassword extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-
-                                                    ShowAlertDialog("Password Updated");
+                                                    ShowAlertDialog("Password Updated", true);
 
                                                 } else {
-                                                    ShowAlertDialog("Sorry we are unable to process your request this time. Try again later");
+                                                    ShowAlertDialog("Sorry we are unable to process your request this time. Try again later", false);
                                                 }
                                             }
                                         });
                                     } else {
-                                        Log.d("TAG", "onComplete: "+task.getException().toString());
-                                        ShowAlertDialog("Please Enter Right Password");
+                                        Log.d("TAG", "onComplete: " + task.getException().toString());
+                                        ShowAlertDialog("Please Enter Right Password", false);
                                     }
                                 }
                             });
@@ -86,74 +85,79 @@ public class UpdatePassword extends AppCompatActivity {
             }
         });
     }
+
     private boolean checkField() {
         tietOldPass.setError(null);
         tietNewPass.setError(null);
         boolean provideField = true;
         View focusView = null;
 
-        if(TextUtils.isEmpty(tietOldPass.getText().toString())){
-            ShowAlertDialog("Please Enter Old Pass");
+        if (TextUtils.isEmpty(tietOldPass.getText().toString())) {
+            ShowAlertDialog("Please Enter Old Pass", false);
             focusView = tietOldPass;
             provideField = false;
 
-        }else if(TextUtils.isEmpty(tietNewPass.getText().toString())){
-            ShowAlertDialog("Please Enter New Pass");
+        } else if (TextUtils.isEmpty(tietNewPass.getText().toString())) {
+            ShowAlertDialog("Please Enter New Pass", false);
             focusView = tietNewPass;
             provideField = false;
 
         }
-        if(!provideField){
+        if (!provideField) {
             focusView.requestFocus();
         }
         return provideField;
     }
 
 
-    protected void ShowAlertDialog(String stMessage){
+    protected void ShowAlertDialog(String stMessage, boolean b) {
 
         Dialog dialog = new Dialog(this);
         dialog.setCancelable(true);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        View view  = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+        View view = getLayoutInflater().inflate(R.layout.alert_dialog, null);
         dialog.setContentView(view);
 
-        TextView Message,btnAllow;
+        TextView Message, btnAllow;
         ImageView ivAlert;
-        Message=(TextView)view.findViewById(R.id.tvMessage);
-        btnAllow=(TextView)view.findViewById(R.id.btn_allow);
-        ivAlert = (ImageView) view.findViewById(R.id.imageView16) ;
+        Message = (TextView) view.findViewById(R.id.tvMessage);
+        btnAllow = (TextView) view.findViewById(R.id.btn_allow);
+        ivAlert = (ImageView) view.findViewById(R.id.imageView16);
         Message.setText(stMessage);
 
-        if(stMessage.equals("Please Enter Right Password") || stMessage.equals("Sorry we are unable to process your request this time. Try again later")){
+        if (stMessage.equals("Please Enter Right Password") || stMessage.equals("Sorry we are unable to process your request this time. Try again later")) {
             ivAlert.setImageResource(R.drawable.warning);
-            ivAlert.setColorFilter(ContextCompat.getColor(this,R.color.dark_blue_700));
-        }else {
+            ivAlert.setColorFilter(ContextCompat.getColor(this, R.color.dark_blue_700));
+        } else {
             ivAlert.setImageResource(R.drawable.done);
-            ivAlert.setColorFilter(ContextCompat.getColor(this,R.color.green));
+            ivAlert.setColorFilter(ContextCompat.getColor(this, R.color.green));
         }
-
 
 
         btnAllow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                SignIn.patient = false;
-                SignIn.doctor = false;
-                Intent intentSignOut = new Intent(UpdatePassword.this , SignIn.class);
-                startActivity(intentSignOut);
-                finishAffinity();
-                dialog.dismiss();
+                if (b) {
+                    FirebaseAuth.getInstance().signOut();
+                    SignIn.patient = false;
+                    SignIn.doctor = false;
+                    Intent intentSignOut = new Intent(UpdatePassword.this, SignIn.class);
+                    startActivity(intentSignOut);
+                    finishAffinity();
+                    dialog.dismiss();
+                } else {
+                    dialog.dismiss();
+                }
+
             }
         });
 
 
-
-
         dialog.show();
-    };
+    }
+
+    ;
 
     private void initViews() {
         tietOldPass = findViewById(R.id.tiet_old_pass);

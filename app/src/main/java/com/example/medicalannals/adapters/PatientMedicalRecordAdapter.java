@@ -7,6 +7,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,17 +19,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medicalannals.R;
 import com.example.medicalannals.models.DocPatientViewMedicalRecordModel;
+import com.example.medicalannals.models.DoctorsModel;
 import com.example.medicalannals.models.PatientMedicalRecordModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class PatientMedicalRecordAdapter extends RecyclerView.Adapter<PatientMedicalRecordAdapter.MyViewHolder> {
+public class PatientMedicalRecordAdapter extends RecyclerView.Adapter<PatientMedicalRecordAdapter.MyViewHolder> implements Filterable {
 
     private ArrayList<DocPatientViewMedicalRecordModel> patientMedicalRecordModelArrayList;
+    private ArrayList<DocPatientViewMedicalRecordModel> filteredData;
     private Context mcontext;
 
-    public PatientMedicalRecordAdapter(ArrayList<DocPatientViewMedicalRecordModel> patientMedicalRecordModelArrayList, Context mcontext) {
+
+    public PatientMedicalRecordAdapter(ArrayList<DocPatientViewMedicalRecordModel> patientMedicalRecordModelArrayList,Context mcontext) {
         this.patientMedicalRecordModelArrayList = patientMedicalRecordModelArrayList;
+        this.filteredData = patientMedicalRecordModelArrayList;
         this.mcontext = mcontext;
     }
 
@@ -41,7 +48,7 @@ public class PatientMedicalRecordAdapter extends RecyclerView.Adapter<PatientMed
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        DocPatientViewMedicalRecordModel patientMedicalRecordModel = patientMedicalRecordModelArrayList.get(position);
+        DocPatientViewMedicalRecordModel patientMedicalRecordModel = filteredData.get(position);
         holder.tvDocNamePatientRecordItem.setText(patientMedicalRecordModel.getTvDocNamePatientRecord());
         holder.tvDatePatientRecordItem.setText(patientMedicalRecordModel.getTvDatePatientRecord());
 //        holder.tvRemarksData.setText(patientMedicalRecordModel.getRemarksPatientRecord());
@@ -116,7 +123,48 @@ public class PatientMedicalRecordAdapter extends RecyclerView.Adapter<PatientMed
 
     @Override
     public int getItemCount() {
-        return patientMedicalRecordModelArrayList.size();
+        return filteredData.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new ItemFilter();
+    }
+    private class ItemFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            String filterString = constraint.toString().toLowerCase();
+
+            FilterResults results = new FilterResults();
+
+            final List<DocPatientViewMedicalRecordModel> list = patientMedicalRecordModelArrayList;
+
+            int count = list.size();
+            final ArrayList<DocPatientViewMedicalRecordModel> nlist = new ArrayList<DocPatientViewMedicalRecordModel>(count);
+
+            DocPatientViewMedicalRecordModel filterableString ;
+
+            for (int i = 0; i < count; i++) {
+                filterableString = list.get(i);
+                if (filterableString.getTvDocNamePatientRecord().toLowerCase().contains(filterString)) {
+                    nlist.add(filterableString);
+                }
+            }
+
+            results.values = nlist;
+            results.count = nlist.size();
+
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredData = (ArrayList<DocPatientViewMedicalRecordModel>) results.values;
+            notifyDataSetChanged();
+        }
+
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
