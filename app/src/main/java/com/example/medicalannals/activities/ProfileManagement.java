@@ -70,6 +70,7 @@ public class ProfileManagement extends AppCompatActivity {
         }
     }
 
+
     private void initViews() {
         toolbarImageBackPatient = findViewById(R.id.toolbar_image_back_patient);
         clChangePassword = findViewById(R.id.cl_change_password);
