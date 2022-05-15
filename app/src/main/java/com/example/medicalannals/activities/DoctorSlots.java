@@ -2,6 +2,7 @@ package com.example.medicalannals.activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,27 +20,34 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.medicalannals.R;
+import com.example.medicalannals.models.DoctorsModel;
 import com.example.medicalannals.models.SlotsModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class DoctorSlots extends AppCompatActivity {
 
-
-    ImageView ivToolbarBack , ivCalenderSetSlots , ivTimeSetSlots;
+    ImageView ivToolbarBack, ivCalenderSetSlots, ivTimeSetSlots;
     Button btnSetSlot;
-    EditText edSetSlotsDate , edSetSlotsTime;
+    EditText edSetSlotsDate, edSetSlotsTime;
     private DatePickerDialog.OnDateSetListener doctorDashboardDateListener;
     long age;
     String stDate, stTime;
+    private DoctorsModel doctor;
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -48,6 +56,7 @@ public class DoctorSlots extends AppCompatActivity {
         setContentView(R.layout.activity_doctor_slots);
         initViews();
         clickListeners();
+        getDoctor();
     }
 
     private void clickListeners() {
@@ -126,17 +135,19 @@ public class DoctorSlots extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         String strAM_PM;
-                        if(selectedHour==0){
-                            selectedHour+=12;   strAM_PM="AM";
-                        }else if(selectedHour==12){
-                            strAM_PM="PM";
-                        }else if(selectedHour>12){
-                            selectedHour=selectedHour-12;   strAM_PM="PM";
-                        }else{
-                            strAM_PM="AM";
+                        if (selectedHour == 0) {
+                            selectedHour += 12;
+                            strAM_PM = "AM";
+                        } else if (selectedHour == 12) {
+                            strAM_PM = "PM";
+                        } else if (selectedHour > 12) {
+                            selectedHour = selectedHour - 12;
+                            strAM_PM = "PM";
+                        } else {
+                            strAM_PM = "AM";
                         }
 
-                        edSetSlotsTime.setText( selectedHour + ":" + selectedMinute + " " + strAM_PM);
+                        edSetSlotsTime.setText(selectedHour + ":" + selectedMinute + " " + strAM_PM);
                     }
                 }, hour, minute, false);//Yes 24 hour time
                 timePickerDialog.setTitle("Select Time");
@@ -146,8 +157,10 @@ public class DoctorSlots extends AppCompatActivity {
         btnSetSlot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog = new ProgressDialog(DoctorSlots.this);
+                progressDialog.setMessage("Loading..... ");
 
-                if(!checkFields()){
+                if (!checkFields()) {
                     SlotsModel slotsModel = new SlotsModel();
                     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -156,19 +169,78 @@ public class DoctorSlots extends AppCompatActivity {
                     slotsModel.setDate(stDate);
                     slotsModel.setTime(stTime);
                     slotsModel.setDocId(uid);
-                    reference.push().setValue(slotsModel).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()){
 
-                            showDialog();
-                        }else {
-                            Toast.makeText(DoctorSlots.this,"Please Try again",Toast.LENGTH_LONG).show();
+//addition
+                    final Query userQuery = FirebaseDatabase.getInstance().getReference().child("Slots").orderByChild("id");
+                    userQuery.equalTo(doctor.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Boolean check = false;
+                            if (snapshot.hasChildren()) {
+
+                                for (DataSnapshot dsp : snapshot.getChildren()) {
+                                    SlotsModel bookTimeSlotModel = dsp.getValue(SlotsModel.class);
+                                    if (stDate.equals(bookTimeSlotModel.getDate()) && stTime.equals(bookTimeSlotModel.getTime())) {
+                                        check= true;
+                                        break;
+                                    }
+                                }
+                                if (check){
+                                    progressDialog.dismiss();
+                                    ShowAlertDialog("Please Select different Date and Time");
+                                }else {
+                                    reference.push().setValue(slotsModel).addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            progressDialog.dismiss();
+                                            showDialog();
+                                        } else {
+                                            Toast.makeText(DoctorSlots.this, "Please Try again", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+                            } else {
+                                reference.push().setValue(slotsModel).addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        progressDialog.dismiss();
+                                        showDialog();
+                                    } else {
+                                        Toast.makeText(DoctorSlots.this, "Please Try again", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
                         }
                     });
+
 //                    reference.child(uid).setValue(arrayList);
                 }
 
             }
         });
+    }
+
+    private void getDoctor() {
+
+        String uid = FirebaseAuth.getInstance().getUid();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        database.child("Doctor")
+                .child(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            doctor = snapshot.getValue(DoctorsModel.class);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
     }
 
     private void showDialog() {
@@ -180,7 +252,7 @@ public class DoctorSlots extends AppCompatActivity {
         dialog.setContentView(dialogView);
 
         TextView Message, btnAllow;
-        Message =  (TextView) dialogView.findViewById(R.id.tvMessage);
+        Message = (TextView) dialogView.findViewById(R.id.tvMessage);
         btnAllow = (TextView) dialogView.findViewById(R.id.btn_allow);
 
         Message.setText("Slot Added.");
@@ -221,11 +293,11 @@ public class DoctorSlots extends AppCompatActivity {
     }
 
     private boolean checkFields() {
-       edSetSlotsDate.setError(null);
-       edSetSlotsTime.setError(null);
+        edSetSlotsDate.setError(null);
+        edSetSlotsTime.setError(null);
 
-       stDate = edSetSlotsDate.getText().toString().trim();
-       stTime = edSetSlotsTime.getText().toString().trim();
+        stDate = edSetSlotsDate.getText().toString().trim();
+        stTime = edSetSlotsTime.getText().toString().trim();
         boolean cancel = false;
         View focusView = null;
 
@@ -233,8 +305,7 @@ public class DoctorSlots extends AppCompatActivity {
             ShowAlertDialog("Please Select Date");
             focusView = edSetSlotsDate;
             cancel = true;
-        }
-        else if(TextUtils.isEmpty(stTime)){
+        } else if (TextUtils.isEmpty(stTime)) {
             ShowAlertDialog("Please Select Time");
             focusView = edSetSlotsTime;
             cancel = true;
@@ -246,20 +317,20 @@ public class DoctorSlots extends AppCompatActivity {
 
     }
 
-    protected void ShowAlertDialog(String stMessage){
+    protected void ShowAlertDialog(String stMessage) {
 
         Dialog dialog = new Dialog(DoctorSlots.this);
         dialog.setCancelable(true);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        View view  = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+        View view = getLayoutInflater().inflate(R.layout.alert_dialog, null);
         dialog.setContentView(view);
 
-        TextView Message,btnAllow;
+        TextView Message, btnAllow;
         ImageView ivAlert;
-        Message=(TextView)view.findViewById(R.id.tvMessage);
-        btnAllow=(TextView)view.findViewById(R.id.btn_allow);
-        ivAlert = (ImageView) view.findViewById(R.id.imageView16) ;
+        Message = (TextView) view.findViewById(R.id.tvMessage);
+        btnAllow = (TextView) view.findViewById(R.id.btn_allow);
+        ivAlert = (ImageView) view.findViewById(R.id.imageView16);
 
         ivAlert.setImageResource(R.drawable.warning);
         ivAlert.setColorFilter(ContextCompat.getColor(this, R.color.dark_blue_700), android.graphics.PorterDuff.Mode.SRC_IN);
@@ -274,5 +345,7 @@ public class DoctorSlots extends AppCompatActivity {
         });
 
         dialog.show();
-    };
+    }
+
+    ;
 }

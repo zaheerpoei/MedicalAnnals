@@ -2,9 +2,14 @@ package com.example.medicalannals.activities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +22,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.medicalannals.R;
 import com.example.medicalannals.models.DocPatientViewMedicalRecordModel;
 import com.example.medicalannals.models.DoctorSlotsBookedModel;
 import com.example.medicalannals.models.DoctorsModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +38,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 public class EditPatientRecord extends AppCompatActivity {
 
@@ -41,11 +55,23 @@ public class EditPatientRecord extends AppCompatActivity {
     private DoctorsModel doctorsModel;
     private DocPatientViewMedicalRecordModel docPatientViewMedicalRecordModel;
     ProgressDialog progressDialog;
+    ImageView ivPrescriptionPic;
+    Uri prescriptionUri;
+
+    FirebaseStorage storage;
+    StorageReference storageReference;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_patient_record);
+
+        storageReference = FirebaseStorage.getInstance().getReference();
+
         Bundle bundle = getIntent().getExtras();
         doctorSlotsBookedModel = (DoctorSlotsBookedModel) bundle.getSerializable("PatientRecord");
         initViews();
@@ -72,6 +98,8 @@ public class EditPatientRecord extends AppCompatActivity {
 
                         remarksEt.setText(docPatientViewMedicalRecordModel.getTvRemarksPatientRecord());
                         prescriptionEt.setText(docPatientViewMedicalRecordModel.getTvPrescriptionPatientRecord());
+                        Glide.with(EditPatientRecord.this).load(docPatientViewMedicalRecordModel.getPrescription()).into(ivPrescriptionPic);
+
 //                    }
                 }
 
@@ -128,6 +156,7 @@ public class EditPatientRecord extends AppCompatActivity {
         docPatientViewMedicalRecordModel.setDoctorBookedSlotId(doctorSlotsBookedModel.doctorBookedSlotId);
         docPatientViewMedicalRecordModel.setTvDatePatientRecord(doctorSlotsBookedModel.patientBookedSlotDate);
         docPatientViewMedicalRecordModel.setAppointmentKey(doctorSlotsBookedModel.getAppointmentKey());
+        docPatientViewMedicalRecordModel.setPrescription(prescriptionUri.toString());
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("Patient Records");
@@ -180,8 +209,34 @@ public class EditPatientRecord extends AppCompatActivity {
                 }
             }
         });
+
+        ivPrescriptionPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchTakePictureIntent();
+            }
+        });
     }
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            // display error state to the user
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ivPrescriptionPic.setImageBitmap(imageBitmap);
+            uploadImage(imageBitmap);
+        }
+    }
 
     private boolean checkFields() {
         remarksEt.setError(null);
@@ -207,7 +262,6 @@ public class EditPatientRecord extends AppCompatActivity {
         return cancel;
 
     }
-
 
     protected void ShowAlertDialog(String stMessage) {
 
@@ -271,6 +325,7 @@ public class EditPatientRecord extends AppCompatActivity {
         appointmentDate = findViewById(R.id.appointmentDate);
         remarksEt = findViewById(R.id.tied_remarks_edit_patient);
         prescriptionEt = findViewById(R.id.tied_prescription_edit_patient);
+        ivPrescriptionPic = findViewById(R.id.iv_prescription_pic);
 
         patientName.setText(doctorSlotsBookedModel.getPatientName());
         appointmentDate.setText(doctorSlotsBookedModel.getPatientBookedSlotDate());
@@ -278,5 +333,82 @@ public class EditPatientRecord extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading..... ");
+    }
+
+    private void uploadImage(Bitmap bitmap) {
+        if(bitmap != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            String uid = FirebaseAuth.getInstance().getUid();
+            StorageReference ref = storageReference.child("prescription/"+ uid);
+/*            ref.putFile(bitmap)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(EditPatientRecord.this, "Uploaded...", Toast.LENGTH_SHORT).show();
+
+                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {//add this method
+                                @Override
+                                public void onSuccess(Uri uri) {
+
+
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(EditPatientRecord.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });*/
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            UploadTask uploadTask = ref.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.dismiss();
+                    Toast.makeText(EditPatientRecord.this, "Uploaded...", Toast.LENGTH_SHORT).show();
+
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {//add this method
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            prescriptionUri = uri;
+
+                        }
+                    });
+                }
+            })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
     }
 }

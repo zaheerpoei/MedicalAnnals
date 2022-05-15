@@ -17,6 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.medicalannals.R;
 import com.example.medicalannals.models.DocPatientViewMedicalRecordModel;
 import com.example.medicalannals.models.DoctorsModel;
@@ -74,6 +75,35 @@ public class PatientMedicalRecordAdapter extends RecyclerView.Adapter<PatientMed
                 lineView.setVisibility(View.GONE);
 
                 Message.setText(patientMedicalRecordModel.getTvRemarksPatientRecord());
+
+                btnAllow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+        holder.constraintPatientViewPrescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog dialog = new Dialog(view.getContext());
+                dialog.setCancelable(true);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                View dialogView = ((FragmentActivity) mcontext).getLayoutInflater().inflate(R.layout.alert_dialog_image, null);
+                dialog.setContentView(dialogView);
+
+                TextView btnAllow;
+                ImageView ivPrescriptionPic;
+                ivPrescriptionPic = (ImageView) dialogView.findViewById(R.id.iv_view_prescription);
+                btnAllow = (TextView) dialogView.findViewById(R.id.btn_allow);
+
+                Glide.with(mcontext).load(patientMedicalRecordModel.getPrescription()).into(ivPrescriptionPic);
+
 
                 btnAllow.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -169,7 +199,7 @@ public class PatientMedicalRecordAdapter extends RecyclerView.Adapter<PatientMed
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvDocNamePatientRecordItem , tvDatePatientRecordItem,tvRemarksData, tvPrescriptionData ;
-        ConstraintLayout constraintPatientMedicalRecordSymptoms ,constraintPatientMedicalRecordPrescription;
+        ConstraintLayout constraintPatientMedicalRecordSymptoms ,constraintPatientMedicalRecordPrescription , constraintPatientViewPrescription;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -179,6 +209,7 @@ public class PatientMedicalRecordAdapter extends RecyclerView.Adapter<PatientMed
             tvPrescriptionData = itemView.findViewById(R.id.tv_prescription_data);
             constraintPatientMedicalRecordSymptoms = itemView.findViewById(R.id.constraint_patient_medical_record_symptoms);
             constraintPatientMedicalRecordPrescription = itemView.findViewById(R.id.constraint_patient_medical_record_prescription);
+            constraintPatientViewPrescription = itemView.findViewById(R.id.constraint_patient_view_prescription);
         }
     }
 }

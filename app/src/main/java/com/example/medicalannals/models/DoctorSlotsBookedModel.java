@@ -10,9 +10,10 @@ public class DoctorSlotsBookedModel implements Serializable {
     public String patientBookedSlotTime;
     public String patientName;
     public String appointmentKey;
+    public String patientProfilePic;
 
     public DoctorSlotsBookedModel(String patientBookedSlotId, String doctorBookedSlotId, String patientBookedSlotDate
-            , String patientBookedSlotTime, String patientName,String appointmentKey )
+            , String patientBookedSlotTime, String patientName,String appointmentKey , String patientProfilePic)
     {
         this.patientBookedSlotId = patientBookedSlotId;
         this.doctorBookedSlotId = doctorBookedSlotId;
@@ -21,6 +22,7 @@ public class DoctorSlotsBookedModel implements Serializable {
         this.patientBookedSlotTime=patientBookedSlotTime;
         this.patientName=patientName;
         this.appointmentKey=appointmentKey;
+        this.patientProfilePic = patientProfilePic;
     }
 
     public DoctorSlotsBookedModel() {
@@ -72,5 +74,13 @@ public class DoctorSlotsBookedModel implements Serializable {
 
     public String getAppointmentKey() {
         return appointmentKey;
+    }
+
+    public void setPatientProfilePic(String patientProfilePic) {
+        this.patientProfilePic = patientProfilePic;
+    }
+
+    public String getPatientProfilePic() {
+        return patientProfilePic;
     }
 }

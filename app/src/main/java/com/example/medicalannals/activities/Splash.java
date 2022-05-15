@@ -25,7 +25,9 @@ public class Splash extends AppCompatActivity {
 
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null) {
+        boolean emailVerified = firebaseUser.isEmailVerified();
+
+        if (firebaseUser != null && emailVerified) {
             String uid = firebaseUser.getUid();
             DatabaseReference database = FirebaseDatabase.getInstance().getReference();
             database.child("Doctor")

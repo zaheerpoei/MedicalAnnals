@@ -71,13 +71,13 @@ public class SignIn extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Signing in..... ");
-        if(rbPatient.isChecked()) {
-            tiedEmailAddress.setText("waheed.shah121@gmail.com");
-            tiedPassword.setText("login@123");
-        }else {
-            tiedEmailAddress.setText("ibra@gmail.com");
-            tiedPassword.setText("something");
-        }
+//        if(rbPatient.isChecked()) {
+//            tiedEmailAddress.setText("waheed.shah121@gmail.com");
+//            tiedPassword.setText("login@123");
+//        }else {
+//            tiedEmailAddress.setText("ibra@gmail.com");
+//            tiedPassword.setText("something");
+//        }
     }
 
     private void clickListeners() {
@@ -97,7 +97,8 @@ public class SignIn extends AppCompatActivity {
                     if(!checkFields()) {
                         if(isValidEmailAddress(tiedEmailAddress)) {
                             progressDialog.show();
-                            LoginPatient(stEmailAddress , stPassword); }
+                                LoginPatient(stEmailAddress, stPassword);
+                        }
                     }
                 }
                 else if(rbDoctor.isChecked()){
@@ -123,7 +124,7 @@ public class SignIn extends AppCompatActivity {
 
             }
         });
-
+/*
         rbDoctor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,7 +150,7 @@ public class SignIn extends AppCompatActivity {
                     tiedPassword.setText("something");
                 }
             }
-        });
+        });*/
     }
 
     private boolean checkFields() {
@@ -190,7 +191,59 @@ public class SignIn extends AppCompatActivity {
 
     public void LoginPatient(String EMAIL, String PASSWORD) {
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword(EMAIL, PASSWORD)
+
+//        boolean emailVerified = mAuth.getCurrentUser().isEmailVerified();
+//        if(emailVerified){
+            mAuth.signInWithEmailAndPassword(EMAIL, PASSWORD)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                                String uid = mAuth.getCurrentUser().getUid();
+                                database
+                                        .child("Patient")
+                                        .child(uid)
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                progressDialog.dismiss();
+                                                if(snapshot.exists()) {
+                                                    mAuth = FirebaseAuth.getInstance();
+                                                    boolean emailVerified = mAuth.getCurrentUser().isEmailVerified();
+                                                    if (emailVerified) {
+                                                        startActivity(new Intent(SignIn.this, PatientDashboard.class));
+                                                        finishAffinity();
+                                                    }
+                                                    else
+                                                    {
+                                                        ShowAlertDialog("Email not verified.");
+                                                    }
+                                                }
+                                                else{
+                                                    ShowAlertDialog("Record not exists.");
+                                                }
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                ShowAlertDialog(error.toString());
+                                            }
+                                        });
+                            }else {
+                                ShowAlertDialog(task.getException().getMessage());
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                }
+            });
+//            Intent intent = new Intent(SignIn.this, PatientDashboard.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(intent);
+        }
+/*        mAuth.signInWithEmailAndPassword(EMAIL, PASSWORD)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -226,11 +279,17 @@ public class SignIn extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
             }
-        });
-    }
+        });*/
+//    }
 
     public void LoginDoctor(String EMAIL, String PASSWORD) {
         mAuth = FirebaseAuth.getInstance();
+//        boolean emailVerified = mAuth.getCurrentUser().isEmailVerified();
+//                                        if(emailVerified){
+//                                            Intent intent = new Intent(SignIn.this, PatientDashboard.class);
+//                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                            startActivity(intent);
+//    }
         mAuth.signInWithEmailAndPassword(EMAIL, PASSWORD)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -247,8 +306,16 @@ public class SignIn extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             progressDialog.dismiss();
                                             if(snapshot.exists()) {
-                                                startActivity(new Intent(SignIn.this, DoctorDashboard.class));
-                                                finish(); }
+                                                mAuth = FirebaseAuth.getInstance();
+                                                boolean emailVerified = mAuth.getCurrentUser().isEmailVerified();
+                                                if (true/*emailVerified*/) {
+                                                    startActivity(new Intent(SignIn.this, DoctorDashboard.class));
+                                                    finishAffinity();
+                                                } else {
+                                                    ShowAlertDialog("Email not verified.");
+                                                }
+                                            }
+
                                             else{ ShowAlertDialog("Record not exists.");
                                             }
                                         }

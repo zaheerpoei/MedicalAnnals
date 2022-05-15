@@ -12,11 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.medicalannals.R;
 import com.example.medicalannals.activities.EditPatientRecord;
+import com.example.medicalannals.activities.ProfileManagement;
 import com.example.medicalannals.models.DoctorSlotsBookedModel;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SlotsBookedAdapter extends RecyclerView.Adapter<SlotsBookedAdapter.MyViewHolder>{
 
@@ -43,6 +47,8 @@ public class SlotsBookedAdapter extends RecyclerView.Adapter<SlotsBookedAdapter.
         holder.tvPatientNameBookedSlots.setText(doctorSlotsBookedModel.getPatientName());
         holder.tvBookedSlotsDate.setText(doctorSlotsBookedModel.getPatientBookedSlotDate());
         holder.tvBookedSlotsTime.setText(doctorSlotsBookedModel.getPatientBookedSlotTime());
+        Glide.with(mcontext).load(doctorSlotsBookedModel.getPatientProfilePic()).into(holder.ivPatientPicBookedSlots);
+
         holder.constraintMainSlotsBooked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,7 +67,7 @@ public class SlotsBookedAdapter extends RecyclerView.Adapter<SlotsBookedAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvPatientNameBookedSlots, tvBookedSlotsDate, tvBookedSlotsTime;
-        ImageView ivPatientPicBookedSlots;
+        CircleImageView ivPatientPicBookedSlots;
         ConstraintLayout constraintMainSlotsBooked;
 
         public MyViewHolder(View itemView) {

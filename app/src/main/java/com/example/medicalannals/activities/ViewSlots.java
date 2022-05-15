@@ -17,9 +17,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.medicalannals.R;
 import com.example.medicalannals.adapters.AfternoonSlotsAdapter;
 import com.example.medicalannals.adapters.EveningSlotsAdapter;
@@ -45,6 +47,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ViewSlots extends AppCompatActivity implements ViewSlotsAdapter.SelectedDate,
         EveningSlotsAdapter.EveningSelectedTime, AfternoonSlotsAdapter.AfternoonSelectedTime, MorningSlotsAdapter.MorningSelectedTime {
 
@@ -67,6 +71,7 @@ public class ViewSlots extends AppCompatActivity implements ViewSlotsAdapter.Sel
     ProgressDialog progressDialog;
     private String stDate = "";
     private String stTime = "";
+    CircleImageView ivDocPic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +85,13 @@ public class ViewSlots extends AppCompatActivity implements ViewSlotsAdapter.Sel
 
     }
 
-    private void getSlotsData(String date) {
+       private void getSlotsData(String date) {
         stDate = date;
         morningList.clear();
         afternoonList.clear();
         eveningList.clear();
         progressDialog.show();
+
         final Query userQuery = FirebaseDatabase.getInstance().getReference().child("Slots").orderByChild("docId");
         userQuery.equalTo(doctor.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -156,15 +162,62 @@ public class ViewSlots extends AppCompatActivity implements ViewSlotsAdapter.Sel
                                         doctorSlotsBookedModel.setPatientBookedSlotId(uid);
                                         doctorSlotsBookedModel.setDoctorBookedSlotId(doctor.getId());
                                         doctorSlotsBookedModel.setPatientName(patientModel.getName());
-                                        reference.push().setValue(doctorSlotsBookedModel).addOnCompleteListener(task -> {
+                                        doctorSlotsBookedModel.setPatientProfilePic(patientModel.getPatientProfilePic());
 
-                                            progressDialog.dismiss();
-                                            if (task.isSuccessful()){
-                                                showDialog();
-                                            }else {
-                                                Toast.makeText(ViewSlots.this,"Please try again",Toast.LENGTH_LONG).show();
+                                        final Query userQuery = FirebaseDatabase.getInstance().getReference().child("Appointments").orderByChild("doctorBookedSlotId");
+
+                                        userQuery.equalTo(doctor.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                Boolean check = false;
+                                                if (snapshot.hasChildren()) {
+
+                                                    for (DataSnapshot dsp : snapshot.getChildren()) {
+                                                        DoctorSlotsBookedModel doctorSlotsBookedModel = dsp.getValue(DoctorSlotsBookedModel.class);
+                                                        if (stDate.equals(doctorSlotsBookedModel.getPatientBookedSlotDate()) && stTime.equals(doctorSlotsBookedModel.getPatientBookedSlotTime())) {
+                                                            check= true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (check){
+                                                        progressDialog.dismiss();
+                                                        ShowAlertDialog("Please Select different Date and Time.It is already Booked");
+                                                    }else {
+                                                        reference.push().setValue(doctorSlotsBookedModel).addOnCompleteListener(task -> {
+
+                                                            progressDialog.dismiss();
+                                                            if (task.isSuccessful()){
+                                                                showDialog();
+                                                            }else {
+                                                                Toast.makeText(ViewSlots.this,"Please try again",Toast.LENGTH_LONG).show();
+                                                            }
+                                                        });
+                                                    }
+                                                } else {
+                                                    reference.push().setValue(doctorSlotsBookedModel).addOnCompleteListener(task -> {
+
+                                                        progressDialog.dismiss();
+                                                        if (task.isSuccessful()){
+                                                            showDialog();
+                                                        }else {
+                                                            Toast.makeText(ViewSlots.this,"Please try again",Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
                                             }
                                         });
+
+
+
+
+
+
+
                                     }
                                 }
 
@@ -262,6 +315,7 @@ public class ViewSlots extends AppCompatActivity implements ViewSlotsAdapter.Sel
         recyclerViewSlotsAvailable = findViewById(R.id.recycler_view_slits_available);
         ivToolbarBack = findViewById(R.id.toolbar_image_back);
         tvChangeDoc = findViewById(R.id.tv_change_doc);
+        ivDocPic = findViewById(R.id.iv_doc_pic);
         recyclerViewMorningSlots = findViewById(R.id.recycler_view_morning_slots);
         recyclerViewAfternoonSlots = findViewById(R.id.recycler_view_afternoon_slots);
         recyclerViewEveningSlots = findViewById(R.id.recycler_view_eveing_slots);
@@ -280,6 +334,7 @@ public class ViewSlots extends AppCompatActivity implements ViewSlotsAdapter.Sel
             tv_years.setText(doctor.getExperience());
             tv_education.setText(doctor.getQualification());
             tv_fee_amount.setText(doctor.getFees());
+            Glide.with(this).load(doctor.getDoctorProfilePic()).into(ivDocPic);
         }
     }
 
@@ -301,5 +356,36 @@ public class ViewSlots extends AppCompatActivity implements ViewSlotsAdapter.Sel
     @Override
     public void onMorningTimeSelected(String time) {
         stTime = time;
+    }
+
+
+    protected void ShowAlertDialog(String stMessage) {
+
+        Dialog dialog = new Dialog(ViewSlots.this);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        View view = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+        dialog.setContentView(view);
+
+        TextView Message, btnAllow;
+        ImageView ivAlert;
+        Message = (TextView) view.findViewById(R.id.tvMessage);
+        btnAllow = (TextView) view.findViewById(R.id.btn_allow);
+        ivAlert = (ImageView) view.findViewById(R.id.imageView16);
+
+        ivAlert.setImageResource(R.drawable.warning);
+        ivAlert.setColorFilter(ContextCompat.getColor(this, R.color.dark_blue_700), android.graphics.PorterDuff.Mode.SRC_IN);
+
+        Message.setText(stMessage);
+
+        btnAllow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }

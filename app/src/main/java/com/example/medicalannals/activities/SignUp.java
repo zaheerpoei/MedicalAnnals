@@ -50,6 +50,7 @@ public class SignUp extends AppCompatActivity {
     FirebaseAuth mAuth;
     ConstraintLayout constraintLayout;
     Button btnSignUp;
+    Uri patientProfilepic;
 
     ProgressDialog progressDialog;
     RadioButton rbDoctorSignUp, rbPatientSignUp;
@@ -207,7 +208,7 @@ public class SignUp extends AppCompatActivity {
                     if (!checkFields()) {
                         if(isValidEmailAddress(tiedEmailSignUp)) {
                             progressDialog.show();
-                            PatientModel patientModel = new PatientModel(stUsernameSignUp, stEmailSignUp, stGenderSignUp, stAgeSignUp, stContactSignUp);
+                            PatientModel patientModel = new PatientModel(stUsernameSignUp, stEmailSignUp, stGenderSignUp, stAgeSignUp, stContactSignUp,"");
                             RegisterPatient(patientModel, stPasswordSignUp);
                         }
                     }
@@ -215,7 +216,7 @@ public class SignUp extends AppCompatActivity {
                     if (!checkFields()) {
                         if(isValidEmailAddress(tiedEmailSignUp)){
                             progressDialog.show();
-                            DoctorsModel doctorsModel = new DoctorsModel("",stUsernameSignUp, stEmailSignUp, stContactSignUp, stAgeSignUp, stGenderSignUp, stSpecializationSignUp, stHospitalSignUp, stExperienceSignUp, stQualificationSignUp, stFeesSignUp);
+                            DoctorsModel doctorsModel = new DoctorsModel("",stUsernameSignUp, stEmailSignUp, stContactSignUp, stAgeSignUp, stGenderSignUp, stSpecializationSignUp, stHospitalSignUp, stExperienceSignUp, stQualificationSignUp, stFeesSignUp,"");
                             RegisterDoctor(doctorsModel, stPasswordSignUp);
                         }
                     }
@@ -376,13 +377,44 @@ public class SignUp extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            mAuth = FirebaseAuth.getInstance();
 
-                            DatabaseReference reference = database.getReference("Patient");
-                            reference.child(uid).setValue(patientModel);
+                            mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
 
-                            Intent intent = new Intent(SignUp.this, PatientDashboard.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(SignUp.this, "Please check email for verification.", Toast.LENGTH_SHORT).show();
+                                        DatabaseReference reference = database.getReference("Patient");
+                                            reference.child(uid).setValue(patientModel);
+                                        Intent intent = new Intent(SignUp.this, SignIn.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+//                                        boolean emailVerified = mAuth.getCurrentUser().isEmailVerified();
+//                                        if(emailVerified){
+//                                            DatabaseReference reference = database.getReference("Patient");
+//                                            reference.child(uid).setValue(patientModel);
+//
+//                                            Intent intent = new Intent(SignUp.this, PatientDashboard.class);
+//                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                            startActivity(intent);
+                                        }
+                                    else{
+                                        Toast.makeText(SignUp.this, task.getException().getMessage() , Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            });
+
+
+
+
+//                            DatabaseReference reference = database.getReference("Patient");
+//                            reference.child(uid).setValue(patientModel);
+//
+//                            Intent intent = new Intent(SignUp.this, PatientDashboard.class);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            startActivity(intent);
 //                            activity.startActivity(new Intent(activity, MainActivity.class));
 //                            Toast.makeText(activity, "Account Created", Toast.LENGTH_SHORT).show();
 //                            activity.finish();
@@ -414,13 +446,42 @@ public class SignUp extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            mAuth = FirebaseAuth.getInstance();
+//
+//                            DatabaseReference reference = database.getReference("Doctor");
+//                            reference.child(uid).setValue(doctorsModel);
 
-                            DatabaseReference reference = database.getReference("Doctor");
-                            reference.child(uid).setValue(doctorsModel);
 
-                            Intent intent = new Intent(SignUp.this, DoctorDashboard.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+
+//                            Intent intent = new Intent(SignUp.this, DoctorDashboard.class);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            startActivity(intent);
+                            mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(SignUp.this, "Please check email for verification.", Toast.LENGTH_SHORT).show();
+                                        DatabaseReference reference = database.getReference("Doctor");
+                                        reference.child(uid).setValue(doctorsModel);
+                                        Intent intent = new Intent(SignUp.this, SignIn.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+//                                        boolean emailVerified = mAuth.getCurrentUser().isEmailVerified();
+//                                        if(emailVerified){
+//                                            DatabaseReference reference = database.getReference("Patient");
+//                                            reference.child(uid).setValue(patientModel);
+//
+//                                            Intent intent = new Intent(SignUp.this, PatientDashboard.class);
+//                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                            startActivity(intent);
+                                    }
+                                    else{
+                                        Toast.makeText(SignUp.this, task.getException().getMessage() , Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            });
 
                         } else {
                             Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();

@@ -20,8 +20,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.medicalannals.R;
 import com.example.medicalannals.activities.DocViewPatientMedicalRecords;
+import com.example.medicalannals.activities.EditPatientRecord;
 import com.example.medicalannals.models.DocPatientViewMedicalRecordModel;
 import com.example.medicalannals.models.DoctorsModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -117,6 +119,35 @@ public class DocPatientViewMedicalRecordAdapter extends RecyclerView.Adapter<Doc
                 lineView.setVisibility(View.GONE);
 
                 Message.setText(docPatientViewMedicalRecordModel.getTvPrescriptionPatientRecord());
+
+                btnAllow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+        holder.constraintDocViewPrescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog dialog = new Dialog(view.getContext());
+                dialog.setCancelable(true);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                View dialogView = ((FragmentActivity) mcontext).getLayoutInflater().inflate(R.layout.alert_dialog_image, null);
+                dialog.setContentView(dialogView);
+
+                TextView btnAllow;
+                ImageView ivPrescriptionPic;
+                ivPrescriptionPic = (ImageView) dialogView.findViewById(R.id.iv_view_prescription);
+                btnAllow = (TextView) dialogView.findViewById(R.id.btn_allow);
+
+                Glide.with(mcontext).load(docPatientViewMedicalRecordModel.getPrescription()).into(ivPrescriptionPic);
+
 
                 btnAllow.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -229,7 +260,7 @@ public class DocPatientViewMedicalRecordAdapter extends RecyclerView.Adapter<Doc
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvDocNamePatientRecordItem, tvDatePatientRecordItem, tvRemarksData, tvPrescriptionData, tvDoc;
-        ConstraintLayout constraintPatientMedicalRecordSymptoms, constraintPatientMedicalRecordPrescription;
+        ConstraintLayout constraintPatientMedicalRecordSymptoms, constraintPatientMedicalRecordPrescription , constraintDocViewPrescription;
         ImageView ivDustbin;
 
         public MyViewHolder(View itemView) {
@@ -240,7 +271,9 @@ public class DocPatientViewMedicalRecordAdapter extends RecyclerView.Adapter<Doc
             tvRemarksData = itemView.findViewById(R.id.tv_remarks_data);
             tvPrescriptionData = itemView.findViewById(R.id.tv_prescription_data);
             constraintPatientMedicalRecordSymptoms = itemView.findViewById(R.id.constraint_doc_patient_medical_record_symptoms);
+            constraintPatientMedicalRecordSymptoms = itemView.findViewById(R.id.constraint_doc_patient_medical_record_symptoms);
             constraintPatientMedicalRecordPrescription = itemView.findViewById(R.id.constraint_doc_patient_medical_record_prescription);
+            constraintDocViewPrescription = itemView.findViewById(R.id.constraint_doc_view_prescription);
             ivDustbin = itemView.findViewById(R.id.iv_dustbin);
         }
     }

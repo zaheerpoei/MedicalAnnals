@@ -7,13 +7,14 @@
     android:id="@+id/constraint_main_slots_booked"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_patient_pic_booked_slots"
         android:layout_width="@dimen/_45sdp"
         android:layout_height="@dimen/_45sdp"
-        android:scaleType="fitXY"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"
         android:layout_marginStart="@dimen/_5sdp"
-        android:background="@drawable/profile_background"
         android:src="@drawable/default_profile_pic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

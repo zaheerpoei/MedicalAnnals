@@ -145,6 +145,30 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/tv_add_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:textSize="@dimen/_12sdp"
+        android:text="Prescription Image"
+        android:layout_marginTop="@dimen/_15sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ti_prescription_edit_patient"/>
+
+    <ImageView
+        android:id="@+id/iv_prescription_pic"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:src="@drawable/add"
+        android:scaleType="centerCrop"
+        android:background="@drawable/imageview_border"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_add_image" />
 
     <Button
         android:id="@+id/btn_edit_patient"
@@ -156,7 +180,7 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ti_prescription_edit_patient" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_prescription_pic" />
 
 
 

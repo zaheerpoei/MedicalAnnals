@@ -52,6 +52,19 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/iv_patient_profile_image"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        app:civ_border_width="2dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:civ_border_color="#FF000000"
+        android:src="@drawable/default_profile_pic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraint_toolbar"/>
+
     <ImageView
         android:id="@+id/iv_patient_pic"
         android:layout_width="@dimen/_60sdp"
@@ -60,6 +73,7 @@
         android:layout_marginTop="@dimen/_15sdp"
         android:background="@drawable/profile_background"
         android:scaleType="fitXY"
+        android:visibility="gone"
         android:src="@drawable/default_profile_pic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,9 +87,10 @@
         android:textColor="@color/dark_blue_700"
         android:textSize="@dimen/_9ssp"
         android:textStyle="bold"
+        android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_patient_pic"
+        app:layout_constraintTop_toBottomOf="@+id/iv_patient_profile_image"
         app:layout_constraintVertical_bias="0.44" />
 
     <TextView

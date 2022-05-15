@@ -1,5 +1,6 @@
 package com.example.medicalannals.models;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,13 +12,15 @@ public class PatientModel implements Serializable {
     private String gender;
     private String age;
     private String number;
+    private String patientProfilePic;
 
-    public PatientModel(String name, String email, String gender, String age, String number) {
+    public PatientModel(String name, String email, String gender, String age, String number , String patientProfilePic) {
         this.name = name;
         this.email = email;
         this.gender = gender;
         this.age = age;
         this.number = number;
+        this.patientProfilePic = patientProfilePic;
     }
 
     public PatientModel() {
@@ -61,6 +64,14 @@ public class PatientModel implements Serializable {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getPatientProfilePic() {
+        return patientProfilePic;
+    }
+
+    public void setPatientProfilePic(String patientProfilePic) {
+        this.patientProfilePic = patientProfilePic;
     }
 
 }

@@ -12,12 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.medicalannals.R;
 import com.example.medicalannals.activities.ViewSlots;
 import com.example.medicalannals.models.DoctorsModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.MyViewHolder> implements Filterable {
 
@@ -43,6 +46,8 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         DoctorsModel doctorsModel = filteredData.get(position);
         holder.tvDocName.setText(doctorsModel.getName());
+        Glide.with(mcontext).load(doctorsModel.getDoctorProfilePic()).into(holder.ivDoctorProfilePic);
+
         holder.tvViewSlots.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,12 +105,14 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.MyViewHo
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvDocName;
         TextView tvViewSlots;
+        CircleImageView ivDoctorProfilePic;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             tvDocName = itemView.findViewById(R.id.tv_doc_name);
             tvViewSlots = itemView.findViewById(R.id.tvview_slots);
+            ivDoctorProfilePic = itemView.findViewById(R.id.iv_doc_pic);
         }
     }
 }

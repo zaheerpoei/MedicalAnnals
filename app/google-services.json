@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "748398062324",
+    "firebase_url": "https://medical-annals-default-rtdb.firebaseio.com",
     "project_id": "medical-annals",
     "storage_bucket": "medical-annals.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "748398062324-4gdp9a3er4rpeiirbt3dvs2tcplorg6h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.medicalannals",
+            "certificate_hash": "484fc721e791756b7ec4284b910016f35dba8d13"
+          }
+        },
         {
           "client_id": "748398062324-pjt3qne3rfbqrn0qurev05jc7c68pcrm.apps.googleusercontent.com",
           "client_type": 3

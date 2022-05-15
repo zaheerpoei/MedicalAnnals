@@ -14,8 +14,9 @@ public class DoctorsModel implements Serializable {
     public String experience;
     public String qualification;
     public String fees;
+    public String doctorProfilePic;
 
-    public DoctorsModel(String id,String name, String email, String contact, String age, String gender, String specialization, String hospital, String experience, String qualification, String fees) {
+    public DoctorsModel(String id,String name, String email, String contact, String age, String gender, String specialization, String hospital, String experience, String qualification, String fees , String doctorProfilePic) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -27,6 +28,7 @@ public class DoctorsModel implements Serializable {
         this.experience = experience;
         this.qualification = qualification;
         this.fees = fees;
+        this.doctorProfilePic = doctorProfilePic;
     }
 
     public DoctorsModel() {
@@ -118,5 +120,13 @@ public class DoctorsModel implements Serializable {
 
     public void setFees(String fees) {
         this.fees = fees;
+    }
+
+    public String getDoctorProfilePic() {
+        return doctorProfilePic;
+    }
+
+    public void setDoctorProfilePic(String doctorProfilePic) {
+        this.doctorProfilePic = doctorProfilePic;
     }
 }
