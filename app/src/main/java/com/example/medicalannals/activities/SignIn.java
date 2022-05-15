@@ -217,6 +217,8 @@ public class SignIn extends AppCompatActivity {
                                                     }
                                                     else
                                                     {
+
+                                                        mAuth.signOut();
                                                         ShowAlertDialog("Email not verified.");
                                                     }
                                                 }
@@ -308,10 +310,11 @@ public class SignIn extends AppCompatActivity {
                                             if(snapshot.exists()) {
                                                 mAuth = FirebaseAuth.getInstance();
                                                 boolean emailVerified = mAuth.getCurrentUser().isEmailVerified();
-                                                if (true/*emailVerified*/) {
+                                                if (emailVerified) {
                                                     startActivity(new Intent(SignIn.this, DoctorDashboard.class));
                                                     finishAffinity();
                                                 } else {
+                                                    mAuth.signOut();
                                                     ShowAlertDialog("Email not verified.");
                                                 }
                                             }

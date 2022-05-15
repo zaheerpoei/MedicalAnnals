@@ -25,9 +25,13 @@ public class Splash extends AppCompatActivity {
 
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null){
+            signIn();
+            return;
+        }
         boolean emailVerified = firebaseUser.isEmailVerified();
 
-        if (firebaseUser != null && emailVerified) {
+        if (emailVerified) {
             String uid = firebaseUser.getUid();
             DatabaseReference database = FirebaseDatabase.getInstance().getReference();
             database.child("Doctor")
@@ -62,18 +66,21 @@ public class Splash extends AppCompatActivity {
                         }
                     });
         }else {
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    Intent intent=new Intent(Splash.this, SignIn.class);
-                    startActivity(intent);
-                    finish();
-
-                }
-            }, 2000);
+            signIn();
         }
 
+    }
+
+    private void signIn() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                Intent intent=new Intent(Splash.this, SignIn.class);
+                startActivity(intent);
+                finish();
+
+            }
+        }, 2000);
     }
 }
